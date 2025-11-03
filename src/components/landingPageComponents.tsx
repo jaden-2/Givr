@@ -1,9 +1,9 @@
-import type { ButtonProps, FeatureCardProps, NavLinkProps } from "../props interface/landingPage";
+import type { ButtonProps, FeatureCardProps, NavLinkProps } from "../interface/interfaces"
 
 
 // --- Reusable Components ---
 
-export const Button: React.FC<ButtonProps> = ({ children, variant, className = '' }) => {
+export const Button: React.FC<ButtonProps> = ({ children, variant, className = '', onClick }) => {
   // Adjusted base classes for a cleaner look matching the image
   const baseClasses = 'px-6 py-3 font-semibold rounded-lg transition duration-200 whitespace-nowrap';
 
@@ -28,7 +28,7 @@ export const Button: React.FC<ButtonProps> = ({ children, variant, className = '
   }
 
   return (
-    <button className={`${baseClasses} ${variantClasses} ${className}`}>
+    <button className={`${baseClasses} ${variantClasses} ${className}`} onClick={onClick}>
       {children}
     </button>
   );
@@ -73,7 +73,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, ic
       break;
   }
 
-const cardBaseClasses = 'p-6 rounded-xl transition duration-300 h-full';
+  const cardBaseClasses = 'p-6 rounded-xl transition duration-300 h-full';
 
 
   return (
@@ -113,3 +113,9 @@ export const PlatformCategory: React.FC<FeatureCardProps> = ({ color, descriptio
   }
 
 }
+
+export const Card: React.FC<{children: React.ReactNode}> = ({ children }) => (
+  <div className="p-8 max-w-lg w-5/6 bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-2xl m-4">
+    {children}
+  </div>
+);

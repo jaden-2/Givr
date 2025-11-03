@@ -10,7 +10,7 @@ import blueVerifiedIcon from "../assets/icons/blue-tick-badge.svg"
 import ratingIcon from "../assets/icons/shield.svg"
 import roundCert from "../assets/icons/round-cert.svg"
 import bulletPointIcon from "../assets/icons/radiobox-marked.svg"
-
+import googleIcon from "../assets/icons/google.svg"
 // Simplified Icon for Verified/Checkmark Logo
 
 
@@ -70,3 +70,7 @@ export const StarIcon: React.FC<{ className?: string }> = ({ className = "w-10 h
 export const LockIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
   <img src={recognitionIcon} className={className} />
 );
+
+export const GoogleIcon: React.FC <{className?:string}> = ({className= "w-6 h-6"})=>(
+  <img src={googleIcon} alt="Google Logo Icon" className={className}/>
+)

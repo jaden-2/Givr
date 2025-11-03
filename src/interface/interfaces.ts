@@ -1,3 +1,5 @@
+import type { NavigateFunction } from "react-router-dom";
+
 export interface NavLinkProps {
   label: string;
   href: string;
@@ -28,4 +30,16 @@ export interface LabeledIcon {
     icon: string,
     label: string,
     altText: string
+}
+
+// Sign in
+export interface SignInFormProps extends BasicNatigationProps {
+    onSignInAttempt: (email: string, pass: string) => void;
+}
+
+export interface BasicNatigationProps{
+  onBackToSignUp?: ()=> void ,
+  onBackToSignIn?: ()=> void,
+  toForgotPassword?:string,
+  toSignUp?:string
 }
