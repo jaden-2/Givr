@@ -1,16 +1,17 @@
-import type { ButtonProps, FeatureCardProps, NavLinkProps } from "../props interface/landingPage";
+import type { ButtonProps, FeatureCardProps, NavLinkProps } from "../interface/interfaces"
 
 
 // --- Reusable Components ---
+export const Button: React.FC<ButtonProps> = ({ children, variant, className = '', onClick }) => {
 
-export const Button: React.FC<ButtonProps> = ({ children, variant, className = '' }) => {
+
   // Adjusted base classes for a cleaner look matching the image
   const baseClasses = 'px-6 py-3 font-semibold rounded-lg transition duration-200 whitespace-nowrap';
 
   let variantClasses = '';
   switch (variant) {
     case 'primary':
-      variantClasses = 'bg-[#1877F2] text-white hover:bg-[#156cd4] shadow-md';
+      variantClasses = 'bg-[#1877F2] text-white hover:bg-[#156cd4] shadow-md  ';
       break;
     case 'secondary':
       // The "Post a project" button in the image is secondary: white background, light border, text-gray
@@ -28,9 +29,11 @@ export const Button: React.FC<ButtonProps> = ({ children, variant, className = '
   }
 
   return (
-    <button className={`${baseClasses} ${variantClasses} ${className}`}>
+    <button className={`${baseClasses} ${variantClasses} ${className}`} onClick={onClick}>
       {children}
     </button>
+
+  
   );
 };
 
@@ -73,7 +76,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, ic
       break;
   }
 
-const cardBaseClasses = 'p-6 rounded-xl transition duration-300 h-full';
+  const cardBaseClasses = 'p-6 rounded-xl transition duration-300 h-full';
 
 
   return (
@@ -103,13 +106,19 @@ export const PlatformCategory: React.FC<FeatureCardProps> = ({ color, descriptio
         <ol className='space-y-4'>
           {description.map((text, index) => <li key={index} className='flex gap-2 text-left'>
             <span className={`flex items-center justify-center w-6 h-6 rounded-full ${listBgColor} text-white text-sm font-medium`}>{index + 1}</span>
-            <span className='text-gray-700 w-90'>{text}</span>
+            <span className='text-gray-700 w-full'>{text}</span>
           </li>)}
         </ol>
 
-        <Button variant={color == 'blue' ? 'primary' : 'green'} className='w-90 mt-8 py-3'>{cta}</Button>
+        <Button variant={color == 'blue' ? 'primary' : 'green'} className='w-full mt-8 py-3'>{cta}</Button>
       </div>
     )
   }
 
 }
+
+export const Card: React.FC<{children: React.ReactNode}> = ({ children }) => (
+  <div className="p-8 max-w-lg w-5/6 bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-2xl m-4">
+    {children}
+  </div>
+);
