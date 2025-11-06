@@ -10,6 +10,7 @@ export interface ButtonProps {
   variant: 'primary' | 'secondary' | 'outline'| 'green';
   onClick?: () => void;
   className?: string;
+  href?: string;
 }
 
 export interface FeatureCardProps {
@@ -38,10 +39,12 @@ export interface SignInFormProps extends BasicNatigationProps {
 }
 
 export interface BasicNatigationProps{
-  onBackToSignUp?: ()=> void ;
-  onBackToSignIn?: ()=> void;
+  onToSignUp?: ()=> void;
+  onToSignIn?: ()=> void
+  onToInterest?:(userId:string)=>void;
   toForgotPassword?:string;
-  toSignUp?:string
+  toSignUp?:string;
+  toVolunteerDetails?:string;
 }
 
 export interface MetricProps{
