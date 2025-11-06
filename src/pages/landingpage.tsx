@@ -5,6 +5,7 @@ import { BulletIcon, DigitalCertificate, FileXIcon, GivrLogoIcon, GreenCheck, Lo
 import { Button, FeatureCard, NavLink, PlatformCategory } from '../components/landingPageComponents';
 import type { FeatureCardProps } from '../props interface/landingPage';
 
+
 // --- Section Components ---
 
 const Header: React.FC = () => (
@@ -24,8 +25,8 @@ const Header: React.FC = () => (
 
       {/* Action Buttons: Sign In (Primary), Sign Up (Outline) */}
       <div className="flex space-x-3">
-        <Button variant="primary" className="text-sm px-4 py-2 shadow-none">Sign In</Button>
-        <Button variant="outline" className="text-sm px-4 py-2 shadow-none">Sign Up</Button>
+        <Button variant="primary" className="text-sm px-4 py-2 shadow-none" href='signin' >Sign In</Button>
+        <Button variant="outline" className="text-sm px-4 py-2 shadow-none" href="signup-select-role" >Sign Up</Button>
       </div>
     </div>
   </header>
@@ -255,7 +256,7 @@ const CTASection: React.FC = () => (
         <Button variant="secondary" className="text-base shadow-lg">Post a project</Button>
       </div>
 
-      
+
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium justify-center">
         <div className="flex items-center text-gray-300">
           <GreenCheck className="w-5 h-5 mr-1.5" /> Free to join
@@ -324,8 +325,8 @@ export default function LandingPage() {
     <div className="min-h-screen font-[Inter] antialiased">
       {/* Load Inter Font - assumed to be available or loaded via global CSS */}
       <style>{`
-        body { 
-            font-family: 'Poppins', sans-serif; 
+        body {
+            font-family: 'Poppins', sans-serif;
             background-color: #F7FAFC; /* Match the subtle background color from the image */
         }
       `}</style>
@@ -340,7 +341,7 @@ export default function LandingPage() {
         <Footer/>
       </main>
 
-     
+
     </div>
   );
 }

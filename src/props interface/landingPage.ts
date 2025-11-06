@@ -8,6 +8,7 @@ export interface ButtonProps {
   variant: 'primary' | 'secondary' | 'outline'| 'green';
   onClick?: () => void;
   className?: string;
+  href?: string;
 }
 
 export interface FeatureCardProps {
