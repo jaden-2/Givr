@@ -120,7 +120,7 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
   }
   
   return (
-    <div className=" flex flex-col justify-center items-center  min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full text-[#323338] ">
+    <div className=" flex flex-col justify-center items-center  min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full text-[#323338]">
       <h1 className="md:text-5xl sm:text-3xl text-xl  text-center">
         Select your skills and interests
       </h1>
@@ -137,7 +137,7 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
                         return (
                           <span
                             key={i}
-                                className={`border border-ui px-5  sm:text-lg text-sm rounded-2xl cursor-pointer  text-[#323338] hover:bg-(--primary-color) hover:text-white  ${isSelected ? "bg-(--primary-color) text-white" : "text-[#323338] bg-white"}`}
+                                className={`rounded-xl p-2 sm:text-lg text-sm rounded-2xl cursor-pointer  text-[#323338] hover:bg-(--primary-color) hover:text-white  ${isSelected ? "bg-(--primary-color) text-white" : "text-[#323338] bg-gray-200"}`}
                             onClick={() => handleSelect(item)}
                           >
                             <p>{item}</p>
@@ -149,7 +149,7 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
           </div>
         ))}
       </div>
-      <div className="flex justify-center space-x-3 w-full">
+      <div className="flex justify-center mb-2 space-x-3 w-full">
         {/* User should provide their interest, it is required for recommendation */}
         {/* <Button
           variant="outline"
