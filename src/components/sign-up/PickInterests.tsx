@@ -6,8 +6,7 @@ type interestprops = {
     title: string;
     items: string[];
 }
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+
 
 
 const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {

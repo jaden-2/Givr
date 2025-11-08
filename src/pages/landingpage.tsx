@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import heroImage from "../assets/hero-image.svg"
 import { BulletIcon, DigitalCertificate, FileXIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
 import { Button, FeatureCard, PlatformCategory } from '../components/ReuseableComponents';
