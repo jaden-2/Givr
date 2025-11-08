@@ -19,14 +19,11 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
 
         // Simulate a sign-in attempt with dummy data/logic
         setTimeout(() => {
-            if (email === 'johndoe@gmail.com' && password === 'xxxxxxxx') {
-
-                console.log('Simulated Sign In Success:', { email, rememberMe });
-                onSignInAttempt(email, password);
-            } else {
+            if (!onSignInAttempt(email, password)) {
                 setError('Invalid email or password. (Simulated error)');
                 setIsLoading(false);
             }
+            
         }, 1500);
     };
 
@@ -135,7 +132,16 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
 };
 
 
-export const SignInPage: React.FC<BasicNatigationProps> = function ({ toSignUp, toForgotPassword }) {
+export const SignInPage: React.FC<BasicNatigationProps> = function ({ toSignUp, toForgotPassword, onToDashboard }) {
+
+    const handleSignIn = (email:string, password:string)=>{
+        if(email == "test@gmail.com" && password=="test"){
+            if(onToDashboard)
+                onToDashboard()
+            return true
+        }
+        return false
+    }
 
     return (
         <section className="flex items-center justify-center min-h-screen bg-none p-4 sm:p-6 lg:p-10 pt-20" style={{
@@ -155,7 +161,7 @@ export const SignInPage: React.FC<BasicNatigationProps> = function ({ toSignUp, 
                     </div>
                 </div>
 
-                <SignInForm toForgotPassword={toForgotPassword} toSignUp={toSignUp} onSignInAttempt={() => { }} />
+                <SignInForm toForgotPassword={toForgotPassword} toSignUp={toSignUp} onSignInAttempt={handleSignIn} />
             </div>
         </section>
     )

@@ -284,22 +284,21 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization
         <InfoCell icon={<GroupIcon/>} info={`${totalApplicants?totalApplicants: 15 }/${maxApplicants?maxApplicants: 20}` }/>
     </div>
     
-    <div className="flex justify-between items-end pt-4">
+    <div className="flex flex-col justify-between pt-4 gap-y-2">
         
         <div className="flex flex-col space-y-3">
-            <div className="flex space-x-2">
-            
-                {categories? categories.map((category, i)=>(<span key= {i} className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{category}</span>)): <>
-                <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Healthcare</span>
-                <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Community Outreach</span>
-                </>}
-            </div>
-            
+          <div className="flex space-x-2">
+              {categories? categories.map((category, i)=>(<span key= {i} className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{category}</span>)): <>
+              <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Healthcare</span>
+              <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Community Outreach</span>
+              </>}
+          </div>
             {superVolunteer&& (<p className="text-sm font-normal text-gray-600">Super Volunteer: <span className="font-medium text-gray-800">{superVolunteer}</span></p>)}
         </div>
-        <div className="flex gap-x-2">
-          {viewDetails && <Button variant="outline" onClick={handleView}>View details</Button>}
-          {!applied?(<Button variant="primary" onClick={()=>setDisplayForm(true)}>Apply Now</Button>): <Button variant="disabled">Applied</Button>}
+        
+        <div className="flex gap-x-2 self-end">
+            {viewDetails && <Button variant="outline" onClick={handleView}>View details</Button>}
+            {!applied?(<Button variant="primary" onClick={()=>setDisplayForm(true)}>Apply Now</Button>): <Button variant="disabled">Applied</Button>}
         </div>
     </div>
 

@@ -35,18 +35,20 @@ export interface LabeledIcon {
 
 // Sign in
 export interface SignInFormProps extends BasicNatigationProps {
-    onSignInAttempt: (email: string, pass: string) => void;
+    onSignInAttempt: (email: string, pass: string) => boolean;
 }
 
 export interface BasicNatigationProps{
   onToSignUp?: ()=> void;
   onToSignIn?: ()=> void
   onToInterest?:(userId:string)=>void;
+  onToDashboard?: ()=>void;
   toForgotPassword?:string;
   toSignUp?:string;
   toVolunteerDetails?:string;
   toDashBoard?:string;
   toOppurtunities?:string;  
+
 }
 
 export interface MetricProps{

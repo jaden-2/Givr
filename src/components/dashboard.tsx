@@ -158,14 +158,14 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
     return <>
         <div className="w-full grid grid-cols-1 gap-4 mt-2 ">
             {/* Volunteer Metrics */}
-            <div className="grid grid-cols-4 gap-5 mb-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-2">
                 {metricState.map((metric, i)=> <MetricCard {...metric} key={i}/>)}
             </div>
 
             {/* Quick Actions */}
             <div className="border border-gray-300 rounded-xl p-4">
                 <p className="text-xl font-bold text-gray-800">Quick Actions</p>
-                <div className="flex gap-x-2">
+                <div className="flex flex-col sm:flex-row gap-x-2">
                     {Array.from(quickActions.entries()).map((entry, index)=>{
                     const notActiveStyle = "text-grey-600 shadow-md rounded-xl hover:bg-blue-700 hover:text-white w-full"
                     const title = entry[0]

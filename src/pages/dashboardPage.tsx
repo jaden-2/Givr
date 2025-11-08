@@ -37,7 +37,6 @@ export const DashboardPage = ()=>{
             }
 
             const data = await response.json()
-            console.log(data)
             return data as ProjectProps[]
         }catch(error){
             console.error("Error loading data")

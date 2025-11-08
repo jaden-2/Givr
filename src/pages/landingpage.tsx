@@ -302,7 +302,7 @@ const Footer: React.FC = () => (
 export default function LandingPage(navigation: BasicNatigationProps) {
   return (
     <div className="min-h-screen font-[Inter] antialiased">
-      <GenericHeader></GenericHeader>
+      <GenericHeader onToSignIn={navigation.onToSignIn} onToSignUp={navigation.onToSignUp}/>
       <main>
         <HeroSection onToSignUp={navigation.onToSignUp}/>
         <ProblemSection />
