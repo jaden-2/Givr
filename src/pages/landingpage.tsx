@@ -1,39 +1,16 @@
 import React from 'react';
 
 import heroImage from "../assets/hero-image.svg"
-import { BulletIcon, DigitalCertificate, FileXIcon, GivrLogoIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
-import { Button, FeatureCard, NavLink, PlatformCategory } from '../components/landingPageComponents';
-import type { FeatureCardProps } from '../props interface/landingPage';
+import { BulletIcon, DigitalCertificate, FileXIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
+import { Button, FeatureCard, PlatformCategory } from '../components/ReuseableComponents';
+import type { FeatureCardProps, BasicNatigationProps } from '../interface/interfaces'
+import { GenericHeader } from '../components/landingHeader';
 
 // --- Section Components ---
 
-const Header: React.FC = () => (
-  // Fixed header with slightly off-white background
-  <header className="fixed top-0 left-0 right-0 z-50 bg-[#F7FAFC] backdrop-blur-sm border-b border-gray-100">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-      <div className="flex items-center space-x-1 font-semibold text-xl text-gray-800">
-        <GivrLogoIcon />
-      </div>
-
-      {/* Navigation Links */}
-      <nav className="hidden lg:flex space-x-8">
-        <NavLink label="Opportunities" href="#opportunities" />
-        <NavLink label="Organizations" href="#organizations" />
-        <NavLink label="Certificates" href="#certificates" />
-      </nav>
-
-      {/* Action Buttons: Sign In (Primary), Sign Up (Outline) */}
-      <div className="flex space-x-3">
-        <Button variant="primary" className="text-sm px-4 py-2 shadow-none">Sign In</Button>
-        <Button variant="outline" className="text-sm px-4 py-2 shadow-none">Sign Up</Button>
-      </div>
-    </div>
-  </header>
-);
-
 // HeroSection rewritten to match the provided structure and image styling
-const HeroSection: React.FC = () => (
-  <section className="pt-32 pb-16 bg-[#F7FAFC] min-h-[85vh] flex items-center">
+const HeroSection: React.FC<BasicNatigationProps> = ({onToSignUp}) => (
+  <section className="mt-21 pb-16 bg-[#F7FAFC] min-h-[85vh] flex items-center">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
       {/* Left Content Column */}
       <div className="max-w-lg">
@@ -48,7 +25,7 @@ const HeroSection: React.FC = () => (
         {/* Call to action Buttons */}
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
           {/* Sign up as a volunteer (Primary Button) */}
-          <Button variant="primary" className="text-base">Sign up as a volunteer</Button>
+          <Button variant="primary" className="text-base" onClick={onToSignUp}>Sign up as a volunteer</Button>
           {/* Post a project (Secondary/Outline Button) */}
           <Button variant="secondary" className="text-base">Post a project</Button>
         </div>
@@ -139,7 +116,7 @@ const ProblemSection: React.FC = () => {
   );
 };
 
-const MoreInfoSection: React.FC = () => {
+const MoreInfoSection: React.FC<BasicNatigationProps> = ({onToSignUp}) => {
 
   const platformCategories: Array<FeatureCardProps> = [
     {
@@ -151,7 +128,8 @@ const MoreInfoSection: React.FC = () => {
         "Complete service and earn digital certificates"
       ],
       color: 'blue',
-      cta: "Sign up as a volunteer"
+      cta: "Sign up as a volunteer",
+      action: onToSignUp
     },
     {
       title: "For Organization",
@@ -177,8 +155,10 @@ const MoreInfoSection: React.FC = () => {
       </p>
 
       {/* Feature Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-        {platformCategories.map((category, index) => <PlatformCategory key={index} color={category.color} description={category.description} title={category.title} cta={category.cta} />)}
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {platformCategories.map((category, index) => <PlatformCategory key={index} {...category}/>)}
+        </div>
       </div>
     </div>
   </section>)
@@ -219,7 +199,7 @@ const CredibilitySection: React.FC = () => {
           We make <span className="text-[#1877F2]">credibility visible</span> and <br className="hidden sm:inline" />
           <span className="text-green-600">impact measurable</span>
         </h2>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
           Built-in trust and recognition systems that reward genuine contribution
         </p>
 
@@ -239,7 +219,7 @@ const CredibilitySection: React.FC = () => {
 
 // --- New CTA Section ---
 
-const CTASection: React.FC = () => (
+const CTASection: React.FC<BasicNatigationProps> = ({onToSignUp}) => (
   <section className="bg-[#1C212A] py-8 text-center">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-white">
@@ -251,11 +231,11 @@ const CTASection: React.FC = () => (
 
       {/* CTA Buttons */}
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center mb-8">
-        <Button variant="primary" className="text-base shadow-lg">Sign up as a volunteer</Button>
+        <Button variant="primary" className="text-base shadow-lg" onClick={onToSignUp}>Sign up as a volunteer</Button>
         <Button variant="secondary" className="text-base shadow-lg">Post a project</Button>
       </div>
 
-      
+
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium justify-center">
         <div className="flex items-center text-gray-300">
           <GreenCheck className="w-5 h-5 mr-1.5" /> Free to join
@@ -276,7 +256,7 @@ const CTASection: React.FC = () => (
 const Footer: React.FC = () => (
   <footer className="bg-[#1C212A] pt-8 pb-8 text-white ">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-    <hr className="border-gray-400 my-8" />
+      <hr className="border-gray-400 my-8" />
       {/* Footer Content Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pb-10 ">
         {/* Column 1: Givr Info */}
@@ -319,28 +299,18 @@ const Footer: React.FC = () => (
 
 // --- Main Application Component ---
 
-export default function LandingPage() {
+export default function LandingPage(navigation: BasicNatigationProps) {
   return (
     <div className="min-h-screen font-[Inter] antialiased">
-      {/* Load Inter Font - assumed to be available or loaded via global CSS */}
-      <style>{`
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: #F7FAFC; /* Match the subtle background color from the image */
-        }
-      `}</style>
-
-      <Header />
+      <GenericHeader></GenericHeader>
       <main>
-        <HeroSection />
+        <HeroSection onToSignUp={navigation.onToSignUp}/>
         <ProblemSection />
-        <MoreInfoSection />
+        <MoreInfoSection onToSignUp={navigation.onToSignUp}/>
         <CredibilitySection />
-        <CTASection/>
-        <Footer/>
+        <CTASection onToSignUp={navigation.onToSignUp}/>
+        <Footer />
       </main>
-
-     
     </div>
   );
 }
