@@ -5,7 +5,7 @@ const UserDashboardInformation:React.FC<{username:string; buttons:Array<string>;
 
     {/* Displays welcome message */}
     const WelcomeBanner = ()=><>
-    <div className="p-4 flex"> 
+    <div className="p-4 flex gap-2"> 
         <div className="flex flex-col mb-2">
             <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
                 Welcome back, <span className="text-gray-900">{username}!</span>
