@@ -6,6 +6,8 @@ type interestprops = {
     title: string;
     items: string[];
 }
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
@@ -170,7 +172,7 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
       {/* A user that has an account should not get to the pick interest stage */}
       {/* <span className="text-base text-[#676879] my-6 ">
         Already have an account?
-        <a href="signin" className="text-[#323338] font-bold ml-2 ">
+        <Link to="signin" className="text-[#323338] font-bold ml-2 ">
           SignIn here
         </a>
       </span> */}
