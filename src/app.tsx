@@ -12,10 +12,10 @@ export const App:React.FC = function(){
 
     return <>
       <Routes>
-        <Route index element= {<LandingPage onToSignUp={()=>navigate("/sign-up")} onToSignIn={()=>navigate("/sign-in")}/>} />
-        <Route path='sign-in' element= {<SignInPage onToDashboard={()=>navigate("/dashboard")} onToSignUp={()=>navigate("/sign-in") } toForgotPassword="/forgot-password" toSignUp="/sign-up"/>} />
-        <Route path='sign-up/*' element= {<SignUpPage onToSignIn={()=>navigate("/sign-in")}/>}/>
-        <Route path='forgot-password' element={<ForgotPasswordForm toSignUp="/sign-up"/>}/>
+        <Route index element= {<LandingPage onToSignUp={()=>navigate("/signup")} onToSignIn={()=>navigate("/signin")}/>} />
+        <Route path='signin' element= {<SignInPage onToDashboard={()=>navigate("/dashboard")} onToSignUp={()=>navigate("/signin") } toForgotPassword="/forgot-password" toSignUp="/signup"/>} />
+        <Route path='signup/*' element= {<SignUpPage onToSignIn={()=>navigate("/signin")}/>}/>
+        <Route path='forgot-password' element={<ForgotPasswordForm toSignUp="/signup"/>}/>
         <Route path='/dashboard' element={<DashboardPage/>}/>
 
         <Route path="*" element ={<PageNotFound toDashBoard="/dashboard" />}/>

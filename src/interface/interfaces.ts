@@ -35,13 +35,13 @@ export interface LabeledIcon {
 
 // Sign in
 export interface SignInFormProps extends BasicNatigationProps {
-    onSignInAttempt: (email: string, pass: string) => boolean;
+    onSignInAttempt: (email: string, pass: string) => Promise<boolean>;
 }
 
 export interface BasicNatigationProps{
   onToSignUp?: ()=> void;
   onToSignIn?: ()=> void
-  onToInterest?:(userId:string)=>void;
+  onToInterest?:()=>void;
   onToDashboard?: ()=>void;
   toForgotPassword?:string;
   toSignUp?:string;
@@ -50,13 +50,13 @@ export interface BasicNatigationProps{
   toOppurtunities?:string;  
 
 }
-
 export interface MetricProps{
   title: string;
   icon: ReactNode;
   value: string;
   context: string;
   color?:string;
+  projects?:VolunteerProjectApplicationProps[]
 }
 
 export interface MetricComponentProps extends MetricProps{
@@ -110,4 +110,31 @@ export interface VolunteerProfileProps{
   email:string;
   Location:string;
 
+}
+
+export interface FormDataProps{
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  location: {
+    state: string;
+    lga:string;
+  }
+  interests: string[];
+}
+export interface VolunteerProjectApplicationProps{
+  id:number;
+  volunteer:number;
+  project:number;
+  status:'APPLIED'|"APPROVED"|"REJECTED";
+  appliedAt:string;
+}
+
+export interface VolunteerDashboardProps{
+  firstname:string;
+  projectApplication:VolunteerProjectApplicationProps[]
 }

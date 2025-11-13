@@ -1,7 +1,9 @@
-
 import type { BasicNatigationProps } from "../../interface/interfaces";
 import { Button } from "../landingPageComponents";
 import { useState } from "react";
+import { useSignup } from "./SignupContext";
+import { LoadingEffect } from "../icons";
+import { useAlert } from "../hooks/useAlert";
 type interestprops = {
     title: string;
     items: string[];
@@ -11,8 +13,9 @@ type interestprops = {
 
 const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  // const location = useLocation();
-  // const {volunteerId} = location.state
+  const usesignup = useSignup()
+  const [isLoading, setIsloading] = useState(false)
+  const {alertMessage, AlertDialog} = useAlert()
   const interestCategories: interestprops[] = [
     {
       title: "Creative & Media",
@@ -113,15 +116,37 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
                 : [...prev, item] // add if not selected
   );};
   
-  const handleSubmit = ():void=>{
+  const handleSubmit = async ()=>{
+    setIsloading(true)
     // make a patch request to add interests for volunteer
+    const baseUrl = import.meta.env.VITE_API_BASE_VOLUNTEER_URL
+    const payload = {
+      ...usesignup?.formData,
+      interests: selectedInterests
+    }
 
-    if(onToSignIn)
+    const response = await fetch(`${baseUrl}/auth/signup`, {
+      method: 'POST', 
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }
+    )
+    console.log(payload)
+  
+    if(response.ok && onToSignIn){
       onToSignIn()
+    }else{
+      alertMessage("Account Creation failed, please try again")
+      setIsloading(false) 
+    }
+    
   }
   
   return (
     <div className=" flex flex-col justify-center items-center  min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full text-[#323338]">
+      <AlertDialog/>
       <h1 className="md:text-5xl sm:text-3xl text-xl  text-center">
         Select your skills and interests
       </h1>
@@ -164,7 +189,7 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
           className="text-sm px-4 py-2 shadow-none sm:w-60 w-full "
           onClick={handleSubmit}
         >
-          Next
+          {isLoading? <LoadingEffect message="Creating Account..."/>: "Next"}
         </Button>
       </div>
 

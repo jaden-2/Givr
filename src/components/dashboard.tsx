@@ -6,54 +6,24 @@ import { EditProfile } from "./editProfile";
 
 const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=>{
     const [active, setActive] = useState("")
-    const [metricState, setMetrics] = useState<MetricProps[]>([
-            {
-                title: "Hours Logged",
-                context: "",
-                icon: <ClockIcon className="w-6 h-6"/>,
-                value:"",
-                color: "#1A73E8"
-            },
-             {
-                title: "Projects completed",
-                context: "",
-                icon: <BriefcaseIcon/>,
-                value:"",
-                color: "#34A853"
-            },
-             {
-                title: "Badges Earned",
-                context: "",
-                icon: <ShieldIcon fill="none" color="#FBBC05" />,
-                value:"",
-                color: "#FBBC05"
-            },
-             {
-                title: "Rating",
-                context: "",
-                icon: <StarIcon color="#237238" fill="none"/>,
-                value:"",
-                color: "#34A853"
-            }
-        ]
-    )
+    
 
     const [organizations, setOrganizations] = useState<OrganizationProps[]>([])
 
 
-    useEffect(() => {
-    if (metrics && metrics.length > 0) {
+//     useEffect(() => {
+//     if (metrics && metrics.length > 0) {
         
-      setMetrics((prev) =>
-        prev.map((defaultMetric) => {
-          const match = metrics.find((m) => m.title === defaultMetric.title);
-          return match
-            ? { ...defaultMetric, value: match.value, context: match.context }
-            : defaultMetric;
-        })
-      );
-    }
-  }, [metrics]);
+//       setMetrics((prev) =>
+//         prev.map((defaultMetric) => {
+//           const match = metrics.find((m) => m.title === defaultMetric.title);
+//           return match
+//             ? { ...defaultMetric, value: match.value, context: match.context }
+//             : defaultMetric;
+//         })
+//       );
+//     }
+//   }, [metrics]);
 
 
     const quickActions = new Map<QuickActions, string>();
@@ -159,7 +129,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
         <div className="w-full grid grid-cols-1 gap-4 mt-2 ">
             {/* Volunteer Metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-2">
-                {metricState.map((metric, i)=> <MetricCard {...metric} key={i}/>)}
+                {metrics?.map((metric, i)=> <MetricCard {...metric} key={i}/>)}
             </div>
 
             {/* Quick Actions */}

@@ -142,7 +142,7 @@ export const MetricCard: React.FC<MetricComponentProps> = ({title, context, icon
     
     <div className="flex justify-between items-center mb-4">
         <h2 className="text-sm font-bold text-gray-700">{title? title: "Hours Logged"}</h2>
-        {icon? icon: <ClockIcon/>}
+        {icon}
     </div>
 
     <div className="flex flex-col">

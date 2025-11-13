@@ -5,6 +5,7 @@ import {
 } from "../landingPageComponents";
 import LocationSelect from "../form/LocationSelect";
 import type { BasicNatigationProps } from "../../interface/interfaces";
+import { useSignup } from "./SignupContext";
 
 
 type inputProps = {
@@ -22,6 +23,7 @@ type inputProps = {
 /**
  * Define a local interface for the form state to avoid colliding with the DOM's FormData type.
  */
+
 interface FormFields {
   firstname: string;
   middlename: string;
@@ -30,12 +32,14 @@ interface FormFields {
   phone: string;
   password: string;
   confirmPassword: string;
-    state: string;
-    lga: string;
+  state: string;
+  lga: string;
 }
 
 const UserDetails:React.FC<BasicNatigationProps> = ({onToInterest}) => {
-    const [formData, setFormData] = useState<FormFields>({
+  
+  const setFormPayload = useSignup()
+  const [formData, setFormData] = useState<FormFields>({
       firstname: "",
       middlename: "",
       lastname: "",
@@ -133,7 +137,7 @@ const UserDetails:React.FC<BasicNatigationProps> = ({onToInterest}) => {
       return newErrors;
     };
 
- const handleSubmit = (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const newErrors = validateForm();
 
@@ -141,8 +145,18 @@ const UserDetails:React.FC<BasicNatigationProps> = ({onToInterest}) => {
             setErrors(newErrors);
             return;
         }
-        if(onToInterest)
-          onToInterest("1234")
+        
+        let {state, lga, ...rest} = formData;
+        
+        const payload = {...rest, location: {
+          state, lga
+        }}
+    
+       setFormPayload?.setFormPayload(prev=>({...prev, ...payload}))
+       console.log("Handling to this point")
+       if(onToInterest)
+        onToInterest()
+        
     };
 
     const inputs: inputProps[] = [

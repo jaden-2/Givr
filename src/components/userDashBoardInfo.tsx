@@ -1,7 +1,7 @@
 import { GivrRoundLogo } from "./icons";
 import { RadioButton } from "./ReuseableComponents";
 
-const UserDashboardInformation:React.FC<{username:string; buttons:Array<string>; activeButton:string; onClick: (event: React.MouseEvent<HTMLButtonElement>)=>void}> = ({username, buttons,activeButton, onClick})=>{
+const UserDashboardInformation:React.FC<{username?:string; buttons:Array<string>; activeButton:string; onClick: (event: React.MouseEvent<HTMLButtonElement>)=>void}> = ({username, buttons,activeButton, onClick})=>{
 
     {/* Displays welcome message */}
     const WelcomeBanner = ()=><>
