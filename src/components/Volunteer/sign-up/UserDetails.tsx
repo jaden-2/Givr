@@ -1,9 +1,11 @@
 import React, { useState, useCallback } from "react";
 import Input from "../form/Input";
-import { Button } from "../ReuseableComponents";
+import {
+  Button,
+} from "../landingPageComponents";
 import LocationSelect from "../form/LocationSelect";
 import type { BasicNatigationProps } from "../../interface/interfaces";
-import { useSignup } from "../Volunteer/sign-up/SignupContext";
+import { useSignup } from "./SignupContext";
 
 
 type inputProps = {
@@ -49,7 +51,7 @@ const UserDetails:React.FC<BasicNatigationProps> = ({onToInterest}) => {
       lga: "",
     });
 
-    const handleLocationChange = useCallback(
+      const handleLocationChange = useCallback(
     (location: { state: string; lga: string }) => {
       setFormData((prev) => ({ ...prev, ...location }));
 

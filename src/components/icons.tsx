@@ -1,5 +1,3 @@
-
-import verifiedIcon from "../assets/icons/check-decagram.svg"
 import givrLogo from "../assets/icons/givr-icon.svg"
 import digitalCertIcon from "../assets/icons/digital-cert.svg"
 import discoverIcon from "../assets/icons/discover.svg"
@@ -32,8 +30,11 @@ export const CheckmarkLogoIcon: React.FC<{ className?: string, color?: string }>
 );
 
 
-export const VerifiedIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
-  <img src={verifiedIcon} alt="Blue tick Icon" className={className} />
+export const VerifiedIcon: React.FC<{ className?: string; color?:string }> = ({ className = "w-6 h-6", color="#1A73E8" }) => (
+  <svg className={className} viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 10.46L19.56 7.68L19.9 4L16.29 3.18L14.4 0L11 1.46L7.6 0L5.71 3.18L2.1 3.99L2.44 7.67L0 10.46L2.44 13.24L2.1 16.93L5.71 17.75L7.6 20.93L11 19.46L14.4 20.92L16.29 17.74L19.9 16.92L19.56 13.24L22 10.46ZM9 15.46L5 11.46L6.41 10.05L9 12.63L15.59 6.04L17 7.46L9 15.46Z" fill={color}/>
+</svg>
+
 );
 
 export const DigitalCertificate: React.FC<{ className?: string }> = ({ className = 'w-6 h-6' }) => <img src={digitalCertIcon} alt="Figital Certidicate Icon" className={className} />
@@ -208,4 +209,11 @@ export const LoadingEffect:React.FC<{message:string}> = ({message})=>(
       </svg>
       {message}
   </div>
+)
+
+export const EyeIcon:React.FC<{className?:string, color?:string}> = ({className="w-6 h-6", color="white"})=>(
+  <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.00033 6C8.53076 6 9.03947 6.21071 9.41454 6.58579C9.78961 6.96086 10.0003 7.46957 10.0003 8C10.0003 8.53043 9.78961 9.03914 9.41454 9.41421C9.03947 9.78929 8.53076 10 8.00033 10C7.46989 10 6.96118 9.78929 6.58611 9.41421C6.21104 9.03914 6.00033 8.53043 6.00033 8C6.00033 7.46957 6.21104 6.96086 6.58611 6.58579C6.96118 6.21071 7.46989 6 8.00033 6ZM8.00033 3C11.3337 3 14.1803 5.07333 15.3337 8C14.1803 10.9267 11.3337 13 8.00033 13C4.66699 13 1.82033 10.9267 0.666992 8C1.82033 5.07333 4.66699 3 8.00033 3ZM2.12033 8C3.22033 10.24 5.49366 11.6667 8.00033 11.6667C10.507 11.6667 12.7803 10.24 13.8803 8C12.7803 5.76 10.507 4.33333 8.00033 4.33333C5.49366 4.33333 3.22033 5.76 2.12033 8Z" fill={color}/>
+</svg>
+
 )

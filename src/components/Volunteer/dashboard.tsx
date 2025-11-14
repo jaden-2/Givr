@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { DashboardProps, OrganizationProps, QuickActions } from "../interface/interfaces";
-import { Banner, MetricCard, OrganizationCard, ProjectCard, RadioButton } from "./ReuseableComponents";
+import type { DashboardProps, OrganizationProps, OrganizationQuickActions, VolunteerQuickActions } from "../../interface/interfaces";
+import { Banner, MetricCard, OrganizationCard, ProjectCard, RadioButton } from "../ReuseableComponents";
 import { EditProfile } from "./editProfile";
 
 const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=>{
@@ -25,10 +25,16 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
 //   }, [metrics]);
 
 
-    const quickActions = new Map<QuickActions, string>();
-    quickActions.set("Find Opportunities", "Find Opportunities")
-    quickActions.set("View Organizations", "View Organizations")
-    quickActions.set("Update Profile", "Update Profile")
+    let quickActions = new Map<OrganizationQuickActions|VolunteerQuickActions, string>(); 
+    if(triggerAction){
+        quickActions.set("Find Opportunities", "Find Opportunities")
+        quickActions.set("View Organizations", "View Organizations")
+        quickActions.set("Update Profile", "Update Profile")
+    }else{
+        quickActions.set("Create New Project", "Create New Project")
+        quickActions.set("Review pending applications", "Review pending applications")
+        quickActions.set("View Analytics", "View Analytics")
+    }
     
     const activateQuickAction = (event:React.MouseEvent<HTMLButtonElement>)=>{
         let selectedAction = event.currentTarget.value
@@ -37,12 +43,13 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
             setActive("")
             return
         }
-        let action = selectedAction as QuickActions;
+        let action = selectedAction as VolunteerQuickActions| OrganizationQuickActions;
 
         
         setActive(quickActions.has(action)?selectedAction: "")
 
         switch(action){
+            // Volunteer Actions
             case "Find Opportunities":
                 if(triggerAction)
                     triggerAction("Find Opportunities")
@@ -51,6 +58,14 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
                 handleOrganization()
                 break;
             case "Update Profile":
+                break;
+
+            // Organization Actions
+            case "Create New Project":
+                break;
+            case "Review pending applications":
+                break;
+            case "View Analytics":
                 break;
         }
     }
@@ -113,12 +128,12 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
         // Default (dashboard)
         return (
             <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
-            <p className="text-xl font-bold text-gray-800">Recommended for you</p>
+            <p className="text-xl font-bold text-gray-800">{triggerAction? "Recommended for you": "Your Projects"}</p>
             <span className="text-sm font-medium text-gray-500">
-                Based on your skills and location
+                {triggerAction && "Based on your skills and location"}
             </span>
             {projects.map((project, index) => (
-                <ProjectCard {...project} key={index} />
+                <ProjectCard {...project} key={index} isOrganization={true}/>
             ))}
             </div>
         );
@@ -136,11 +151,11 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction})=
                 <p className="text-xl font-bold text-gray-800">Quick Actions</p>
                 <div className="flex flex-col sm:flex-row gap-x-2">
                     {Array.from(quickActions.entries()).map((entry, index)=>{
-                    const notActiveStyle = "text-grey-600 shadow-md rounded-xl hover:bg-blue-700 hover:text-white w-full"
+                    const notActiveStyle = `text-grey-600 shadow-md rounded-xl hover:${triggerAction?"bg-blue-700":"bg-green-700"} hover:text-white w-full`
                     const title = entry[0]
                     const content = entry[1] 
                     return <RadioButton active={active == title} value={title} key={title} 
-                        activeSyle="bg-blue-600 w-full text-white rounded-xl" inActiveStyle={notActiveStyle}
+                        activeSyle={`${triggerAction?"bg-blue-600":"bg-green-600"} w-full text-white rounded-xl`} inActiveStyle={notActiveStyle}
                         onClick={activateQuickAction}>
                             <Banner title={title} content={content} key={index}/>
                         </RadioButton>

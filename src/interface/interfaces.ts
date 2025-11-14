@@ -66,8 +66,8 @@ export interface MetricComponentProps extends MetricProps{
 export interface ProjectProps{
   id: string;
   title: string;
-  organization:string;
-  status: "Verified" | "Not Verified";
+  organization:OrganizationProps;
+  status: "Pending" | "In progress" | "Completed";
   startDate: string;
   attendanceHours: string;
   location: string;
@@ -77,10 +77,28 @@ export interface ProjectProps{
   superVolunteer?:string;
 }
 
+export interface ProjectFormProps{
+  title:string;
+  description:string;
+  category:string;
+  maxVolunteers:number;
+  startDate:string;
+  endDate:string;
+  attendanceHours:string;
+  applicationDeadline:string;
+  location: {
+    state:string;
+    lga:string;
+  }
+  requiredSkills:string[];
+  specialRequirements:string;
+}
+
 export interface ProjectComponentProps extends ProjectProps{
-  className?:string
-  viewDetails?:boolean
-  applied?:boolean
+  className?:string;
+  manage?:boolean;
+  applied?:boolean;
+  isOrganization?:boolean;
 }
 
 export interface OrganizationProps{
@@ -98,11 +116,14 @@ export interface DashboardProps{
   metrics?: MetricProps[];
   projects: ProjectProps[];
   className?:string
-  triggerAction?:(action:QuickActions)=>void
+  triggerAction?:(action:VolunteerQuickActions)=>void
+  orgTriggerAction?: (action: OrganizationQuickActions)=>void
 }
 export type NavTypes = "Dashboard" | "Find Opportunities"| "My Volunteering"| "Profile & Achievements";
-export type QuickActions = "Find Opportunities"| "View Organizations" | "Update Profile"|""
+export type VolunteerQuickActions = "Find Opportunities"| "View Organizations" | "Update Profile"|""
 
+export type OrganizationNavTypes = "Dashboard"| "Project Management" | "Applications" | "Analytics"
+export type OrganizationQuickActions = "Create New Project"| "Review pending applications"| "View Analytics"
 
 export interface VolunteerProfileProps{
   firstName:string;

@@ -1,6 +1,6 @@
 import { useState } from "react"
-import type { VolunteerProfileProps } from "../interface/interfaces"
-import { Button } from "./ReuseableComponents"
+import type { VolunteerProfileProps } from "../../interface/interfaces"
+import { Button } from "../ReuseableComponents"
 
 export const EditProfile = ()=>{
 

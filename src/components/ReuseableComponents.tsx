@@ -1,5 +1,5 @@
 import { useState, type ReactNode} from "react";
-import type { ButtonProps, FeatureCardProps, MetricComponentProps, NavLinkProps, OrganizationComponentProps, OrganizationProps, ProjectComponentProps } from "../interface/interfaces"
+import type { ButtonProps, FeatureCardProps, MetricComponentProps, NavLinkProps, OrganizationComponentProps, ProjectComponentProps } from "../interface/interfaces"
 import { ArrowIcon, CalendarIcon, ClockIcon, GroupIcon, LocationIcon } from "./icons";
 import { useConfirmAsk } from "./hooks/useConfirm";
 import { useAlert } from "./hooks/useAlert";
@@ -241,7 +241,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
 }
 
 /**Displays details of a project */
-export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization, categories, attendanceHours, location, maxApplicants, startDate,status, totalApplicants, superVolunteer, viewDetails=false, applied=false})=>{
+export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization, categories, attendanceHours, location, maxApplicants, startDate, status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false})=>{
 
   const [displayForm, setDisplayForm] = useState(false)
   const {modal, DisplayModal} = useModal()
@@ -250,17 +250,17 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization
   // Makes request to backend to get organization information 
   const handleView = ()=>{
     // Make the fetch requiest 
-    const response: OrganizationProps = {
-      name: "The first NGO",
-      description: "A first time NGO to the building and improvement on First Class First timers",
-      categories: [
-        "Healthcare", "Community Outreach"
-      ],
-      location: "Plot 1, Ademola adetokunbo road, Wuse, Abuja",
-      numOfActiveProjects: 2,
-      status: "Verified"
-    }
-    modal(<OrganizationCard {...response} hasVolunteered={false}/>)
+    // const response: OrganizationProps = {
+    //   name: "The first NGO",
+    //   description: "A first time NGO to the building and improvement on First Class First timers",
+    //   categories: [
+    //     "Healthcare", "Community Outreach"
+    //   ],
+    //   location: "Plot 1, Ademola adetokunbo road, Wuse, Abuja",
+    //   numOfActiveProjects: 2,
+    //   status: "Verified"
+    // }
+    modal(<OrganizationCard {...organization} hasVolunteered={false}/>)
 
   }
 
@@ -269,12 +269,16 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization
     <div className="flex justify-between items-start mb-4">
         <div className="flex flex-col">
             <h3 className="text-xl font-bold text-gray-800">{title?title: "Community Health Screening"}</h3>
-            <p className="text-sm font-medium text-gray-500">{organization? organization: "Abuja Health Initiative"}</p>
+            {!isOrganization && <p className="text-sm font-medium text-gray-500">{organization? organization.name: "Abuja Health Initiative"}</p>}
         </div>
        
-        <span className={`${status=="Verified"? "bg-green-600": "bg-red-600 "} text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider`}>
-            {status? status: "Verified"}
-        </span>
+        {!isOrganization? 
+        <span className={`${organization.status=="Verified"? "bg-green-600": "bg-red-600 "} text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider`}>
+            {organization.status? organization.status: "Verified"}
+        </span>:
+        <span className={`${status=="Completed"?"bg-green-600":`${status=="In progress"? "bg-gray-600": "bg-orange-600 "}`} text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider`}>
+            {status? status: "In progress"}
+        </span>}
     </div>
 
     <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-6 py-4 border-y border-gray-200">
@@ -296,14 +300,20 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization
             {superVolunteer&& (<p className="text-sm font-normal text-gray-600">Super Volunteer: <span className="font-medium text-gray-800">{superVolunteer}</span></p>)}
         </div>
         
-        <div className="flex gap-x-2 self-end">
-            {viewDetails && <Button variant="outline" onClick={handleView}>View details</Button>}
+        {!isOrganization?
+      <div className="flex gap-x-2 self-end">
+            {manage && <Button variant="outline" onClick={handleView}>View details</Button>}
             {!applied?(<Button variant="primary" onClick={()=>setDisplayForm(true)}>Apply Now</Button>): <Button variant="disabled">Applied</Button>}
-        </div>
+        </div>:
+        <div className="flex gap-x-2 self-end">
+          {status!="Completed" &&<Button variant="outline" >Edit</Button>}
+            {status!="Completed" &&manage&&<Button variant="outline" > Manage Volunteers</Button>}  
+        </div>  
+      }
     </div>
 
     {/* Volunteer can views details of an organization after applying, therefore, application form should not be shown */}
-    {(displayForm && (!viewDetails || !applied))&& <ApplicationForm organization={organization} onCancel={()=>setDisplayForm(false)}/>}
+    {(displayForm && (!manage || !applied))&& <ApplicationForm organization={organization.name} onCancel={()=>setDisplayForm(false)}/>}
     <DisplayModal/>
     
 </div>

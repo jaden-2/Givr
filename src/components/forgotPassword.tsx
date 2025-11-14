@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Button, Card } from "../components/ReuseableComponents";
+import { Button, Card } from "./ReuseableComponents";
 import type { BasicNatigationProps } from "../interface/interfaces";
 import { Link } from "react-router-dom";
 
 
-export const ForgotPasswordForm: React.FC<BasicNatigationProps> = ({toSignUp}) => {
-  const [email, setEmail] = useState('');
-  const [onSent, setOnent] = useState(false);
+export const ForgotPasswordForm: React.FC<BasicNatigationProps> = ({ toSignUp }) => {
+    const [email, setEmail] = useState('');
+    const [onSent, setOnent] = useState(false);
 
     return (
         <div className="bg-[#F3FAFA] w-screen h-screen flex items-center justify-center">
@@ -19,7 +19,7 @@ export const ForgotPasswordForm: React.FC<BasicNatigationProps> = ({toSignUp}) =
                         Type in the email you used to open your Givr account so we can send you a reset link.
                     </p>
 
-                    <form onSubmit={(e) => {e.preventDefault(); setOnent(true) }}>
+                    <form onSubmit={(e) => { e.preventDefault(); setOnent(true) }}>
                         <div className="mb-6">
                             <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="reset-email">
                                 Email

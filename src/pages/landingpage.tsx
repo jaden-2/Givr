@@ -2,13 +2,13 @@ import React from 'react';
 import heroImage from "../assets/hero-image.svg"
 import { BulletIcon, DigitalCertificate, FileXIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
 import { Button, FeatureCard, PlatformCategory } from '../components/ReuseableComponents';
-import type { FeatureCardProps, BasicNatigationProps } from '../interface/interfaces'
-import { GenericHeader } from '../components/landingHeader';
+import type { FeatureCardProps, BasicNatigationProps } from '../interface/interfaces';
+import { GenericHeader } from '../components/Volunteer/landingHeader';
 
 // --- Section Components ---
 
 // HeroSection rewritten to match the provided structure and image styling
-const HeroSection: React.FC<BasicNatigationProps> = ({onToSignUp}) => (
+const HeroSection: React.FC<BasicNatigationProps> = ({ onToSignUp }) => (
   <section className="mt-21 pb-16 bg-[#F7FAFC] min-h-[85vh] flex items-center">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
       {/* Left Content Column */}
@@ -115,7 +115,7 @@ const ProblemSection: React.FC = () => {
   );
 };
 
-const MoreInfoSection: React.FC<BasicNatigationProps> = ({onToSignUp}) => {
+const MoreInfoSection: React.FC<BasicNatigationProps> = ({ onToSignUp }) => {
 
   const platformCategories: Array<FeatureCardProps> = [
     {
@@ -156,7 +156,7 @@ const MoreInfoSection: React.FC<BasicNatigationProps> = ({onToSignUp}) => {
       {/* Feature Cards Grid */}
       <div className="max-w-5xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {platformCategories.map((category, index) => <PlatformCategory key={index} {...category}/>)}
+          {platformCategories.map((category, index) => <PlatformCategory key={index} {...category} />)}
         </div>
       </div>
     </div>
@@ -218,7 +218,7 @@ const CredibilitySection: React.FC = () => {
 
 // --- New CTA Section ---
 
-const CTASection: React.FC<BasicNatigationProps> = ({onToSignUp}) => (
+const CTASection: React.FC<BasicNatigationProps> = ({ onToSignUp }) => (
   <section className="bg-[#1C212A] py-8 text-center">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-white">
@@ -301,13 +301,13 @@ const Footer: React.FC = () => (
 export default function LandingPage(navigation: BasicNatigationProps) {
   return (
     <div className="min-h-screen font-[Inter] antialiased">
-      <GenericHeader onToSignIn={navigation.onToSignIn} onToSignUp={navigation.onToSignUp}/>
+      <GenericHeader onToSignIn={navigation.onToSignIn} onToSignUp={navigation.onToSignUp} />
       <main>
-        <HeroSection onToSignUp={navigation.onToSignUp}/>
+        <HeroSection onToSignUp={navigation.onToSignUp} />
         <ProblemSection />
-        <MoreInfoSection onToSignUp={navigation.onToSignUp}/>
+        <MoreInfoSection onToSignUp={navigation.onToSignUp} />
         <CredibilitySection />
-        <CTASection onToSignUp={navigation.onToSignUp}/>
+        <CTASection onToSignUp={navigation.onToSignUp} />
         <Footer />
       </main>
     </div>

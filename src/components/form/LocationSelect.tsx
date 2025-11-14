@@ -55,7 +55,7 @@ const LocationSelect: React.FC<Props> = ({ onChange, error }) => {
 
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={"flex flex-col gap-4"}>
       {/* State Select */}
       <div className="flex flex-col">
         <label className="text-xs sm:text-sm   text-[#323338]">

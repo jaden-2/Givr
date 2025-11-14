@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button } from "../components/ReuseableComponents";
+import { Button } from "./ReuseableComponents";
 import type { BasicNatigationProps, SignInFormProps } from "../interface/interfaces";
 import backgroundImage from "../assets/sign-in-background.svg"
-import { GoogleIcon, LoadingEffect } from "../components/icons";
+import { GoogleIcon, LoadingEffect } from "./icons";
 import { Link } from "react-router-dom";
 
 const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toForgotPassword }) => {
@@ -23,7 +23,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
                 setError('Invalid email or password. (Simulated error)');
                 setIsLoading(false);
             }
-            
+
         }, 1500);
     };
 
@@ -95,7 +95,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
                 {/* Sign In Button */}
                 <Button variant="primary" className="w-full py-3" >
                     {isLoading ? (
-                        <LoadingEffect message="Signing In..."/>
+                        <LoadingEffect message="Signing In..." />
                     ) : 'Sign In'}
                 </Button>
             </form>
@@ -126,15 +126,15 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
 };
 
 
-export const SignInPage: React.FC<BasicNatigationProps> = function ({ toSignUp, toForgotPassword, onToDashboard }) {
+export const SignInComp: React.FC<BasicNatigationProps> = function ({ toSignUp, toForgotPassword, onToDashboard }) {
 
-    const handleSignIn = async (email:string, password:string)=>{
+    const handleSignIn = async (email: string, password: string) => {
         const baseUrl = import.meta.env.VITE_API_BASE_VOLUNTEER_URL
 
         let response = await fetch(`${baseUrl}/auth/login`, {
             method: 'POST',
             body: JSON.stringify({
-                email,password
+                email, password
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -143,7 +143,7 @@ export const SignInPage: React.FC<BasicNatigationProps> = function ({ toSignUp, 
         })
 
 
-        if(response.ok && onToDashboard){
+        if (response.ok && onToDashboard) {
             onToDashboard()
             return true
         }

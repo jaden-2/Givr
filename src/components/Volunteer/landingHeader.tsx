@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import type { BasicNatigationProps } from "../interface/interfaces";
-import { GivrLogoIcon } from "./icons";
-import { Button } from "./ReuseableComponents";
+import type { BasicNatigationProps } from "../../interface/interfaces";
+import { GivrLogoIcon } from "../icons";
+import { Button } from "../ReuseableComponents";
 
 export const GenericHeader: React.FC<BasicNatigationProps> = ({ onToSignIn, onToSignUp }) => (
   // Fixed header with slightly off-white background

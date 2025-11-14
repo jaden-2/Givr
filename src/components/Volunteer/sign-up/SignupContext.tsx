@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import type { FormDataProps } from "../../interface/interfaces";
+import type { FormDataProps } from "../../../interface/interfaces";
 
 
 export type SignupContextType = {
