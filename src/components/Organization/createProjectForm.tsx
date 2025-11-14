@@ -49,7 +49,7 @@ export const CreateProject:React.FC<{onClose?:()=>void}> = ({onClose})=>{
     const handleSubmit = ()=>{}
     return <>
         {<ConfirmDialog />}
-        <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-4xl border border-gray-200">
+        <div className="bg-white p-8 rounded-xl shadow-2xl w-full border border-gray-200">
         
         <h2 className="text-3xl font-extrabold text-gray-900 leading-tight">
             Create New Volunteering Project
