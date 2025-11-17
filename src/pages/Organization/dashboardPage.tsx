@@ -74,9 +74,9 @@ export const DashboardPage = () => {
     const fetchOrganizationDashboard = async ()=>{
         API().get("/dashboard")
         .then((response)=>{
-            return setDashboard(response.data)
+            return setDashboard(response.data as OrganizationDashboardProps)
         })
-        return null
+        
     }
 
     const quickAction = (action: OrganizationQuickActions) => {

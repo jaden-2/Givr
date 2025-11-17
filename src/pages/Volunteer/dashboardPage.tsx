@@ -107,7 +107,7 @@ export const DashboardPage = () => {
             withCredentials:true
         })
         .then(response=>{
-            setVolunteerDashboard(response.data)
+            setVolunteerDashboard(response.data as VolunteerDashboardProps)
         })
     
         return null
