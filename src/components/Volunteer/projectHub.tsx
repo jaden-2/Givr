@@ -55,7 +55,7 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
             <Button variant="green" onClick={createProject}>+ Create Project</Button>
         </p>}
 
-        {activeCategory=="All Categories"? (projects.map((project, index)=> <ProjectCard {...project} key={index} isOrganization={isOrganization} manage={true}/>))
+        {activeCategory=="All Categories"? (projects?.map((project, index)=> <ProjectCard {...project} key={index} isOrganization={isOrganization} manage={true}/>))
         : (projects.filter((p)=> p.categories.includes(activeCategory)).map((p, i)=><ProjectCard {...p} key={i} manage={true}/>))}
         </>
         }

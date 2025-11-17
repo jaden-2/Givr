@@ -125,7 +125,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
             <span className="text-sm font-medium text-gray-500">
                 {triggerAction && "Based on your skills and location"}
             </span>
-            {projects.map((project, index) => (
+            {projects?.map((project, index) => (
                 <ProjectCard {...project} key={index} isOrganization={true}/>
             ))}
             </div>

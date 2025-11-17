@@ -8,14 +8,14 @@ import { ProjectHub } from "../../components/Volunteer/projectHub";
 import { DashboardHeader } from "../../components/dashboardHeader";
 
 import { ApplicationHub } from "../../components/Organization/applicationHub";
-import useAuthFetch from "../../components/hooks/useAuthFetch";
+// import useAuthFetch from "../../components/hooks/useAuthFetch";
 
 
 export const DashboardPage = () => {
 
     const [active, setActive] = useState<OrganizationNavTypes>("Dashboard");
    
-    const [dashboard, setDashboard] = useState<OrganizationDashboardProps>({
+    const [dashboard, __] = useState<OrganizationDashboardProps>({
         name: "", 
         projects: []
     });
@@ -50,7 +50,7 @@ export const DashboardPage = () => {
             color: "#B86705"
         }
     ])
-    const {API} = useAuthFetch("organization")
+    // const {API} = useAuthFetch("organization")
 
     const buttons = new Map<string, string>()
     buttons.set("Dashboard", "Dashboard")
@@ -72,10 +72,10 @@ export const DashboardPage = () => {
 
 
     const fetchOrganizationDashboard = async ()=>{
-        API().get("/dashboard")
-        .then((response)=>{
-            return setDashboard(response.data as OrganizationDashboardProps)
-        })
+        // API().get("/dashboard")
+        // .then((response)=>{
+        //     return setDashboard(response.data as OrganizationDashboardProps)
+        // })
         
     }
 
