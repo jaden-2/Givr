@@ -13,7 +13,7 @@ import ProfilePage from "../../components/Profile";
 export const DashboardPage = () => {
 
     const [active, setActive] = useState<NavTypes>("Dashboard");
-    const [volunteerDashboard, setVolunteerDashboard] = useState<VolunteerDashboardProps>({
+    const [volunteerDashboard, _] = useState<VolunteerDashboardProps>({
         firstname: "",
         projectApplications: []
     });
@@ -59,7 +59,7 @@ export const DashboardPage = () => {
 
 
     // Makes requests with automatic refresh logic when access token expires
-    const {API} = useAuthFetch("volunteer")
+    // const {API} = useAuthFetch("volunteer")
 
     
     // const projects = rawProjects as ProjectProps[]
@@ -102,24 +102,24 @@ export const DashboardPage = () => {
         }
     }
 
-    const loadUserProfile =  (): VolunteerDashboardProps | null => {
-        API().get(`/dashboard`, {
-            withCredentials:true
-        })
-        .then(response=>{
-            setVolunteerDashboard(response.data as VolunteerDashboardProps)
-        })
+    // const loadUserProfile =  (): VolunteerDashboardProps | null => {
+    //     API().get(`/dashboard`, {
+    //         withCredentials:true
+    //     })
+    //     .then(response=>{
+    //         setVolunteerDashboard(response.data as VolunteerDashboardProps)
+    //     })
     
-        return null
-    }
+    //     return null
+    // }
 
 
-    useEffect(() => {
-        (async () => {
-            loadUserProfile()
+    // useEffect(() => {
+    //     (async () => {
+    //         loadUserProfile()
            
-        })()
-    }, [])
+    //     })()
+    // }, [])
 
     useEffect(() => {
 
