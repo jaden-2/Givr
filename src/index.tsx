@@ -8,6 +8,7 @@ import { OrganizationApp } from "./organizationApp"
 import { PageNotFound } from "./pages/Volunteer/404 Page"
 
 
+
 export const IndexPage = ()=>{
     const navigate = useNavigate()
 

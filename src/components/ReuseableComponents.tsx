@@ -242,7 +242,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
 }
 
 /**Displays details of a project */
-export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization, category, attendanceHours, location, maxApplicants, startDate, status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false})=>{
+export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization, categories, attendanceHours, location, maxApplicants, startDate, status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false})=>{
 
   const [displayForm, setDisplayForm] = useState(false)
   const {modal, DisplayModal} = useModal()
@@ -278,7 +278,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization
 
         <div className="flex flex-col space-y-3">
           <div className="flex space-x-2">
-              {category? category.map((cat, i)=>(<span key= {i} className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{cat}</span>)): <>
+              {categories? categories.map((cat, i)=>(<span key= {i} className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{cat}</span>)): <>
               <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Healthcare</span>
               <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Community Outreach</span>
               </>}

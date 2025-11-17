@@ -1,7 +1,7 @@
 import { Route, Routes, useNavigate } from "react-router-dom"
 import { SignupProvider } from "../../components/Volunteer/sign-up/SignupContext"
 import UserDetails from "../../components/sign-up/UserDetails"
-import PickInterests from "../../components/Volunteer/sign-up/PickInterests"
+import PickInterests from "../../components/sign-up/PickInterests"
 
 export const VolunteerSignup = ()=>{
 

@@ -1,11 +1,10 @@
-import ProfileAchievements from "./ProfileAchievement";
+// import ProfileAchievements from "./ProfileAchievement";
 import Certifications from "./Certifications";
-import { BadgeIcon } from "./icons";
-import type { ProfileType, BadgeType, DataType } from "../interface/interfaces";
+// import { BadgeIcon } from "./icons";
 
 
 
-const data: DataType[] = [
+const data = [
   {
     id: 1,
     title: "Frontend Developer",
@@ -43,63 +42,63 @@ const data: DataType[] = [
 
 
 
-const sampleProfile: ProfileType = {
-  id: 1,
-  name: "Habib Yusuf",
-  avatar: "/user.png",
-  location: "Abuja, Nigeria",
-  rating: 4,
-  skills: [
-    "React",
-    "TypeScript",
-    "TailwindCSS",
-    "TailwindCSS",
-    "TailwindCSS",
-    "TailwindCSS",
-    "TailwindCSS",],
-  interests: ["Frontend", "UI/UX", "Mobile Dev"],
-  phoneVerified: true,
-  emailVerified: true,
-  role: "Volunteer",
-};
+// const sampleProfile= {
+//   id: 1,
+//   name: "Habib Yusuf",
+//   avatar: "/user.png",
+//   location: "Abuja, Nigeria",
+//   rating: 4,
+//   skills: [
+//     "React",
+//     "TypeScript",
+//     "TailwindCSS",
+//     "TailwindCSS",
+//     "TailwindCSS",
+//     "TailwindCSS",
+//     "TailwindCSS",],
+//   interests: ["Frontend", "UI/UX", "Mobile Dev"],
+//   phoneVerified: true,
+//   emailVerified: true,
+//   role: "Volunteer",
+// };
 
-const sampleBadges: BadgeType[] = [
-  {
-    id: 1,
-    icon: <BadgeIcon  />,
-    description: "Community Helper",
-    earned: true,
-  },
-  {
-    id: 2,
-    icon: <BadgeIcon />,
-    description: "Community Helper",
-    earned: false,
-  },
-  {
-    id: 3,
-    icon: <BadgeIcon />,
-    description: "Community Helper",
-    earned: false,
-  },
-  {
-    id: 4,
-    icon: <BadgeIcon />,
-    description: "Community Helper",
-    earned: false,
-  },
-];
+// const sampleBadges = [
+//   {
+//     id: 1,
+//     icon: <BadgeIcon  />,
+//     description: "Community Helper",
+//     earned: true,
+//   },
+//   {
+//     id: 2,
+//     icon: <BadgeIcon />,
+//     description: "Community Helper",
+//     earned: false,
+//   },
+//   {
+//     id: 3,
+//     icon: <BadgeIcon />,
+//     description: "Community Helper",
+//     earned: false,
+//   },
+//   {
+//     id: 4,
+//     icon: <BadgeIcon />,
+//     description: "Community Helper",
+//     earned: false,
+//   },
+// ];
 
 export default function ProfilePage() {
   return (
       <div className="p-6 space-y-6 flex flex-col justify-center items-center">
-              <ProfileAchievements
+              {/* <ProfileAchievements
       profile={sampleProfile}
       badges={sampleBadges}
       onEditProfile={() => console.log("Edit clicked")}
-    />
+    /> */}
     <Certifications
-data={data}
+    data={data}
       onDownload={() => console.log("download clicked")}
           />
         </div>

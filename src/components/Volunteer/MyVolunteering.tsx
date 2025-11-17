@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import ProjectCard from "../ProjectCard";
 import ConfirmDialog from "../ConfirmDialog";
-import ProjectDetailsModal from "../ProjectModalDetails";
+// import ProjectDetailsModal from "../ProjectModalDetails";
 import type { ProjectProps } from "../../interface/interfaces";
 
 export default function MyVolunteering() {
   const [projects, setProjects] = useState<ProjectProps[]>([]);
   const [showDialog, setShowDialog] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+  // const [showDetails, setShowDetails] = useState(false);
   const [selectedJob, setSelectedJob] = useState<ProjectProps | null>(null);
 
   // Simulate backend fetch
@@ -95,7 +95,7 @@ export default function MyVolunteering() {
 
   const handleViewDetailsClick = (project: ProjectProps) => {
     setSelectedJob(project);
-    setShowDetails(true);
+    // setShowDetails(true);
   };
 
   return (
@@ -117,11 +117,11 @@ export default function MyVolunteering() {
         onConfirm={confirmCancel}
         onClose={() => setShowDialog(false)}
       />
-      <ProjectDetailsModal
+      {/* <ProjectDetailsModal
         visible={showDetails}
         project={selectedJob}
         onClose={() => setShowDetails(false)}
-      />
+      /> */}
     </div>
   );
 }

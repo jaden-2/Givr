@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import UserDashboardInformation from "../../components/Volunteer/userDashBoardInfo";
 import Dashboard from "../../components/Volunteer/dashboard";
 
-import type { MetricProps, OrganizationDashboardProps, OrganizationNavTypes, OrganizationQuickActions, ProjectProps } from "../../interface/interfaces";
+import type { MetricProps, OrganizationDashboardProps, OrganizationNavTypes, OrganizationQuickActions } from "../../interface/interfaces";
 import { ProjectHub } from "../../components/Volunteer/projectHub";
 import { DashboardHeader } from "../../components/dashboardHeader";
 
@@ -71,15 +71,6 @@ export const DashboardPage = () => {
 
 
 
-    const fetchProjects = async (): Promise<ProjectProps[]> => {
-        API().get("/projects")
-        .then((response)=>{
-            return response.data as ProjectProps[]
-        }) 
-        return []
-    }
-
-
     const fetchOrganizationDashboard = async ()=>{
         API().get("/dashboard")
         .then((response)=>{
@@ -87,6 +78,7 @@ export const DashboardPage = () => {
         })
         return null
     }
+
     const quickAction = (action: OrganizationQuickActions) => {
         switch (action) {
             case "Create New Project":

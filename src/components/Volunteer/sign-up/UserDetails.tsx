@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
-import Input from "../form/Input";
+import Input from "../../form/Input";
 import {
   Button,
 } from "../landingPageComponents";
-import LocationSelect from "../form/LocationSelect";
-import type { BasicNatigationProps } from "../../interface/interfaces";
+import LocationSelect from "../../form/LocationSelect";
+import type { BasicNatigationProps } from "../../../interface/interfaces";
 import { useSignup } from "./SignupContext";
 
 

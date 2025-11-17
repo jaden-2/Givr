@@ -80,7 +80,7 @@ export interface ProjectProps{
   location: location;
   totalApplicants: number;
   maxApplicants: number;
-  category: string[];
+  categories: string[];
   superVolunteer?:string;
   deadline:string;
   description?:string;

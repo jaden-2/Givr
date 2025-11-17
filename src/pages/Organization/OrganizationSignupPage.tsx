@@ -89,45 +89,45 @@ export const OrganizationSignup: React.FC<BasicNatigationProps> = ({ onToSignIn 
     setErrors((prev) => ({ ...prev, [name as keyof FormFields]: "" }));
   };
 
-  const validateForm = (): Partial<FormFields> => {
-    const newErrors: Partial<FormFields> = {};
+  // const validateForm = (): Partial<FormFields> => {
+  //   const newErrors: Partial<FormFields> = {};
 
 
-    //   // Email validation
-    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //   if (!formData.email) {
-    //     newErrors.email = "Email is required";
-    //   } else if (!emailRegex.test(formData.email)) {
-    //     newErrors.email = "Please enter a valid email address";
-    //   }
+  //   //   // Email validation
+  //   //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   //   if (!formData.email) {
+  //   //     newErrors.email = "Email is required";
+  //   //   } else if (!emailRegex.test(formData.email)) {
+  //   //     newErrors.email = "Please enter a valid email address";
+  //   //   }
 
-    //   // Phone validation
-    //   const phoneRegex = /^\d{11,}$/;
-    //   if (!formData.cacRegNumber) {
-    //     newErrors. = "Phone number is required";
-    //   } else if (!phoneRegex.test(formData.phone)) {
-    //     newErrors.phone = "Phone number must be at least 11 digits";
-    //   }
+  //   //   // Phone validation
+  //   //   const phoneRegex = /^\d{11,}$/;
+  //   //   if (!formData.cacRegNumber) {
+  //   //     newErrors. = "Phone number is required";
+  //   //   } else if (!phoneRegex.test(formData.phone)) {
+  //   //     newErrors.phone = "Phone number must be at least 11 digits";
+  //   //   }
 
-    //   // Password validation
-    //   if (!formData.password) {
-    //     newErrors.password = "Password is required";
-    //   } else if (formData.password.length < 6) {
-    //     newErrors.password = "Password must be at least 6 characters";
-    //   }
+  //   //   // Password validation
+  //   //   if (!formData.password) {
+  //   //     newErrors.password = "Password is required";
+  //   //   } else if (formData.password.length < 6) {
+  //   //     newErrors.password = "Password must be at least 6 characters";
+  //   //   }
 
-    //   // Confirm Password validation
-    //   if (!formData.confirmPassword) {
-    //     newErrors.confirmPassword = "Please confirm your password";
-    //   } else if (formData.password !== formData.confirmPassword) {
-    //     newErrors.confirmPassword = "Passwords do not match";
-    //   }
+  //   //   // Confirm Password validation
+  //   //   if (!formData.confirmPassword) {
+  //   //     newErrors.confirmPassword = "Please confirm your password";
+  //   //   } else if (formData.password !== formData.confirmPassword) {
+  //   //     newErrors.confirmPassword = "Passwords do not match";
+  //   //   }
 
-    // if (!formData.state) newErrors.state = "State is required";
-    // if (!formData.lga) newErrors.lga = "LGA is required";
+  //   // if (!formData.state) newErrors.state = "State is required";
+  //   // if (!formData.lga) newErrors.lga = "LGA is required";
 
-    return newErrors;
-  };
+  //   return newErrors;
+  // };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
