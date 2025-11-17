@@ -1,4 +1,14 @@
-import type { DataType} from "../interface/interfaces";
+
+interface DataType  {
+  title:string;
+  company:string;
+  verified:boolean;
+  earned:string;
+  hoursContributed:number;
+  companyIndustries:string[]
+  role:string;
+  username:string;
+}
 
 interface ProfilePageProps {
   data: DataType[] | null;
@@ -75,7 +85,7 @@ if (!data || data.length === 0) {
           <div className="flex justify-between items-center">
             <div className="sm:text-sm text-xs text-[#676879]">
               <p >{certification.role}:</p>
-              <span>{certification.userName}</span>
+              <span>{certification.username}</span>
             </div>
             <button
               onClick={onDownload}

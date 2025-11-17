@@ -7,6 +7,8 @@ import type { MetricProps, NavTypes, ProjectProps, VolunteerQuickActions, Volunt
 import { ProjectHub } from "../../components/Volunteer/projectHub";
 import { DashboardHeader } from "../../components/dashboardHeader";
 import useAuthFetch from "../../components/hooks/useAuthFetch";
+import MyVolunteering from "../../components/Volunteer/MyVolunteering";
+import Certifications from "../../components/Volunteer/Certifications";
 
 export const DashboardPage = () => {
 
@@ -172,6 +174,8 @@ export const DashboardPage = () => {
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={volunteerDashboard?.firstname} />
                 {active == "Dashboard" && projects && <Dashboard projects={projects} metrics={metrics} triggerAction={quickAction} />}
                 {active == "Find Opportunities" && <ProjectHub projects={projects}/>}
+                {active == "My Volunteering" && <MyVolunteering/>}
+                {active == "Profile & Achievements" && <Certifications data={null}  onDownload={()=>{}}/>}
             </div>
         </main>
     </>

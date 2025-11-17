@@ -83,6 +83,7 @@ export interface ProjectProps{
   category: string[];
   superVolunteer?:string;
   deadline:string;
+  description?:string;
   }
 
 export interface ProjectFormProps{
@@ -116,6 +117,7 @@ export interface OrganizationProps{
   category?:string;
   status?: "VERIFIED" | "UNVERIFIED";
   numOfActiveProjects?:number;
+  address?:string;
 }
 
 export interface OrganizationComponentProps extends OrganizationProps{
