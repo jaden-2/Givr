@@ -114,7 +114,7 @@ export const ApplicationHub = ()=>{
         <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
             <span className="text-sm font-medium text-gray-500">Pending Applications</span>
             {
-                applicants? applicants.map((applicant, index)=><VolunteerCard applicant={{...applicant}} key={index} onApprove={onApprove} onDecline={onDecline}/>): <NoApplicant/>       
+                applicants? applicants?.map((applicant, index)=><VolunteerCard applicant={{...applicant}} key={index} onApprove={onApprove} onDecline={onDecline}/>): <NoApplicant/>       
             }
         </div>
     </div>
