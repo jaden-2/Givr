@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import heroImage from "../assets/hero-image.svg"
 import { BulletIcon, DigitalCertificate, FileXIcon, GivrLogoIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
 import { Button, FeatureCard, NavLink, PlatformCategory } from '../components/landingPageComponents';
@@ -24,8 +24,11 @@ const Header: React.FC = () => (
 
       {/* Action Buttons: Sign In (Primary), Sign Up (Outline) */}
       <div className="flex space-x-3">
-        <Button variant="primary" className="text-sm px-4 py-2 shadow-none">Sign In</Button>
-        <Button variant="outline" className="text-sm px-4 py-2 shadow-none">Sign Up</Button>
+        <Link to="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs">
+          <Button variant="primary" className="text-sm px-4 py-2 shadow-none">
+            Join waitlist
+          </Button>
+        </Link>
       </div>
     </div>
   </header>
@@ -33,16 +36,16 @@ const Header: React.FC = () => (
 
 // HeroSection rewritten to match the provided structure and image styling
 const HeroSection: React.FC = () => (
-  <section className="pt-32 pb-16 bg-[#F7FAFC] min-h-[85vh] flex items-center">
+  <section className="pt-32 pb-16 bg-[#F7FAFC] min-h-[85vh] flex items-center w-full">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
       {/* Left Content Column */}
       <div className="max-w-lg">
         <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 text-gray-900">
-          <span className="block">Volunteer your time.</span>
-          <span className="block text-[#1A73E8]">Create Lasting Impact</span>
+          <span className="block">Welcome to Givr</span>
+          <span className="block text-[#1A73E8]">Create Lasting Impact Today</span>
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Givr.ng makes volunteering in Nigeria trusted, transparent, and rewarding. Connect with verified organizations and make a real difference in your community.
+          Whether you are volunteering or managing a project, get skill-matched opportunities, seamless coordination, meaningful recognition, and a smarter way to drive community service on Givr.
         </p>
 
         {/* Call to action Buttons */}
@@ -111,7 +114,7 @@ const ProblemSection: React.FC = () => {
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
-          Volunteering in Nigeria is <span className="text-[#FB2C36]">broken</span>
+          Volunteering in Nigeria needs a better system
         </h2>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
           Current volunteering efforts face serious challenges that prevent meaningful impact
@@ -167,21 +170,35 @@ const MoreInfoSection: React.FC = () => {
 
   ]
 
-  return (<section className="py-20 bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
-        How Givr.ng works <br />
-      </h2>
-      <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
-        Two simple pathways to make volunteering work for everyone
-      </p>
+  return (
+    <section className="py-20 bg-white">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
+          How Givr works <br />
+        </h2>
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
+          Two simple pathways to make volunteering work for everyone
+        </p>
 
-      {/* Feature Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-        {platformCategories.map((category, index) => <PlatformCategory key={index} color={category.color} description={category.description} title={category.title} cta={category.cta} />)}
+        {/* Feature Cards Grid */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2
+
+"
+        >
+          {platformCategories.map((category, index) => (
+            <PlatformCategory
+              key={index}
+              color={category.color}
+              description={category.description}
+              title={category.title}
+              cta={category.cta}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-  </section>)
+    </section>
+  );
 }
 
 const CredibilitySection: React.FC = () => {
@@ -255,7 +272,7 @@ const CTASection: React.FC = () => (
         <Button variant="secondary" className="text-base shadow-lg">Post a project</Button>
       </div>
 
-      
+
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium justify-center">
         <div className="flex items-center text-gray-300">
           <GreenCheck className="w-5 h-5 mr-1.5" /> Free to join
@@ -324,8 +341,8 @@ export default function LandingPage() {
     <div className="min-h-screen font-[Inter] antialiased">
       {/* Load Inter Font - assumed to be available or loaded via global CSS */}
       <style>{`
-        body { 
-            font-family: 'Poppins', sans-serif; 
+        body {
+            font-family: 'Poppins', sans-serif;
             background-color: #F7FAFC; /* Match the subtle background color from the image */
         }
       `}</style>
@@ -340,7 +357,7 @@ export default function LandingPage() {
         <Footer/>
       </main>
 
-     
+
     </div>
   );
 }

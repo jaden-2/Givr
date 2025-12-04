@@ -97,7 +97,7 @@ export const PlatformCategory: React.FC<FeatureCardProps> = ({ color, descriptio
 
   if (typeof description == 'object') {
     return (
-      <div className='max-w-md mx-auto bg-white rounded-xl border border-blue-100 p-8 shadow-sm'>
+      <div className='w-full sm:w-auto mx-auto bg-white rounded-xl border border-blue-100 p-8 shadow-sm'>
         <h2 className='text-2xl font-bold text-gray-900 mb-6'>{title}</h2>
 
         <ol className='space-y-4'>
@@ -107,7 +107,7 @@ export const PlatformCategory: React.FC<FeatureCardProps> = ({ color, descriptio
           </li>)}
         </ol>
 
-        <Button variant={color == 'blue' ? 'primary' : 'green'} className='w-90 mt-8 py-3'>{cta}</Button>
+        <Button variant={color == 'blue' ? 'primary' : 'green'} className='w-full mt-8 py-3'>{cta}</Button>
       </div>
     )
   }
