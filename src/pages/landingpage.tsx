@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 import heroImage from "../assets/hero-image.svg"
 import { BulletIcon, DigitalCertificate, FileXIcon, GivrLogoIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
 import { Button, FeatureCard, NavLink, PlatformCategory } from '../components/landingPageComponents';
@@ -24,11 +24,15 @@ const Header: React.FC = () => (
 
       {/* Action Buttons: Sign In (Primary), Sign Up (Outline) */}
       <div className="flex space-x-3">
-        <Link to="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs">
+         <a
+          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Button variant="primary" className="text-sm px-4 py-2 shadow-none">
             Join waitlist
           </Button>
-        </Link>
+        </a>
       </div>
     </div>
   </header>
@@ -42,27 +46,49 @@ const HeroSection: React.FC = () => (
       <div className="max-w-lg">
         <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 text-gray-900">
           <span className="block">Welcome to Givr</span>
-          <span className="block text-[#1A73E8]">Create Lasting Impact Today</span>
+          <span className="block text-[#1A73E8]">
+            Create Lasting Impact Today
+          </span>
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Whether you are volunteering or managing a project, get skill-matched opportunities, seamless coordination, meaningful recognition, and a smarter way to drive community service on Givr.
+          Whether you are volunteering or managing a project, get skill-matched
+          opportunities, seamless coordination, meaningful recognition, and a
+          smarter way to drive community service on Givr.
         </p>
 
         {/* Call to action Buttons */}
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
           {/* Sign up as a volunteer (Primary Button) */}
-          <Button variant="primary" className="text-base">Sign up as a volunteer</Button>
+           <a
+          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+            <Button variant="primary" className="text-base">
+              Sign up as a volunteer
+            </Button>
+          </a>
           {/* Post a project (Secondary/Outline Button) */}
-          <Button variant="secondary" className="text-base">Post a project</Button>
+           <a
+          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button variant="secondary" className="text-base">
+            Post a project
+          </Button>
+          </a>
         </div>
 
         {/* Verification Badges (Styled like LabeledIcons) */}
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
           <div className="flex items-center text-gray-600">
-            <VerifiedIcon className="w-5 h-5 mr-1.5 m-1" /> Verified Organizations
+            <VerifiedIcon className="w-5 h-5 mr-1.5 m-1" /> Verified
+            Organizations
           </div>
           <div className="flex items-center text-gray-600">
-            <DigitalCertificate className="w-5 h-5 mr-1.5" /> Digital Certificates
+            <DigitalCertificate className="w-5 h-5 mr-1.5" /> Digital
+            Certificates
           </div>
         </div>
       </div>
@@ -74,7 +100,6 @@ const HeroSection: React.FC = () => (
           src={heroImage}
           alt="Group of volunteers shaking hands over a map"
           className="rounded-3xl shadow-2xl w-full h-auto"
-
         />
       </div>
     </div>
@@ -263,15 +288,31 @@ const CTASection: React.FC = () => (
         Ready to get more
       </h2>
       <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-10">
-        Join thousands of Nigerians making real impact in their communities. Start your volunteering journey today.
+        Join thousands of Nigerians making real impact in their communities.
+        Start your volunteering journey today.
       </p>
 
       {/* CTA Buttons */}
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center mb-8">
-        <Button variant="primary" className="text-base shadow-lg">Sign up as a volunteer</Button>
-        <Button variant="secondary" className="text-base shadow-lg">Post a project</Button>
+        <a
+          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button variant="primary" className="text-base shadow-lg">
+            Sign up as a volunteer
+          </Button>
+        </a>
+         <a
+          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button variant="secondary" className="text-base shadow-lg">
+            Post a project
+          </Button>
+        </a>
       </div>
-
 
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium justify-center">
         <div className="flex items-center text-gray-300">
