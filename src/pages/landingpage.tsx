@@ -1,9 +1,27 @@
-import React from 'react';
+import React from "react";
 
-import heroImage from "../assets/hero-image.svg"
-import { BulletIcon, DigitalCertificate, FileXIcon, GivrLogoIcon, GreenCheck, LockIcon, SearchTimeIcon, ShieldIcon, StarIcon, UsersIcon, VerifiedIcon, YelloBadge } from '../components/icons';
-import { Button, FeatureCard, NavLink, PlatformCategory } from '../components/landingPageComponents';
-import type { FeatureCardProps } from '../props interface/landingPage';
+import heroImage from "../assets/hero-image.svg";
+import {
+  BulletIcon,
+  DigitalCertificate,
+  FileXIcon,
+  GivrLogoIcon,
+  GreenCheck,
+  LockIcon,
+  SearchTimeIcon,
+  ShieldIcon,
+  StarIcon,
+  UsersIcon,
+  VerifiedIcon,
+  YelloBadge,
+} from "../components/icons";
+import {
+  Button,
+  FeatureCard,
+  NavLink,
+  PlatformCategory,
+} from "../components/landingPageComponents";
+import type { FeatureCardProps } from "../props interface/landingPage";
 
 // --- Section Components ---
 
@@ -24,7 +42,7 @@ const Header: React.FC = () => (
 
       {/* Action Buttons: Sign In (Primary), Sign Up (Outline) */}
       <div className="flex space-x-3">
-         <a
+        <a
           href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
           target="_blank"
           rel="noopener noreferrer"
@@ -59,24 +77,24 @@ const HeroSection: React.FC = () => (
         {/* Call to action Buttons */}
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
           {/* Sign up as a volunteer (Primary Button) */}
-           <a
-          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+          <a
+            href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button variant="primary" className="text-base">
               Sign up as a volunteer
             </Button>
           </a>
           {/* Post a project (Secondary/Outline Button) */}
-           <a
-          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="secondary" className="text-base">
-            Post a project
-          </Button>
+          <a
+            href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="secondary" className="text-base">
+              Post a project
+            </Button>
           </a>
         </div>
 
@@ -106,32 +124,35 @@ const HeroSection: React.FC = () => (
   </section>
 );
 
-
 const ProblemSection: React.FC = () => {
   const problemData = [
     {
-      title: 'Trust Issues',
-      description: 'Volunteers struggle to verify if organizations are legitimate or if their help will be used properly.',
+      title: "Trust Issues",
+      description:
+        "Volunteers struggle to verify if organizations are legitimate or if their help will be used properly.",
       icon: <ShieldIcon />,
-      color: 'red' as const,
+      color: "red" as const,
     },
     {
-      title: 'Discovery Gap',
-      description: 'Hard to find genuine opportunities that match your skills and availability.',
+      title: "Discovery Gap",
+      description:
+        "Hard to find genuine opportunities that match your skills and availability.",
       icon: <SearchTimeIcon />,
-      color: 'red' as const,
+      color: "red" as const,
     },
     {
-      title: 'No Recognition',
-      description: 'Volunteer work goes unrecognized, with no credentials for future opportunities.',
+      title: "No Recognition",
+      description:
+        "Volunteer work goes unrecognized, with no credentials for future opportunities.",
       icon: <FileXIcon />,
-      color: 'red' as const,
+      color: "red" as const,
     },
     {
-      title: 'Poor Coordination',
-      description: 'WhatsApp groups and informal networks sometimes lead to confusion and wasted effort.',
+      title: "Poor Coordination",
+      description:
+        "WhatsApp groups and informal networks sometimes lead to confusion and wasted effort.",
       icon: <UsersIcon />,
-      color: 'red' as const,
+      color: "red" as const,
     },
   ];
 
@@ -142,7 +163,8 @@ const ProblemSection: React.FC = () => {
           Volunteering in Nigeria needs a better system
         </h2>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
-          Current volunteering efforts face serious challenges that prevent meaningful impact
+          Current volunteering efforts face serious challenges that prevent
+          meaningful impact
         </p>
 
         {/* Problem Cards Grid */}
@@ -156,10 +178,14 @@ const ProblemSection: React.FC = () => {
         <div className="max-w-5xl mx-auto p-8 md:p-12 bg-white rounded-3xl shadow-2xl border border-gray-100">
           <h3 className="text-3xl font-extrabold mb-4 text-gray-900">
             Givr.ng fixes this by making volunteering <br />
-            <span className="text-[#1A73E8]">easy</span>, <span className="text-[#34A853]">credible</span>, and <span className="text-[#FBBC05]">rewarding</span>
+            <span className="text-[#1A73E8]">easy</span>,{" "}
+            <span className="text-[#34A853]">credible</span>, and{" "}
+            <span className="text-[#FBBC05]">rewarding</span>
           </h3>
           <p className="text-[#676879] max-w-2xl mx-auto">
-            Our platform connects trusted volunteers with verified organizations through a transparent, gamified system that recognizes your contributions.
+            Our platform connects trusted volunteers with verified organizations
+            through a transparent, gamified system that recognizes your
+            contributions.
           </p>
         </div>
       </div>
@@ -168,18 +194,17 @@ const ProblemSection: React.FC = () => {
 };
 
 const MoreInfoSection: React.FC = () => {
-
   const platformCategories: Array<FeatureCardProps> = [
     {
       title: "For Volunteers",
       description: [
         "Sign up with basic verification",
         "Browse verfied opportunities by location and skills",
-        "Apply and get approved by super volunteers",
-        "Complete service and earn digital certificates"
+        "Apply and get approved",
+        "Complete service and earn digital certificates",
       ],
-      color: 'blue',
-      cta: "Sign up as a volunteer"
+      color: "blue",
+      cta: "Sign up as a volunteer",
     },
     {
       title: "For Organization",
@@ -187,13 +212,12 @@ const MoreInfoSection: React.FC = () => {
         "Register and get verified by our team",
         "Post projects with clear requirements",
         "Review volunteer with clear requirements",
-        "Rate volunteer and build relationships"
+        "Rate volunteer and build relationships",
       ],
-      color: 'green',
-      cta: "Sign up as an Organization"
-    }
-
-  ]
+      color: "green",
+      cta: "Sign up as an Organization",
+    },
+  ];
 
   return (
     <section className="py-20 bg-white">
@@ -224,33 +248,37 @@ const MoreInfoSection: React.FC = () => {
       </div>
     </section>
   );
-}
+};
 
 const CredibilitySection: React.FC = () => {
   const featureData = [
     {
-      title: 'Verified Organizations',
-      description: 'Every organization goes through our verification process before posting opportunities.',
+      title: "Verified Organizations",
+      description:
+        "Every organization goes through our verification process before posting opportunities.",
       icon: <VerifiedIcon className="w-12 h-12" />,
-      color: 'blue' as const,
+      color: "blue" as const,
     },
     {
-      title: 'Rating System',
-      description: 'Transparent ratings help volunteers and organizations build trust and reputation.',
+      title: "Rating System",
+      description:
+        "Transparent ratings help volunteers and organizations build trust and reputation.",
       icon: <StarIcon className="w-12 h-12" />,
-      color: 'yellow' as const,
+      color: "yellow" as const,
     },
     {
-      title: 'Digital Certificates',
-      description: 'Earn verifiable certificates for completed volunteer work that boost your profile.',
+      title: "Digital Certificates",
+      description:
+        "Earn verifiable certificates for completed volunteer work that boost your profile.",
       icon: <FileXIcon className="w-12 h-12" />, // Reusing File icon
-      color: 'green' as const,
+      color: "green" as const,
     },
     {
-      title: 'Admin Oversight',
-      description: 'Trusted community members ensure safety and quality in every interaction.',
+      title: "Admin Oversight",
+      description:
+        "Trusted community members ensure safety and quality in every interaction.",
       icon: <LockIcon className="w-12 h-12" />,
-      color: 'lock' as const,
+      color: "lock" as const,
     },
   ];
 
@@ -258,18 +286,23 @@ const CredibilitySection: React.FC = () => {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
-          We make <span className="text-[#1877F2]">credibility visible</span> and <br className="hidden sm:inline" />
+          We make <span className="text-[#1877F2]">credibility visible</span>{" "}
+          and <br className="hidden sm:inline" />
           <span className="text-green-600">impact measurable</span>
         </h2>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
-          Built-in trust and recognition systems that reward genuine contribution
+          Built-in trust and recognition systems that reward genuine
+          contribution
         </p>
 
         {/* Feature Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {featureData.map((item, index) => (
             // Apply distinct styling for this section's cards
-            <div key={index} className="bg-white p-6 border border-gray-100 rounded-xl shadow-md text-left transition duration-300 hover:shadow-lg">
+            <div
+              key={index}
+              className="bg-white p-6 border border-gray-100 rounded-xl shadow-md text-left transition duration-300 hover:shadow-lg"
+            >
               <FeatureCard {...item} />
             </div>
           ))}
@@ -303,7 +336,7 @@ const CTASection: React.FC = () => (
             Sign up as a volunteer
           </Button>
         </a>
-         <a
+        <a
           href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
           target="_blank"
           rel="noopener noreferrer"
@@ -334,7 +367,7 @@ const CTASection: React.FC = () => (
 const Footer: React.FC = () => (
   <footer className="bg-[#1C212A] pt-8 pb-8 text-white ">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-    <hr className="border-gray-400 my-8" />
+      <hr className="border-gray-400 my-8" />
       {/* Footer Content Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pb-10 ">
         {/* Column 1: Givr Info */}
@@ -349,9 +382,30 @@ const Footer: React.FC = () => (
         <div>
           <h4 className="text-lg font-bold mb-4 text-white">Platform</h4>
           <ul className="space-y-3">
-            <li><a href="#opportunities" className="text-sm text-gray-400 hover:text-[#1877F2] transition">Opportunities</a></li>
-            <li><a href="#organizations" className="text-sm text-gray-400 hover:text-[#1877F2] transition">Organizations</a></li>
-            <li><a href="#certificates" className="text-sm text-gray-400 hover:text-[#1877F2] transition">Certificates</a></li>
+            <li>
+              <a
+                href="#opportunities"
+                className="text-sm text-gray-400 hover:text-[#1877F2] transition"
+              >
+                Opportunities
+              </a>
+            </li>
+            <li>
+              <a
+                href="#organizations"
+                className="text-sm text-gray-400 hover:text-[#1877F2] transition"
+              >
+                Organizations
+              </a>
+            </li>
+            <li>
+              <a
+                href="#certificates"
+                className="text-sm text-gray-400 hover:text-[#1877F2] transition"
+              >
+                Certificates
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -359,9 +413,30 @@ const Footer: React.FC = () => (
         <div>
           <h4 className="text-lg font-bold mb-4 text-white">Support</h4>
           <ul className="space-y-3">
-            <li><a href="#about" className="text-sm text-gray-400 hover:text-[#1877F2] transition">About Us</a></li>
-            <li><a href="#help" className="text-sm text-gray-400 hover:text-[#1877F2] transition">Help Center</a></li>
-            <li><a href="#contact" className="text-sm text-gray-400 hover:text-[#1877F2] transition">Contact</a></li>
+            <li>
+              <a
+                href="#about"
+                className="text-sm text-gray-400 hover:text-[#1877F2] transition"
+              >
+                About Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="#help"
+                className="text-sm text-gray-400 hover:text-[#1877F2] transition"
+              >
+                Help Center
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                className="text-sm text-gray-400 hover:text-[#1877F2] transition"
+              >
+                Contact
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -369,7 +444,8 @@ const Footer: React.FC = () => (
 
       {/* Copyright */}
       <div className="text-center text-xs text-[#676879]">
-        &copy; {new Date().getFullYear()} Givr.ng. All rights reserved. Built for Nigerian communities.
+        &copy; {new Date().getFullYear()} Givr.ng. All rights reserved. Built
+        for Nigerian communities.
       </div>
     </div>
   </footer>
@@ -394,11 +470,9 @@ export default function LandingPage() {
         <ProblemSection />
         <MoreInfoSection />
         <CredibilitySection />
-        <CTASection/>
-        <Footer/>
+        <CTASection />
+        <Footer />
       </main>
-
-
     </div>
   );
 }
