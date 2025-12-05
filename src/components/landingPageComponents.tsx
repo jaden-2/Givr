@@ -97,19 +97,36 @@ export const PlatformCategory: React.FC<FeatureCardProps> = ({ color, descriptio
 
   if (typeof description == 'object') {
     return (
-      <div className='max-w-md mx-auto bg-white rounded-xl border border-blue-100 p-8 shadow-sm'>
-        <h2 className='text-2xl font-bold text-gray-900 mb-6'>{title}</h2>
+      <div className="w-full sm:w-auto mx-auto bg-white rounded-xl border border-blue-100 p-8 shadow-sm">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">{title}</h2>
 
-        <ol className='space-y-4'>
-          {description.map((text, index) => <li key={index} className='flex gap-2 text-left'>
-            <span className={`flex items-center justify-center w-6 h-6 rounded-full ${listBgColor} text-white text-sm font-medium`}>{index + 1}</span>
-            <span className='text-gray-700 w-90'>{text}</span>
-          </li>)}
+        <ol className="space-y-4">
+          {description.map((text, index) => (
+            <li key={index} className="flex gap-2 text-left">
+              <span
+                className={`flex items-center justify-center w-6 h-6 rounded-full ${listBgColor} text-white text-sm font-medium`}
+              >
+                {index + 1}
+              </span>
+              <span className="text-gray-700 w-90">{text}</span>
+            </li>
+          ))}
         </ol>
 
-        <Button variant={color == 'blue' ? 'primary' : 'green'} className='w-90 mt-8 py-3'>{cta}</Button>
+         <a
+          href="https://forms.zohopublic.com/infogi1/form/GIVROnboardingWaitlist1/formperma/yRXYzBA5-POdKVxW3N0b66loSnLvPKH1FScCtF8hPLs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button
+            variant={color == "blue" ? "primary" : "green"}
+            className="w-full mt-8 py-3"
+          >
+            {cta}
+          </Button>
+        </a>
       </div>
-    )
+    );
   }
 
 }
