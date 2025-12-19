@@ -25,13 +25,13 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
   const handleSubmit = async ()=>{
     setIsloading(true)
     // make a patch request to add interests for volunteer
-    const baseUrl = import.meta.env.VITE_API_BASE_VOLUNTEER_URL
+    const baseUrl = import.meta.env.VITE_API_BASE_URL
     const payload = {
       ...usesignup?.formData,
       interests: selectedInterests
     }
 
-    const response = await fetch(`${baseUrl}/auth/signup`, {
+    const response = await fetch(`${baseUrl}/volunteer/auth/signup`, {
       method: 'POST', 
       headers: {
         "Content-type": "application/json"
