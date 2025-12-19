@@ -2,12 +2,16 @@ import { useEffect, useState } from "react"
 import type { ProjectProps } from "../../interface/interfaces"
 import { Button, ProjectCard, RadioButton } from "../ReuseableComponents"
 import { CreateProject } from "../Organization/createProjectForm"
+import useAuthFetch from "../hooks/useAuthFetch"
 
 
 export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boolean}>= ({projects, isOrganization=false})=>{
     const[itemsCategories, setItemCategories] = useState<string[]>([])
     const [activeCategory, setActiveCategory] = useState<string>("All Categories")
     const [newProject, setNewProject] = useState<boolean>(false);
+    const [projects_, setProjects] = useState<ProjectProps[]>([]);
+    const {API} = useAuthFetch(isOrganization? "organization": "volunteer");
+
 
     if(!isOrganization){
         useEffect(()=>{
@@ -27,6 +31,19 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
     const createProject = ()=>{
         setNewProject(true)
     }
+
+    const fetchProjects = async ()=>{
+        API().get("/projects")
+        .then((value)=>{
+            setProjects(value.data as ProjectProps[])
+        })
+    }
+
+    useEffect(()=>{
+        if(!isOrganization){
+            (async ()=>fetchProjects())()
+        }
+    }, [])
 
     return <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
         {/**Volunteer View */}
@@ -55,8 +72,8 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
             <Button variant="green" onClick={createProject}>+ Create Project</Button>
         </p>}
 
-        {activeCategory=="All Categories"? (projects?.map((project, index)=> <ProjectCard {...project} key={index} isOrganization={isOrganization} manage={true}/>))
-        : (projects.filter((p)=> p.categories.includes(activeCategory)).map((p, i)=><ProjectCard {...p} key={i} manage={true}/>))}
+        {activeCategory=="All Categories"? (projects_?.map((project, index)=> <ProjectCard {...project} key={index} isOrganization={isOrganization} manage={true}/>))
+        : (projects_.filter((p)=> p.categories.includes(activeCategory)).map((p, i)=><ProjectCard {...p} key={i} manage={true}/>))}
         </>
         }
         

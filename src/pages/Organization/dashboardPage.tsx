@@ -8,6 +8,7 @@ import { ProjectHub } from "../../components/Volunteer/projectHub";
 import { DashboardHeader } from "../../components/dashboardHeader";
 
 import { ApplicationHub } from "../../components/Organization/applicationHub";
+import useAuthFetch from "../../components/hooks/useAuthFetch";
 // import useAuthFetch from "../../components/hooks/useAuthFetch";
 
 
@@ -15,7 +16,7 @@ export const DashboardPage = () => {
 
     const [active, setActive] = useState<OrganizationNavTypes>("Dashboard");
    
-    const [dashboard, __] = useState<OrganizationDashboardProps>({
+    const [dashboard, setDashboard] = useState<OrganizationDashboardProps>({
         name: "", 
         projects: []
     });
@@ -50,7 +51,7 @@ export const DashboardPage = () => {
             color: "#B86705"
         }
     ])
-    // const {API} = useAuthFetch("organization")
+    const {API} = useAuthFetch("organization")
 
     const buttons = new Map<string, string>()
     buttons.set("Dashboard", "Dashboard")
@@ -72,10 +73,10 @@ export const DashboardPage = () => {
 
 
     const fetchOrganizationDashboard = async ()=>{
-        // API().get("/dashboard")
-        // .then((response)=>{
-        //     return setDashboard(response.data as OrganizationDashboardProps)
-        // })
+        API().get("/dashboard")
+        .then((response)=>{
+            return setDashboard(response.data as OrganizationDashboardProps)
+        })
         
     }
 
@@ -109,8 +110,8 @@ export const DashboardPage = () => {
             <DashboardHeader isOrganization={true} />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={dashboard.name} />
-                {active == "Dashboard" && dashboard && <Dashboard projects={dashboard.projects} metrics={metrics} orgTriggerAction={quickAction} />}
-                {active == "Project Management" && <ProjectHub projects={dashboard.projects} isOrganization={true}/>}
+                {active == "Dashboard" && dashboard && <Dashboard projects={[]} metrics={metrics} orgTriggerAction={quickAction} />}
+                {active == "Project Management" && <ProjectHub projects={[]} isOrganization={true}/>}
                 {active == "Applications" && <ApplicationHub/>}
             </div>
         </main>

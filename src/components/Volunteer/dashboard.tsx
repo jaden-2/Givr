@@ -1,14 +1,15 @@
-import { useState } from "react";
-import type { DashboardProps, OrganizationProps, OrganizationQuickActions, VolunteerQuickActions } from "../../interface/interfaces";
+import { useEffect, useState } from "react";
+import type { DashboardProps, OrganizationProps, OrganizationQuickActions, ProjectProps, VolunteerQuickActions } from "../../interface/interfaces";
 import { Banner, MetricCard, OrganizationCard, ProjectCard, RadioButton } from "../ReuseableComponents";
 import { EditProfile } from "./editProfile";
+import useAuthFetch from "../hooks/useAuthFetch";
 // import useAuthFetch from "../hooks/useAuthFetch";
 
-const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, orgTriggerAction})=>{
+const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerAction})=>{
     const [active, setActive] = useState("")
-    // const {API} = useAuthFetch("volunteer")
-
-    const [organizations, _] = useState<OrganizationProps[]>([])
+    const {API} = useAuthFetch(orgTriggerAction?"organization":"volunteer")
+    const [projects, setProjects] = useState<ProjectProps[]>([])
+    const [organizations, setOrganizations] = useState<OrganizationProps[]>([])
 
 
 //     useEffect(() => {
@@ -25,6 +26,10 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
 //     }
 //   }, [metrics]);
 
+    useEffect(()=>{
+        // Fetch projects when component is mounted
+        (async ()=> fetchProjects())();
+    }, [])
 
     let quickActions = new Map<OrganizationQuickActions|VolunteerQuickActions, string>(); 
     if(triggerAction){
@@ -56,7 +61,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
                     triggerAction("Find Opportunities")
                 break;
             case "View Organizations":
-                handleOrganization()
+                fetchOrganization()
                 break;
             case "Update Profile":
                 break;
@@ -81,15 +86,20 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
     // Will make fetch request for organizations
     const fetchOrganization = async ()=>{
         // fetch 
-        // await API().get("/organizations")
-        // .then((response)=>{
-        //     setOrganizations(response.data as OrganizationProps[])
-        // })
+        await API().get("/organizations")
+        .then((response)=>{
+            setOrganizations(response.data as OrganizationProps[])
+        })
         
     }
 
-    const handleOrganization = async ()=>{
-        await fetchOrganization()
+    
+
+    const fetchProjects = async ()=>{
+        await API().get("/projects")
+            .then((val)=>{
+                setProjects(val.data as ProjectProps[])
+            })
     }
 
     const renderContent = () => {
@@ -118,7 +128,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
             );
         }
 
-        // Default (dashboard)
+        // Default (List of projects)
         return (
             <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
             <p className="text-xl font-bold text-gray-800">{triggerAction? "Recommended for you": "Your Projects"}</p>
@@ -126,7 +136,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
                 {triggerAction && "Based on your skills and location"}
             </span>
             {projects?.map((project, index) => (
-                <ProjectCard {...project} key={index} isOrganization={true}/>
+                <ProjectCard {...project} key={index} isOrganization={orgTriggerAction&&true}/>
             ))}
             </div>
         );
@@ -156,7 +166,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, projects, triggerAction, o
                 </div>
             </div>
 
-            {/* Recommended for you */}
+            {/* Lists projects for both volunteer or organizations*/}
             <>{renderContent()}</>
            
         </div>

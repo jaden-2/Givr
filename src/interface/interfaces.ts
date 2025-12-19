@@ -71,7 +71,7 @@ interface location{
 }
 
 export interface ProjectProps{
-  id: string;
+  id: number;
   title: string;
   organization?:OrganizationProps;
   status: "PENDING" | "ACTIVE" | "COMPLETED"| "DRAFT";
@@ -101,6 +101,7 @@ export interface ProjectFormProps{
   }
   requiredSkills:string[];
   specialRequirements:string;
+  
 }
 
 export interface ProjectComponentProps extends ProjectProps{
@@ -118,6 +119,7 @@ export interface OrganizationProps{
   status?: "VERIFIED" | "UNVERIFIED";
   numOfActiveProjects?:number;
   address?:string;
+  activeProjects?: ProjectProps[]
 }
 
 export interface OrganizationComponentProps extends OrganizationProps{

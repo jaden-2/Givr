@@ -83,7 +83,7 @@ export const ApplicationHub = ()=>{
     }, [])
 
     const removeApplicantFromList = (applicant: VolunteerApplicationProps)=>{
-        setApplications(applicants?.filter(appl=>appl != applicant))
+        setApplications(applicants?.filter(appl=>appl.projectApplied.id != applicant.projectApplied.id))
     }
     const onApprove = (applicant: VolunteerApplicationProps, perm:boolean)=>{
         // Make request to backend server to update application 
@@ -114,7 +114,7 @@ export const ApplicationHub = ()=>{
         <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
             <span className="text-sm font-medium text-gray-500">Pending Applications</span>
             {
-                applicants? applicants?.map((applicant, index)=><VolunteerCard applicant={{...applicant}} key={index} onApprove={onApprove} onDecline={onDecline}/>): <NoApplicant/>       
+                (applicants && applicants.length>0)? applicants?.map((applicant, index)=><VolunteerCard applicant={{...applicant}} key={index} onApprove={onApprove} onDecline={onDecline}/>): <NoApplicant/>       
             }
         </div>
     </div>

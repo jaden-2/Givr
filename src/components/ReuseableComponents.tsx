@@ -4,6 +4,7 @@ import { ArrowIcon, CalendarIcon, ClockIcon, GroupIcon, LocationIcon } from "./i
 import { useConfirmAsk } from "./hooks/useConfirm";
 import { useAlert } from "./hooks/useAlert";
 import { useModal } from "./hooks/useModal";
+import useAuthFetch from "./hooks/useAuthFetch";
 
 
 // --- Reusable Components ---
@@ -177,7 +178,7 @@ export const InfoCell:React.FC<{icon:ReactNode, info:string}> = ({icon, info})=>
 )
 
 /**Displays an organization's information */
-export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, description, location, numOfActiveProjects, category, status, hasVolunteered=false})=>{
+export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, description, location, activeProjects, category, status, hasVolunteered=false})=>{
   const {confirmAsk, ConfirmDialog} = useConfirmAsk({})
   const {alertMessage, AlertDialog} = useAlert()
 
@@ -209,9 +210,9 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
             </p>
         </div>
         <div className="flex-shrink-0 flex space-x-2">
-            <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+            {/* <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
                 Applied
-            </span>
+            </span> */}
             <span className={`${status=="VERIFIED"?"bg-green-600": "bg-red-600"} text-white text-xs font-semibold px-3 py-1 rounded-full`}>
                {status}
             </span>
@@ -225,7 +226,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
         </p>
         <p>
             <span className="font-semibold text-blue-600">Active Projects: </span>
-            {numOfActiveProjects}
+            {activeProjects? activeProjects.length: 0}
         </p>
     </div>
 
@@ -242,7 +243,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
 }
 
 /**Displays details of a project */
-export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization, categories, attendanceHours, location, maxApplicants, startDate, status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false})=>{
+export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organization, categories, attendanceHours, location, maxApplicants, startDate, status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false})=>{
 
   const [displayForm, setDisplayForm] = useState(false)
   const {modal, DisplayModal} = useModal()
@@ -299,7 +300,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({title, organization
     </div>
 
     {/* Volunteer can views details of an organization after applying, therefore, application form should not be shown */}
-    {(displayForm && (!manage || !applied))&& <ApplicationForm organization={organization?.name} onCancel={()=>setDisplayForm(false)}/>}
+    {(displayForm && (!manage || !applied))&& <ApplicationForm organization={organization?.name} onCancel={()=>setDisplayForm(false)} projectId={id}/>}
     <DisplayModal/>
 
 </div>
@@ -331,21 +332,26 @@ export const RadioButton: React.FC<{children: React.ReactNode;  value?:string; a
 };
 
 /**Promts volunteer to provide their reason for applying for a project before application */
-export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string}> = ({onCancel, organization})=>{
+export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, projectId:number}> = ({onCancel, organization, projectId})=>{
   interface ApplicationFields {
+    projectId:number;
     reason: string;
-    availability:string
+    availableDays:string
   }
   const [applicationForm, setApplicationForm] = useState<ApplicationFields>({
+    projectId: projectId,
     reason: "",
-    availability: ""
+    availableDays: ""
   })
+
+  const {API} = useAuthFetch("volunteer")
 
   let {confirmAsk, ConfirmDialog}= useConfirmAsk({})
   let {alertMessage, AlertDialog} = useAlert()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
+    console.log(applicationForm)
     // Prompt the volunteer to confirm their application
     const ok = await confirmAsk({
       question: "Are you sure you want to apply for this particular project?",
@@ -354,7 +360,13 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string}>
     })
     if(ok){
       let message = `Thank you for Applying! ${organization} will reach out to you if you fit the selection criteria`
-      await alertMessage(message)
+      await API().post("/projects/apply", applicationForm ) 
+      .then(async ()=>{
+        await alertMessage(message)
+      }, async ()=>{
+        await alertMessage(`Application ${organization}'s project failed. Please try again`)
+      })     
+      
     }
 
     onCancel()
@@ -370,7 +382,7 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string}>
 
         <textarea name="reason" rows={5}  value={applicationForm["reason"]} onChange={(e)=>setApplicationForm({...applicationForm, reason:e.currentTarget.value })} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 resize-y text-gray-800" required></textarea>
         <label htmlFor="availability" className="block text-base font-semibold text-gray-700 mb-2">Confirm you availability</label>
-        <input className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800" type="text" name="availability" placeholder="e.g available all day" value={applicationForm.availability} onChange={e=>setApplicationForm({...applicationForm, availability: e.currentTarget.value})} required/>
+        <input className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800" type="text" name="availability" placeholder="e.g available all day" value={applicationForm.availableDays} onChange={e=>setApplicationForm({...applicationForm, availableDays: e.currentTarget.value})} required/>
 
         <div className="flex justify-between pt-2 space-x-4">
           <Button variant="primary" className="w-full">Submit application</Button>
