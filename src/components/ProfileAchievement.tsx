@@ -1,4 +1,5 @@
 import type { BadgeProps, ProfileProps } from "../interface/interfaces";
+import { Button } from "./ReuseableComponents";
 interface ProfileAchievementsProps {
   profile: ProfileProps;
   badges: BadgeProps[];
@@ -97,12 +98,11 @@ export default function ProfileAchievements({
           </div>
 
           {/* Edit Button */}
-          <button
-            onClick={onEditProfile}
-            className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition w-max"
-          >
+          <Button 
+          variant="primary" className="w-[40%]"
+          onClick={onEditProfile}>
             Edit Profile
-          </button>
+          </Button>
         </div>
       </div>
 

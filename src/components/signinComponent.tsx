@@ -13,19 +13,21 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
 
-        // Simulate a sign-in attempt with dummy data/logic
-        setTimeout(() => {
-            if (!onSignInAttempt(email, password)) {
-                setError('Invalid email or password. (Simulated error)');
-                setIsLoading(false);
-            }
+        try{
+            const success = await onSignInAttempt(email, password)
 
-        }, 1500);
+            if(!success)
+                setError("Invalid email or password")
+        }finally{
+            setIsLoading(false)
+        }
+        
+        
     };
 
     return (
@@ -133,16 +135,18 @@ export const SignInComp: React.FC<BasicNatigationProps> = function ({ toSignUp, 
 
     const handleSignIn = async (email: string, password: string) => {
 
-        API().post(`/auth/login`, {email, password}, {
-            withCredentials: true
-        })
-        .then(()=>{
+        try{
+            await API().post(`/auth/login`, {email, password}, {
+                withCredentials: true
+            });
+            
             if(onToDashboard)
                 onToDashboard()
-            return true
-        })
 
-        return false;
+            return true
+        }catch(err){
+            return false;
+        }
     }
 
     return (

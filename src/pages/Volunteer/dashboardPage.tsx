@@ -13,6 +13,7 @@ import ProfilePage from "../../components/Profile";
 export const DashboardPage = () => {
 
     const [active, setActive] = useState<NavTypes>("Dashboard");
+    const [dashboardIsMounted, setDashboardIsMounted] = useState(false)
     const [volunteerDashboard, setVolunteerDashboard] = useState<VolunteerDashboardProps>({
         firstname: "Daniel",
         projectApplications: [
@@ -109,6 +110,9 @@ export const DashboardPage = () => {
             case "Find Opportunities":
                 setActive(action as NavTypes)
                 break;
+            case "Update Profile":
+                setActive("Profile & Achievements")
+                break;
         }
     }
 
@@ -129,7 +133,7 @@ export const DashboardPage = () => {
             loadUserProfile()
            
         })()
-    }, [])
+    }, [dashboardIsMounted])
 
     useEffect(() => {
 
@@ -154,7 +158,7 @@ export const DashboardPage = () => {
                 return {
                     ...metric,
                     value: totalApplied.toString(),
-                    context: `${approvedThisMonth} approved this month`,
+                    context: `+ ${approvedThisMonth} approved this month`,
                 }
             }
 
@@ -162,7 +166,7 @@ export const DashboardPage = () => {
                 return {
                     ...metric,
                     value: approvedApplicatins.length.toString(),
-                    context: `${approvedThisMonth} this month`
+                    context: `+${approvedThisMonth} this month`
                 }
             }
             return metric
@@ -182,7 +186,7 @@ export const DashboardPage = () => {
             <DashboardHeader />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={volunteerDashboard?.firstname} />
-                {active == "Dashboard" && projects && <Dashboard projects={projects} metrics={metrics} triggerAction={quickAction} />}
+                {active == "Dashboard" && projects && <Dashboard projects={projects} metrics={metrics} triggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)}/>}
                 {active == "Find Opportunities" && <ProjectHub projects={projects}/>}
                 {active == "My Volunteering" && <MyVolunteering/>}
                 {active == "Profile & Achievements" && <ProfilePage/>}

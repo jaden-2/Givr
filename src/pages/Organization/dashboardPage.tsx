@@ -1,5 +1,5 @@
 import { ClockIcon, GroupIcon, StarIcon, VerifiedIcon } from "../../components/icons"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import UserDashboardInformation from "../../components/Volunteer/userDashBoardInfo";
 import Dashboard from "../../components/Volunteer/dashboard";
 
@@ -9,48 +9,61 @@ import { DashboardHeader } from "../../components/dashboardHeader";
 
 import { ApplicationHub } from "../../components/Organization/applicationHub";
 import useAuthFetch from "../../components/hooks/useAuthFetch";
-// import useAuthFetch from "../../components/hooks/useAuthFetch";
 
 
 export const DashboardPage = () => {
 
     const [active, setActive] = useState<OrganizationNavTypes>("Dashboard");
-   
+    const [dashboardIsMounted, setDashboardIsMounted] = useState(false);
     const [dashboard, setDashboard] = useState<OrganizationDashboardProps>({
         name: "", 
-        projects: []
+        projects: {
+            
+            draftProjects: [],
+            openProjects: [],
+            ongoingProjects: [],
+            completedProjects: []
+        },
+
+        rating: 0.0,
+        applicationStats: {
+            numApplied: 0,
+            numApproved: 0,
+            numRejected:0
+        }
     });
     
-    const [metrics, _] = useState<MetricProps[]>([
+    const metrics = useMemo<MetricProps[]>(()=>[
         {
             title: "Active Projects",
-            context: "+12 hours this month",
+            context: `${dashboard.projects.openProjects.length} projects open for applicants`,
             icon: <ClockIcon color="#34A853" />,
-            value: "5",
+            value: `${dashboard.projects.ongoingProjects.length}`,
             color: "#34A853"
         },
         {
             title: "Total Volunteers",
-            context: "+2 this month",
+            context: `${dashboard.applicationStats.numApplied} applicants`,
             icon: <GroupIcon color="#1A73E8" />,
-            value: "84",
+            value: `${dashboard.applicationStats.numApproved}`,
             color: "#1A73E8"
         },
         {
             title: "Average Rating",
-            context: "0.0 rating from organizations",
+            context: ` `,
             icon: <StarIcon color="#FBBC05" fill="none" />,
-            value: "0",
+            value: `${dashboard.rating}`,
             color: "#FBBC05"
         },
         {
             title: "Completed Projects",
-            context: "8 completed this month",
+            context: `${dashboard.projects.draftProjects.length} draft projects`,
             icon: <VerifiedIcon color="#B86705" />,
-            value: "4",
+            value: `${dashboard.projects.completedProjects.length}`,
             color: "#B86705"
         }
-    ])
+    ], [dashboard])
+
     const {API} = useAuthFetch("organization")
 
     const buttons = new Map<string, string>()
@@ -62,9 +75,8 @@ export const DashboardPage = () => {
 
     // Makes requests with automatic refresh logic when access token expires
     // const authFetch = useAuth()
-
-
     // const projects = rawProjects as ProjectProps[]
+
     const activateNavButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         let selectButtonValue = buttons.get(event.currentTarget.textContent);
         setActive(selectButtonValue ? selectButtonValue as OrganizationNavTypes : "Dashboard")
@@ -75,7 +87,7 @@ export const DashboardPage = () => {
     const fetchOrganizationDashboard = async ()=>{
         API().get("/dashboard")
         .then((response)=>{
-            return setDashboard(response.data as OrganizationDashboardProps)
+            setDashboard(response.data as OrganizationDashboardProps)
         })
         
     }
@@ -94,14 +106,11 @@ export const DashboardPage = () => {
         }
     }
 
-
-
     useEffect(() => {
         (async () => {
-            await fetchOrganizationDashboard()
-            
+            await fetchOrganizationDashboard()  
         })()
-    }, [])
+    }, [dashboardIsMounted])
 
 
 
@@ -110,7 +119,7 @@ export const DashboardPage = () => {
             <DashboardHeader isOrganization={true} />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={dashboard.name} />
-                {active == "Dashboard" && dashboard && <Dashboard projects={[]} metrics={metrics} orgTriggerAction={quickAction} />}
+                {active == "Dashboard" && dashboard && <Dashboard projects={[]} metrics={metrics} orgTriggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)} />}
                 {active == "Project Management" && <ProjectHub projects={[]} isOrganization={true}/>}
                 {active == "Applications" && <ApplicationHub/>}
             </div>

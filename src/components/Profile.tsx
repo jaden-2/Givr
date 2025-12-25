@@ -5,6 +5,8 @@ import Certifications from "./Volunteer/Certifications";
 import { BadgeIcon } from "./icons";
 
 import type {MyCertificationProps} from "../interface/interfaces"
+import { useState } from "react";
+import { EditProfile } from "./Volunteer/editProfile";
 
 const data: MyCertificationProps[] = [
   {
@@ -97,18 +99,23 @@ const sampleBadges = [
   },
 ];
 
-export default function ProfilePage() {
+export const ProfilePage:React.FC<{editing?:boolean}> = ({editing = false})=> {
+
+  const [isEditing, setIsEditing] = useState(editing)
+
   return (
-      <div className="p-6 space-y-6 flex flex-col justify-center items-center">
-              <ProfileAchievements
-      profile={sampleProfile}
-      badges={sampleBadges}
-      onEditProfile={() => console.log("Edit clicked")}
-    />
-    <Certifications
-    data={data}
-      onDownload={() => console.log("download clicked")}
-          />
-        </div>
+    <div className="p-6 space-y-6 flex flex-col justify-center items-center">
+      
+      {isEditing?<EditProfile onClose={()=>{
+        setIsEditing(false)
+      }}/> : <ProfileAchievements
+        profile={sampleProfile}
+        badges={sampleBadges}
+        onEditProfile={() => setIsEditing(true)}
+      />}
+
+    </div>
   );
 }
+
+export default ProfilePage;

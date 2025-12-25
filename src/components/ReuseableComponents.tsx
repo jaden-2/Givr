@@ -1,10 +1,11 @@
 import { useState, type ReactNode} from "react";
-import type { ButtonProps, FeatureCardProps, MetricComponentProps, NavLinkProps, OrganizationComponentProps, ProjectComponentProps } from "../interface/interfaces"
-import { ArrowIcon, CalendarIcon, ClockIcon, GroupIcon, LocationIcon } from "./icons";
+import type { ButtonProps, FeatureCardProps, MetricComponentProps, NavLinkProps, OrganizationComponentProps, ProjectComponentProps, ProjectFormProps } from "../interface/interfaces"
+import { ArrowIcon, CalendarIcon, ClockIcon, DeleteBinIcon, GroupIcon, LocationIcon } from "./icons";
 import { useConfirmAsk } from "./hooks/useConfirm";
 import { useAlert } from "./hooks/useAlert";
 import { useModal } from "./hooks/useModal";
 import useAuthFetch from "./hooks/useAuthFetch";
+import { CreateProject } from "./Organization/createProjectForm";
 
 
 // --- Reusable Components ---
@@ -178,7 +179,7 @@ export const InfoCell:React.FC<{icon:ReactNode, info:string}> = ({icon, info})=>
 )
 
 /**Displays an organization's information */
-export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, description, location, activeProjects, category, status, hasVolunteered=false})=>{
+export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, description, numOfActiveProjects,location, category, status, hasVolunteered=false})=>{
   const {confirmAsk, ConfirmDialog} = useConfirmAsk({})
   const {alertMessage, AlertDialog} = useAlert()
 
@@ -226,7 +227,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
         </p>
         <p>
             <span className="font-semibold text-blue-600">Active Projects: </span>
-            {activeProjects? activeProjects.length: 0}
+            {numOfActiveProjects? numOfActiveProjects: 0}
         </p>
     </div>
 
@@ -243,10 +244,11 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
 }
 
 /**Displays details of a project */
-export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organization, categories, attendanceHours, location, maxApplicants, startDate, status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false})=>{
+export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organization, specialRequirements,applicationDeadline,description,categories, attendanceHours, location,requiredSkills, maxVolunteers, startDate, endDate,status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false, isDraft=false, onEdit, onDelete, onPublish})=>{
 
   const [displayForm, setDisplayForm] = useState(false)
   const {modal, DisplayModal} = useModal()
+  const [isEditing, setIsEditing] = useState(false)
 
   // Makes request to backend to get organization information
   const handleView = ()=>{
@@ -255,53 +257,95 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
   }
   const {state, lga} = location
 
+  const closeEditing = ()=>{
+    setIsEditing(false);
+  }
 
-  return <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 w-full">
-    <div className="flex justify-between items-start mb-4">
-        <div className="flex flex-col">
-            <h3 className="text-xl font-bold text-gray-800">{title?title: "Community Health Screening"}</h3>
-            {!isOrganization && <p className="text-sm font-medium text-gray-500">{organization? organization.name: "Abuja Health Initiative"}</p>}
-        </div>
-       
-        <span className={`${status=="PENDING"? "bg-green-600": "bg-red-600 "} text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider`}>
-            {status? status: "Verified"}
-        </span>
-    </div>
+  // Project data to prepopulate when editing 
+  const projectData:ProjectFormProps = {
+    id: id,
+    title: title,
+    startDate: startDate.split(",")[0].split("/").reverse().join("-"),
+    attendanceHours: attendanceHours,
+    category: categories[0],
+    applicationDeadline: applicationDeadline.split(",")[0].split("/").reverse().join("-"),
+    description: description?description:"",
+    endDate: endDate.split(",")[0].split("/").reverse().join("-"),
+    location: location,
+    maxVolunteers: maxVolunteers,
+    requiredSkills: requiredSkills,
+    specialRequirements: specialRequirements,
+  }
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-6 py-4 border-y border-gray-200">
-        <InfoCell icon={<CalendarIcon/>} info={startDate? startDate: "Jan 20, 2025"}/>
-        <InfoCell icon={<ClockIcon color="#676879" className="w-6 w-6"/>} info={attendanceHours? attendanceHours: "9:00 AM - 3:00 PM"}/>
-        <InfoCell icon={<LocationIcon/>} info={location? `${lga}, ${state}`: "Wuse District, Abuja"}/>
-        <InfoCell icon={<GroupIcon/>} info={`${totalApplicants?totalApplicants: 15 }/${maxApplicants?maxApplicants: 20}` }/>
-    </div>
-
-    <div className="flex flex-col justify-between pt-4 gap-y-2">
-
-        <div className="flex flex-col space-y-3">
-          <div className="flex space-x-2">
-              {categories? categories.map((cat, i)=>(<span key= {i} className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{cat}</span>)): <>
-              <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Healthcare</span>
-              <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Community Outreach</span>
-              </>}
+  return <div className="relative bg-white p-6 rounded-xl shadow-lg border border-gray-200 w-full">
+    {isEditing?<CreateProject onClose={closeEditing} projectData={projectData} isCreating={false} onSuccessfulEdit={onEdit}/>:<>
+      {isDraft&&<button
+      className="absolute top-0 right-0 m-1
+      rounded-full
+      border border-red-500
+      p-1
+      text-red-500
+      cursor-pointer
+      transition-all duration-200
+      hover:bg-red-500
+      hover:text-white
+      hover:scale-110"
+      onClick={()=>{
+        if(onDelete)
+          onDelete(id, title)
+      }}
+      ><DeleteBinIcon/></button>}
+      <div className=" flex justify-between items-start mb-4">
+          <div className="flex flex-col">
+              <h3 className="text-xl font-bold text-gray-800">{title?title: "Community Health Screening"}</h3>
+              {!isOrganization && <p className="text-sm font-medium text-gray-500">{organization? organization.name: "Abuja Health Initiative"}</p>}
           </div>
-            {superVolunteer&& (<p className="text-sm font-normal text-gray-600">Super Volunteer: <span className="font-medium text-gray-800">{superVolunteer}</span></p>)}
-        </div>
         
-        {!isOrganization?
-      <div className="flex gap-x-2 self-end">
-            {manage && <Button variant="outline" onClick={handleView}>View details</Button>}
-            {!applied?(<Button variant="primary" onClick={()=>setDisplayForm(true)}>Apply Now</Button>): <Button variant="disabled">Applied</Button>}
-        </div>:
-        <div className="flex gap-x-2 self-end">
-          {status!="COMPLETED" &&<Button variant="outline" >Edit</Button>}
-            {status!="COMPLETED" &&manage&&<Button variant="outline" > Manage Volunteers</Button>}  
-        </div>  
-      }
-    </div>
+          <span className={`${status=="OPEN"? "bg-green-600": "bg-red-600 "} text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider`}>
+              {status? status: "Verified"}
+          </span>
+      </div>
 
-    {/* Volunteer can views details of an organization after applying, therefore, application form should not be shown */}
-    {(displayForm && (!manage || !applied))&& <ApplicationForm organization={organization?.name} onCancel={()=>setDisplayForm(false)} projectId={id}/>}
-    <DisplayModal/>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-6 py-4 border-y border-gray-200">
+          <InfoCell icon={<CalendarIcon/>} info={startDate? startDate.split(",")[0]: "Jan 20, 2025"}/>
+          <InfoCell icon={<ClockIcon color="#676879" className="w-6 w-6"/>} info={attendanceHours && typeof attendanceHours !="string"? `${attendanceHours.from.toUpperCase()}-${attendanceHours.to.toUpperCase()}`: "9:00 AM - 3:00 PM"}/>
+          <InfoCell icon={<LocationIcon/>} info={location? `${lga}, ${state}`: "Wuse District, Abuja"}/>
+          <InfoCell icon={<GroupIcon/>} info={`${totalApplicants?totalApplicants: 0 }/${maxVolunteers?maxVolunteers: 20}` }/>
+      </div>
+
+      <div className="flex flex-col justify-between pt-4 gap-y-2">
+
+          <div className="flex flex-col space-y-3">
+            <div className="flex space-x-2">
+                {categories? categories.map((cat, i)=>(<span key= {i} className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{cat}</span>)): <>
+                <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Healthcare</span>
+                <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">Community Outreach</span>
+                </>}
+            </div>
+              {superVolunteer&& (<p className="text-sm font-normal text-gray-600">Super Volunteer: <span className="font-medium text-gray-800">{superVolunteer}</span></p>)}
+          </div>
+          
+          {!isOrganization?
+        <div className="flex gap-x-2 self-end">
+              {manage && <Button variant="outline" onClick={handleView}>View details</Button>}
+              {!applied?(<Button variant="primary" onClick={()=>setDisplayForm(true)}>Apply Now</Button>): <Button variant="disabled">Applied</Button>}
+          </div>:
+          <div className="flex gap-x-2 self-end">
+            {status!="COMPLETED" &&<Button variant="outline" onClick={()=>setIsEditing(true)}>Edit</Button>}
+              {status!="COMPLETED" &&manage&&<Button variant="outline" > Manage Volunteers</Button>}  
+              {isDraft && <Button variant="green" onClick={()=>{
+                if(onPublish)
+                  onPublish(id, title)
+
+              }}>Publish</Button>}
+          </div>  
+        }
+      </div>
+
+      {/* Volunteer can views details of an organization after applying, therefore, application form should not be shown */}
+      {(displayForm && (!manage || !applied))&& <ApplicationForm organization={organization?.name} onCancel={()=>setDisplayForm(false)} projectId={id}/>}
+      <DisplayModal/>
+    </>}
 
 </div>
 }

@@ -5,9 +5,11 @@ type Props = {
   onChange: (value: { state: string; lga: string }) => void;
     // error: string | boolean;
   error?: { state?: string; lga?: string };
+  state?:string;
+  lga?:string;
 };
 
-const LocationSelect: React.FC<Props> = ({ onChange, error }) => {
+const LocationSelect: React.FC<Props> = ({ onChange, error, state, lga }) => {
   const [states, setStates] = useState<string[]>([]);
   const [lgas, setLgas] = useState<string[]>([]);
   const [selectedState, setSelectedState] = useState<string>("");
@@ -25,6 +27,9 @@ const LocationSelect: React.FC<Props> = ({ onChange, error }) => {
       }
     };
     fetchStates();
+    if(state)
+      setSelectedState(state)
+
   }, []);
 
   // Fetch LGAs when a state is selected
@@ -45,6 +50,9 @@ const LocationSelect: React.FC<Props> = ({ onChange, error }) => {
       }
     };
     fetchLgas();
+    if(lga)
+      setSelectedLga(lga)
+    
   }, [selectedState]);
 
   // Notify parent when changes occur

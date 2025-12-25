@@ -47,7 +47,7 @@ export const useConfirmAsk = ({isOrg=false})=>{
       </p>
   
       <div className="flex justify-end space-x-3">
-          <Button variant={isOrg?"green": "primary"} onClick={onApply}>
+          <Button variant={isOrg?`${props.trueAnswer.toLocaleLowerCase()=="delete"?"danger":"green"}`: "primary"} onClick={onApply}>
               {props.trueAnswer}
           </Button>
           <Button variant="outline" onClick={onCancel}>

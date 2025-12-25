@@ -10,6 +10,8 @@ export default function useAuthFetch(path:"volunteer"|"organization"){
     let isRefreshing= false;
     let refreshPromise:Promise<number>|null=null;
 
+    const ApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
     const authFetch = async (url:string, options?:RequestInit):Promise<Response> =>{
         let response = await fetch(url, {...options, credentials: "include"});
 
@@ -36,8 +38,8 @@ export default function useAuthFetch(path:"volunteer"|"organization"){
         let requestQueue:PendindRequest[] = []
 
         const instance = axios.create({
-            baseURL: `${import.meta.env.VITE_API_BASE_URL}/${path}`,
-            timeout: 1500,
+            baseURL: `${ApiBaseUrl}/${path}`,
+            timeout: 2500,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -57,9 +59,10 @@ export default function useAuthFetch(path:"volunteer"|"organization"){
 
 
         instance.interceptors.response.use((response)=>response, async (error:AxiosError)=>{
+
             const originalRequest = error.config as AxiosRequestConfig & {_retry?:boolean}
 
-            if(error.response?.status !==401){
+            if(error.response?.status !==403){
                 return Promise.reject(error)
             }
 
@@ -77,8 +80,8 @@ export default function useAuthFetch(path:"volunteer"|"organization"){
             isRefreshing = true;
 
             try{
-                await instance.post("/auth/refresh", null, {
-                    baseURL: "",
+                await instance.get("/auth/refresh", {
+                    baseURL: ApiBaseUrl,
                     withCredentials:true
                 })
 

@@ -8,7 +8,7 @@ export interface NavLinkProps {
 export interface ButtonProps {
   children: React.ReactNode;
   variant: 'primary' | 'secondary' | 'outline'| 'green'|'disabled'|'void'|'danger';
-  onClick?: () => void;
+  onClick?: (E?:React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
 }
 
@@ -74,26 +74,38 @@ export interface ProjectProps{
   id: number;
   title: string;
   organization?:OrganizationProps;
-  status: "PENDING" | "ACTIVE" | "COMPLETED"| "DRAFT";
+  status: "OPEN" | "ONGOING" | "COMPLETED"| "DRAFT";
   startDate: string;
-  attendanceHours: string;
+  endDate:string;
+  attendanceHours: {
+    from:string;
+    to:string;
+  };
   location: location;
   totalApplicants: number;
-  maxApplicants: number;
+  maxVolunteers: number;
   categories: string[];
   superVolunteer?:string;
-  deadline:string;
+  applicationDeadline:string;
   description?:string;
+  specialRequirements:string;
+  requiredSkills:string[];
+  createdAt:string;
+  updatedAt:string;
   }
 
 export interface ProjectFormProps{
+  id?:number;
   title:string;
   description:string;
   category:string;
   maxVolunteers:number;
   startDate:string;
   endDate:string;
-  attendanceHours:string;
+  attendanceHours:{
+    from:string;
+    to:string;
+  };
   applicationDeadline:string;
   location: {
     state:string;
@@ -108,7 +120,11 @@ export interface ProjectComponentProps extends ProjectProps{
   className?:string;
   manage?:boolean;
   applied?:boolean;
+  isDraft?:boolean;
   isOrganization?:boolean;
+  onDelete?:(projectId:number, title:string)=>void;
+  onEdit?:(prj:ProjectProps)=>void;
+  onPublish?:(projectId:number, title:string)=>void;
 }
 
 export interface OrganizationProps{
@@ -174,6 +190,7 @@ export interface DashboardProps{
   className?:string
   triggerAction?:(action:VolunteerQuickActions)=>void
   orgTriggerAction?: (action: OrganizationQuickActions)=>void
+  hasMounted:()=>void;
 }
 
 
@@ -187,7 +204,7 @@ export interface VolunteerProfileProps{
   firstName:string;
   lastName:string;
   email:string;
-  Location:string;
+  location:location;
 
 }
 
@@ -267,8 +284,23 @@ export interface OrganizationSignupProps{
   description:string;
 }
 
+export interface ProjectMap {
+  draftProjects: ProjectProps[];
+  openProjects: ProjectProps[];
+  ongoingProjects: ProjectProps[];
+  completedProjects: ProjectProps[]; 
+}
+
+export const projectStatuses= ["DRAFT", "OPEN", "ONGOING", "COMPLETED"] as const
+
+
 export interface OrganizationDashboardProps {
   name:string;
-
-  projects:ProjectProps[]
+  projects: ProjectMap;
+  rating: number;
+  applicationStats: {
+    numApplied:number;
+    numApproved:number;
+    numRejected:number;
+  }
 }

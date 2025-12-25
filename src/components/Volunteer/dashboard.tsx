@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import type { DashboardProps, OrganizationProps, OrganizationQuickActions, ProjectProps, VolunteerQuickActions } from "../../interface/interfaces";
+import { projectStatuses, type DashboardProps, type OrganizationProps, type OrganizationQuickActions, type ProjectProps, type VolunteerQuickActions } from "../../interface/interfaces";
 import { Banner, MetricCard, OrganizationCard, ProjectCard, RadioButton } from "../ReuseableComponents";
 import { EditProfile } from "./editProfile";
 import useAuthFetch from "../hooks/useAuthFetch";
 // import useAuthFetch from "../hooks/useAuthFetch";
 
-const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerAction})=>{
+const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerAction, hasMounted})=>{
     const [active, setActive] = useState("")
     const {API} = useAuthFetch(orgTriggerAction?"organization":"volunteer")
     const [projects, setProjects] = useState<ProjectProps[]>([])
     const [organizations, setOrganizations] = useState<OrganizationProps[]>([])
 
+    const [selectedProjectCategory, setSelectedProjectCategory]= useState("")
 
 //     useEffect(() => {
 //     if (metrics && metrics.length > 0) {
@@ -29,6 +30,7 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerA
     useEffect(()=>{
         // Fetch projects when component is mounted
         (async ()=> fetchProjects())();
+        hasMounted()
     }, [])
 
     let quickActions = new Map<OrganizationQuickActions|VolunteerQuickActions, string>(); 
@@ -64,6 +66,8 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerA
                 fetchOrganization()
                 break;
             case "Update Profile":
+                if(triggerAction)
+                    triggerAction("Update Profile")
                 break;
 
             // Organization Actions
@@ -93,7 +97,6 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerA
         
     }
 
-    
 
     const fetchProjects = async ()=>{
         await API().get("/projects")
@@ -128,16 +131,37 @@ const Dashboard:React.FC<DashboardProps> = ({metrics, triggerAction, orgTriggerA
             );
         }
 
+    const activateSelectedProjectCategory = (event: React.MouseEvent<HTMLButtonElement>)=>{
+        let selectButtonValue = event.currentTarget.textContent;
+    
+        setSelectedProjectCategory(selectButtonValue != selectedProjectCategory? selectButtonValue : "")
+    }
         // Default (List of projects)
         return (
-            <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
+            <div className={`border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2 `}>
             <p className="text-xl font-bold text-gray-800">{triggerAction? "Recommended for you": "Your Projects"}</p>
             <span className="text-sm font-medium text-gray-500">
                 {triggerAction && "Based on your skills and location"}
             </span>
-            {projects?.map((project, index) => (
+            <div className="flex gap-x-2">
+                {orgTriggerAction&&projectStatuses.filter(p=>p!="DRAFT")
+                    .map((status, index)=><RadioButton 
+                        key={index}
+                        active={selectedProjectCategory == status}
+                        value={status}
+                        onClick={activateSelectedProjectCategory}
+                        >{status}</RadioButton>)}
+            </div>
+
+            {projects?.filter(prj=>{
+                // Display only project categories user wants to see
+                if(selectedProjectCategory != "")
+                    return prj.status == selectedProjectCategory
+                return true
+            }).map((project, index) => (
                 <ProjectCard {...project} key={index} isOrganization={orgTriggerAction&&true}/>
             ))}
+
             </div>
         );
     };
