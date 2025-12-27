@@ -1,10 +1,10 @@
 import { useState } from "react"
-import type { VolunteerProfileProps } from "../../interface/interfaces"
+import type { FormDataProps, VolunteerProfileProps } from "../../interface/interfaces"
 import { Button } from "../ReuseableComponents"
 import LocationSelect from "../form/LocationSelect"
 import { interestCategories } from "../interest"
 
-export const EditProfile:React.FC<{onClose?:()=>void}> = ({onClose})=>{
+export const EditProfile:React.FC<{onClose?:()=>void, profile?:FormDataProps}> = ({onClose})=>{
 
     const [profile, setProfile] = useState<VolunteerProfileProps>({
         firstName:"",
@@ -78,7 +78,7 @@ export const EditProfile:React.FC<{onClose?:()=>void}> = ({onClose})=>{
                     } */}
                 </select>
             </div>
-            <div id="requiredSkills" className="flex gap-x-2 px-4 py-3 border border-white rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800">
+            <div id="skills" className="flex gap-x-2 px-4 py-3 border border-white rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800">
                 {/* {formFields.requiredSkills.map((skill)=><span className="px-2 py-1 text-xs bg-gray-200 rounded-full flex items-center" key={skill}>
                     {skill}
                     <button className="ml-1 text-red-500">×</button>

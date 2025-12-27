@@ -51,7 +51,8 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
   }
   
   return (
-    <div className=" flex flex-col justify-center items-center  min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full text-[#323338]">
+    <div className="min-h-screen ">
+    <div className=" flex flex-col gap-y-2 justify-center items-center min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full max-w-4xl text-[#323338]">
       <AlertDialog/>
       <h1 className="md:text-5xl sm:text-3xl text-xl  text-center">
         Select your skills and interests
@@ -107,6 +108,7 @@ const PickInterests: React.FC<BasicNatigationProps> = ({onToSignIn}) => {
         </a>
       </span> */}
     </div>
+  </div>
   );
 }
 export default PickInterests

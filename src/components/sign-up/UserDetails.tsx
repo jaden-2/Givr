@@ -210,9 +210,10 @@ const UserDetails:React.FC<BasicNatigationProps> = ({onToInterest}) => {
 
      ];
     return (
-      <div className="bg-[#F3FAFA] flex flex-col min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full">
-        <form className="form " onSubmit={handleSubmit} noValidate>
-          <h2 className=" font-bold text-2xl leading-4 text-[#323338]  ">
+    <div className="min-h-screen flex flex-col bg-gray-200 place-items-center">
+      <div className="bg-[#F3FAFA] flex flex-col min-h-screen max-w-4xl p-10 px-3 sm:px-4 lg:px-4 mx-auto w-full">
+        <form className="form mb-4" onSubmit={handleSubmit} noValidate>
+          <h2 className="font-bold text-2xl leading-4 text-[#323338] mb-3">
             Input your details
           </h2>
           {inputs.map((input) => (
@@ -255,6 +256,7 @@ const UserDetails:React.FC<BasicNatigationProps> = ({onToInterest}) => {
           </Button>
         </form>
       </div>
+    </div>
     );
 };
 export default UserDetails;

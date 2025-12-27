@@ -5,6 +5,7 @@ import backgroundImage from "../assets/sign-in-background.svg"
 import { GoogleIcon, LoadingEffect } from "./icons";
 import { Link } from "react-router-dom";
 import useAuthFetch from "./hooks/useAuthFetch";
+import { useVerifyAuth } from "./Auth/AuthContext";
 
 const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toForgotPassword, isOrganization}) => {
     const [email, setEmail] = useState('');
@@ -18,15 +19,10 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
         setError('');
         setIsLoading(true);
 
-        try{
-            const success = await onSignInAttempt(email, password)
-
-            if(!success)
-                setError("Invalid email or password")
-        }finally{
-            setIsLoading(false)
-        }
-        
+        const success = await onSignInAttempt(email, password)
+        if(!success )
+            setError("Invalid email or password")
+        setIsLoading(false)   
         
     };
 
@@ -132,17 +128,24 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
 export const SignInComp: React.FC<BasicNatigationProps> = function ({ toSignUp, toForgotPassword, onToDashboard, isOrganization=false }) {
 
     const {API} = useAuthFetch(isOrganization?"organization": "volunteer")
+    const verifyAuth = useVerifyAuth()
 
     const handleSignIn = async (email: string, password: string) => {
 
         try{
-            await API().post(`/auth/login`, {email, password}, {
+            let res = await API().post(`/auth/login`, {email, password}, {
                 withCredentials: true
             });
             
+            if(res.status != 200)
+                return false
+
             if(onToDashboard)
                 onToDashboard()
 
+            // Allow route guard render dashboard
+            verifyAuth?.signin()
+            
             return true
         }catch(err){
             return false;

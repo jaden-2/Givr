@@ -5,14 +5,15 @@ import { CreateProject } from "../Organization/createProjectForm"
 import useAuthFetch from "../hooks/useAuthFetch"
 import { useAlert } from "../hooks/useAlert"
 import { useConfirmAsk } from "../hooks/useConfirm"
+import  { PageLoader } from "../icons"
 
-export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boolean}>= ({ isOrganization=false})=>{
+export const ProjectHub:React.FC<{ isOrganization?:boolean}>= ({ isOrganization=false})=>{
     const[itemsCategories, setItemCategories] = useState<string[]>([])
     const [activeCategory, setActiveCategory] = useState<string>("All Categories")
     const [newProject, setNewProject] = useState<boolean>(false);
     const {alertMessage, AlertDialog} = useAlert()
     const {confirmAsk, ConfirmDialog} = useConfirmAsk({isOrg:true})
-
+    const [change, setChange] = useState(false)
     // Projects are for volunteers
     const [projects, setProjects] = useState<ProjectProps[]>([]);
 
@@ -42,22 +43,28 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
     }
 
     const fetchProjects = async ()=>{
-        API().get("/projects")
-        .then((value)=>{
-            setProjects(value.data as ProjectProps[])
-        })
+        try{
+            setIsloading(true)
+            let res = await API().get("/projects")
+            setProjects(res.data as ProjectProps[])
+        }finally{
+            setIsloading(false)
+        }
     }
 
     const loadDraftProjects = async (): Promise<ProjectProps[]> =>{
-            await API().get("/dashboard")
-                .then((value)=>{
-                    const response = value.data as OrganizationDashboardProps
-                    setOrganizationDraftProjects(response.projects.draftProjects)
-                    return response.projects.draftProjects
-                }
-            )
-            return []     
+        
+        try{
+            setIsloading(true)
+            let response = await API().get("/dashboard")
+             const data = response.data as OrganizationDashboardProps
+            setOrganizationDraftProjects(data.projects.draftProjects)
+            return data.projects.draftProjects
+        }finally{
+            setIsloading(false)
         }
+          
+    }
 
     const onSuccessfulProjectUpdate = (updatedProject:ProjectProps)=>{
         setOrganizationDraftProjects(prev=> prev.map(p=>p.id == updatedProject.id? updatedProject: p))
@@ -74,6 +81,7 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
             API().patch(`/projects/${projectId}/publish`)
             .then(()=>{
                 setProjects(projects.filter(p=>p.id!=projectId))
+                setChange(!change)
             }, ()=>alertMessage(`Failed to publish ${title} project, please try again`))
         }
 
@@ -108,7 +116,7 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
             loadDraftProjects()
         }
         setIsloading(false)
-    }, [])
+    }, [change])
 
     const handleSave = (projects: ProjectProps[])=>{
         setOrganizationDraftProjects(projects)
@@ -120,7 +128,7 @@ export const ProjectHub:React.FC<{projects:ProjectProps[], isOrganization?:boole
     return <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
         {<AlertDialog/>}
         {<ConfirmDialog/>}
-       {isLoading? "Loading...":<>
+       {isLoading? <PageLoader/>:<>
         {/**Volunteer View */}
         {!isOrganization&&
              <>

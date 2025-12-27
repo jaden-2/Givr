@@ -240,6 +240,22 @@ export const LoadingEffect:React.FC<{message:string}> = ({message})=>(
   </div>
 )
 
+export const PageLoader: React.FC<{ message?: string }> = ({ message }) => (
+  <div className="fixed inset-0 flex flex-col items-center justify-center gap-4">
+    <div className="relative w-16 h-16">
+      <div className="absolute inset-0 rounded-full border-4 border-blue-500/30"></div>
+      <div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
+    </div>
+
+    {message && (
+      <p className="text-sm text-gray-600 animate-pulse">
+        {message}
+      </p>
+    )}
+  </div>
+);
+
+
 export const EyeIcon:React.FC<{className?:string, color?:string}> = ({className="w-6 h-6", color="white"})=>(
   <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.00033 6C8.53076 6 9.03947 6.21071 9.41454 6.58579C9.78961 6.96086 10.0003 7.46957 10.0003 8C10.0003 8.53043 9.78961 9.03914 9.41454 9.41421C9.03947 9.78929 8.53076 10 8.00033 10C7.46989 10 6.96118 9.78929 6.58611 9.41421C6.21104 9.03914 6.00033 8.53043 6.00033 8C6.00033 7.46957 6.21104 6.96086 6.58611 6.58579C6.96118 6.21071 7.46989 6 8.00033 6ZM8.00033 3C11.3337 3 14.1803 5.07333 15.3337 8C14.1803 10.9267 11.3337 13 8.00033 13C4.66699 13 1.82033 10.9267 0.666992 8C1.82033 5.07333 4.66699 3 8.00033 3ZM2.12033 8C3.22033 10.24 5.49366 11.6667 8.00033 11.6667C10.507 11.6667 12.7803 10.24 13.8803 8C12.7803 5.76 10.507 4.33333 8.00033 4.33333C5.49366 4.33333 3.22033 5.76 2.12033 8Z" fill={color}/>

@@ -147,28 +147,28 @@ export interface MyCertificationProps {
   userName?: string;
   role?: string;
 }
-export interface MyVolunteeringProps extends OrganizationProps {
+export interface MyVolunteeringProps {
   id?: string;
   organization?: OrganizationProps;
-  title?: string;
-  startDate?: string;
-  userApplied?: boolean;
-  progressStatus?: "PENDING" | "COMPLETED";
+  project?:ProjectProps;
+  status?: "IN_PROGRESS" | "COMPLETED";
   rating?:string;
 }
 
 
 export interface ProfileProps {
-  id?: number;
-  name?: string;
-  avatar?: string;
-  location?: string;
+  id?: string;
+  firstname?: string;
+  middleName?:string;
+  lastname?:string;
+  profileUrl?: string;
+  location?: location;
   rating?: string | number | undefined;
   skills?: string[];
   interests?: string[];
-  phoneVerified?: boolean;
-  emailVerified?: boolean;
-  role?: string;
+  phoneIsVerified?: boolean;
+  emailIsVerified?: boolean;
+  role?: "VOLUNTEER"|"ORGANIZATION";
 };
 
 export interface BadgeProps {
@@ -186,7 +186,7 @@ export interface OrganizationComponentProps extends OrganizationProps{
 
 export interface DashboardProps{
   metrics?: MetricProps[];
-  projects: ProjectProps[];
+  projects?: ProjectProps[];
   className?:string
   triggerAction?:(action:VolunteerQuickActions)=>void
   orgTriggerAction?: (action: OrganizationQuickActions)=>void
@@ -205,7 +205,6 @@ export interface VolunteerProfileProps{
   lastName:string;
   email:string;
   location:location;
-
 }
 
 export interface FormDataProps{
@@ -240,9 +239,14 @@ export interface VolunteerDashboardProps{
 interface skillProps{
   name:string;
 }
+
 export interface VolunteerProps{
+  volunteerId:string;
   firstName?:string;
+  middleName:string;
   lastname:string;
+  phoneNumber:string;
+  email:string;
   skills:skillProps[];
 }
 

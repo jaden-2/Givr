@@ -1,57 +1,54 @@
 import type { MyVolunteeringProps } from "../interface/interfaces";
 import { MapMarkerIcon, CalendarIcon } from "./icons";
 import { Link } from "react-router-dom";
+import { Button } from "./ReuseableComponents";
 
 
 
 interface ProjectCardProps {
-  project: MyVolunteeringProps;
+  volunteered: MyVolunteeringProps;
   onCancelClick: (project: MyVolunteeringProps) => void;
   onViewDetailsClick: (project: MyVolunteeringProps) => void;
   href?: string;
 }
 
-export default function ProjectCard({
-  project,
+export default function VolunteeringProjectCard({
+  volunteered,
   onCancelClick,
   onViewDetailsClick,
 }: ProjectCardProps) {
   return (
-    <div className="border border-ui rounded-2xl  p-5">
-      <h2 className=" text-[#676879] text-base font-semibold mb-4 ">
-        {project.progressStatus === "PENDING"
-          ? "Ongoing Commitments"
-          : "Recent Projects"}
-      </h2>
+    <div>
       <div className=" border border-ui rounded-2xl p-5  ">
         <h2 className="text-lg font-semibold text-[#323338]">
-          {project.title}
+          {volunteered.project?.title}
         </h2>
-        <p className="text-[#676879] text-sm">{project.organization?.name}</p>
+        <p className="text-[#676879] text-sm">{volunteered.organization?.name}</p>
         <div className="flex items-center gap-4 mt-2">
           <p className="text-gray-500 text-xs flex items-center  gap-1 ">
             <MapMarkerIcon />
-            {project.location &&`${project.location.lga}, ${project.location.state}`}
+            {volunteered.project?.location &&`${volunteered.project.location.lga}, ${volunteered.project.location.state}`}
           </p>
           <p className="text-gray-400 text-xs  flex items-center gap-1 ">
-            <CalendarIcon /> {project.startDate}
+            <CalendarIcon /> {volunteered.project?.startDate}
           </p>
         </div>
 
-        {project.progressStatus === "PENDING" ? (
+        {volunteered.status === "IN_PROGRESS" ? (
           <div className="flex gap-4 mt-3">
-            <button
-              onClick={() => onViewDetailsClick(project)}
-              className="px-4 py-2 border rounded-2xl border-ui text-[#323338] "
+            <Button
+            variant="primary"
+              onClick={() => onViewDetailsClick(volunteered)}
             >
               View Details
-            </button>
-            <button
-              onClick={() => onCancelClick(project)}
-              className="px-4 py-2  text-[#D83A52] "
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => onCancelClick(volunteered)}
+              className="text-[#D83A52] "
             >
               Cancel
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="flex justify-between items-center mt-3">
@@ -60,9 +57,7 @@ export default function ProjectCard({
               {project.}
             </p> */}
             <Link to="/profile">
-              <button className="px-4 py-2 bg-(--primary-color) text-white rounded-2xl ">
-                Certificate
-              </button>
+                <Button variant="primary">Certificate</Button>
             </Link>
           </div>
         )}

@@ -117,12 +117,12 @@ export const DashboardPage = () => {
     return <>
         <main className="">
             <DashboardHeader isOrganization={true} />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
+            {<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={dashboard.name} />
                 {active == "Dashboard" && dashboard && <Dashboard projects={[]} metrics={metrics} orgTriggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)} />}
-                {active == "Project Management" && <ProjectHub projects={[]} isOrganization={true}/>}
+                {active == "Project Management" && <ProjectHub isOrganization={true}/>}
                 {active == "Applications" && <ApplicationHub/>}
-            </div>
+            </div>}
         </main>
     </>
 }

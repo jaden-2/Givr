@@ -35,7 +35,7 @@ interface FormFields {
   organizationName: string;
   organizationType: organizationType;
   cacRegNumber: string;
-  driversLicenseNumber: string;
+  driversLicenseNumber: string
   description: string;
   website: string;
 }
@@ -89,8 +89,8 @@ export const OrganizationSignup: React.FC<BasicNatigationProps> = ({ onToSignIn 
     setErrors((prev) => ({ ...prev, [name as keyof FormFields]: "" }));
   };
 
-  // const validateForm = (): Partial<FormFields> => {
-  //   const newErrors: Partial<FormFields> = {};
+  // // const validateForm = (): Partial<FormFields> => {
+  // //   const newErrors: Partial<FormFields> = {};
 
 
   //   //   // Email validation
@@ -127,7 +127,7 @@ export const OrganizationSignup: React.FC<BasicNatigationProps> = ({ onToSignIn 
   //   // if (!formData.lga) newErrors.lga = "LGA is required";
 
   //   return newErrors;
-  // };
+  // // };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -238,7 +238,8 @@ export const OrganizationSignup: React.FC<BasicNatigationProps> = ({ onToSignIn 
 
 
   return (
-    <div className="bg-[#F3FAFA] flex flex-col min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full">
+    <div className="bg-gray-300 flex place-items-center w-full p-8">
+    <div className="bg-[#F3FAFA] rounded-xl flex flex-col min-h-screen pt-5 px-3 sm:px-4 lg:px-4 mx-auto w-full max-w-5xl">
       <AlertDialog />
       <form className="form " onSubmit={handleSubmit} noValidate>
         <h2 className=" font-bold text-2xl text-center leading-4 text-[#323338]  ">
@@ -255,7 +256,7 @@ export const OrganizationSignup: React.FC<BasicNatigationProps> = ({ onToSignIn 
                   placeholder={input.placeholder}
                   name={input.name}
                   value={
-                    input.name ? formData[input.name as keyof FormFields] : ""
+                    input.name? formData[input.name as keyof FormFields] : ""
                   }
                   onChange={handleChange}
 
@@ -325,16 +326,23 @@ export const OrganizationSignup: React.FC<BasicNatigationProps> = ({ onToSignIn 
             >Description</label>
             <textarea className="w-full border-ui focus:ring-blue-500 rounded-md pl-3 py-2 outline-none "
               name={"description" as keyof FormFields} value={formData.description} onChange={handleChange} rows={4} placeholder="Organization description"></textarea>
-            <Button
+            <div className="flex gap-x-4">
+              <Button variant="outline"
+              className="text-sm px-4 py-2 shadow-none mt-4 w-full"
+              onClick={()=>setStep(0)}
+              >Back</Button>
+              <Button
               variant="green"
-              className="text-sm px-4 py-2 shadow-none w-full mt-4"
+              className="text-sm px-4 py-2 shadow-none mt-4 w-full"
             >
               {isLoading ? <LoadingEffect message="Creating Account..." /> : "Create Account"}
             </Button>
+            </div>
           </>
         }
 
       </form>
+    </div>
     </div>
   );
 };

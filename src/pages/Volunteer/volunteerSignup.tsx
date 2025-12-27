@@ -9,7 +9,7 @@ export const VolunteerSignup = ()=>{
     return <SignupProvider>
         <Routes>
             <Route index element={<UserDetails onToInterest={() => navigate("interests", {relative: "path"})} />} />
-            <Route path="interests" element={<PickInterests onToSignIn={() => navigate("/signin")} />} />
+            <Route path="interests" element={<PickInterests onToSignIn={() => navigate("/signin/volunteer")} />} />
         </Routes>
         </SignupProvider>
     

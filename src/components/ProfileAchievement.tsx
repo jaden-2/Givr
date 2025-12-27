@@ -23,18 +23,21 @@ export default function ProfileAchievements({
           <div className="flex items-center gap-6">
             {/* Avatar */}
             <img
-              src={profile.avatar}
-              alt={profile.name}
+              src={profile.profileUrl}
+              alt={profile.firstname}
               className="w-28 h-28 rounded-full object-cover border"
             />
 
             {/* Info */}
 
             <div>
-              <h3 className="text-lg font-semibold">{profile.name}</h3>
+              
+              <h3 className="text-lg font-semibold">{profile.lastname}</h3>
+              <h3 className="text-lg font-semibold">{profile.firstname}</h3>
+              <h3 className="text-lg font-semibold">{profile.middleName? profile.middleName:""}</h3>
               <span className="text-[#676879] text-sm">{profile.role}</span>
               <span className="text-[#676879] text-sm ml-2">
-                {profile.location}
+                {`${profile.location?.state}, ${profile.location?.lga}`}
               </span>
               {/* Rating */}
               <p className="text-yellow-500 text-sm">
@@ -46,7 +49,7 @@ export default function ProfileAchievements({
 
           {/* Skills */}
           <div>
-            <p className="text-base text-[#323338] font-medium">Skills</p>
+            <p className="text-base text-[#323338] font-medium">Interests</p>
             <div className="flex flex-wrap gap-2 mt-1">
               {profile.skills?.map((skill, i) => (
                 <span
@@ -60,7 +63,7 @@ export default function ProfileAchievements({
           </div>
 
           {/* Interests */}
-          <div>
+          {/* <div>
             <p className="text-base text-[#323338] font-medium">Interests</p>
             <div className="flex flex-wrap gap-2 mt-1  ">
               {profile.interests?.map((tag, i) => (
@@ -72,28 +75,28 @@ export default function ProfileAchievements({
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Verification */}
           <div className="flex items-center gap-4 mt-3">
             <p
-              className={`text-sm px-3 py-1 rounded-full ${
-                profile.phoneVerified
+              className={`text-md text-white px-3 py-1 rounded-full ${
+                profile.phoneIsVerified
                   ? "bg-green-100 text-green-700"
-                  : "bg-gray-200"
+                  : "bg-red-700"
               }`}
             >
-              Phone {profile.phoneVerified ? "Verified" : "Not Verified"}
+              Phone {profile.phoneIsVerified ? "Verified" : "Not Verified"}
             </p>
 
             <p
-              className={`text-sm px-3 py-1 rounded-full ${
-                profile.emailVerified
+              className={`text-md text-white px-3 py-1 rounded-full ${
+                profile.emailIsVerified
                   ? "bg-green-100 text-green-700"
-                  : "bg-gray-200"
+                  : "bg-red-700"
               }`}
             >
-              Email {profile.emailVerified ? "Verified" : "Not Verified"}
+              Email {profile.emailIsVerified ? "Verified" : "Not Verified"}
             </p>
           </div>
 

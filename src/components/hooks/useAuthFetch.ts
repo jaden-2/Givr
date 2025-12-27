@@ -1,4 +1,5 @@
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from "axios";
+import { useVerifyAuth } from "../Auth/AuthContext";
 
 interface PendindRequest {
     resolve:(response:any)=>void;
@@ -9,6 +10,7 @@ export default function useAuthFetch(path:"volunteer"|"organization"){
 
     let isRefreshing= false;
     let refreshPromise:Promise<number>|null=null;
+    const verifyAuth = useVerifyAuth()
 
     const ApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -63,6 +65,11 @@ export default function useAuthFetch(path:"volunteer"|"organization"){
             const originalRequest = error.config as AxiosRequestConfig & {_retry?:boolean}
 
             if(error.response?.status !==403){
+                return Promise.reject(error)
+            }
+
+            if(error.config?.url?.includes("/auth/refresh")){
+                verifyAuth?.logout()
                 return Promise.reject(error)
             }
 

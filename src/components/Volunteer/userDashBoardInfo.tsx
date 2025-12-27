@@ -11,7 +11,7 @@ const UserDashboardInformation:React.FC<{username?:string; buttons:Array<string>
     <div className="p-4 flex gap-2"> 
         <div className="flex flex-col mb-2">
             <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
-                {isOrganization&& "Welcome back,"} <span className="text-gray-900">{username}!</span>
+                {isOrganization&& "Welcome back,"} <span className="text-gray-900">Welcome, {username}!</span>
             </h1>
             <p className="text-lg text-gray-600">{!isOrganization? "Ready to make some impact today?": "Manage your volunteering projects and community impact"}</p>
         </div>

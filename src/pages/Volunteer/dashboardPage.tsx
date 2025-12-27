@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import UserDashboardInformation from "../../components/Volunteer/userDashBoardInfo";
 import Dashboard from "../../components/Volunteer/dashboard";
 
-import type { MetricProps, NavTypes, ProjectProps, VolunteerQuickActions, VolunteerDashboardProps } from "../../interface/interfaces";
+import type { MetricProps, NavTypes, VolunteerQuickActions, VolunteerDashboardProps } from "../../interface/interfaces";
 import { ProjectHub } from "../../components/Volunteer/projectHub";
 import { DashboardHeader } from "../../components/dashboardHeader";
 import useAuthFetch from "../../components/hooks/useAuthFetch";
@@ -28,8 +28,7 @@ export const DashboardPage = () => {
 
         ]
     });
-    const {} = useAuthFetch("volunteer")
-    const [projects, setProjects] = useState<ProjectProps[]>([])
+
     const [metrics, setMetrics] = useState<MetricProps[]>([
         {
             title: "Projects Applied",
@@ -81,30 +80,6 @@ export const DashboardPage = () => {
 
 
 
-    const fetchProjects = async (): Promise<ProjectProps[]> => {
-       
-        try {
-
-            const response = await fetch("/data/projects.json", {
-                headers: {
-                    "Content-Type": "application/json",
-                    "cache-control": "no-cache"
-                }
-            })
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch projects")
-            }
-
-            const data = await response.json()
-            return data as ProjectProps[]
-        } catch (error) {
-            console.error("Error loading data")
-            return []
-        }
-    }
-
-
     const quickAction = (action: VolunteerQuickActions) => {
         switch (action) {
             case "Find Opportunities":
@@ -129,7 +104,7 @@ export const DashboardPage = () => {
 
 
     useEffect(() => {
-        (async () => {
+        (() => {
             loadUserProfile()
            
         })()
@@ -174,20 +149,13 @@ export const DashboardPage = () => {
     }, [volunteerDashboard])
 
 
-    useEffect(() => {
-        (async () => {
-            const data = await fetchProjects()
-            setProjects(data)
-        })()
-    }, [])
-
     return <>
         <main className="">
             <DashboardHeader />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={volunteerDashboard?.firstname} />
-                {active == "Dashboard" && projects && <Dashboard projects={projects} metrics={metrics} triggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)}/>}
-                {active == "Find Opportunities" && <ProjectHub projects={projects}/>}
+                {active == "Dashboard" && <Dashboard metrics={metrics} triggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)}/>}
+                {active == "Find Opportunities" && <ProjectHub />}
                 {active == "My Volunteering" && <MyVolunteering/>}
                 {active == "Profile & Achievements" && <ProfilePage/>}
             </div>

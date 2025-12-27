@@ -1,28 +1,31 @@
 import { useState, type ReactNode } from "react"
 import useScrollLock from "./scrollLock"
 
+const Modal:React.FC<{children:ReactNode; onClose:()=>void}> = ({children, onClose})=>{
+    useScrollLock(true)
+    
+    return <div 
+        className="fixed inset-0 backdrop-blur-sm bg-black/40 flex items-center justify-center z-50"
+        
+        onClick={()=>{
+            onClose()
+        }}
+        >
+            <div
+                className="bg-white rounded-lg p-4">
+                {children}
+            </div>
+        </div>
+    }
 
 export function useModal(){
     const[child, setChild] = useState<ReactNode>(null)
-    //const resolverRef = useRef<{resolve:()=>void}>(null)
 
     const modal = (child:ReactNode)=>{
         setChild(child)
     }
 
-    const DisplayModal = ()=> child? <Modal>{child}</Modal>:null
-
-    const Modal:React.FC<{children:ReactNode}> = ({children})=>{
-    useScrollLock(true)
-    return <div 
-        className="fixed inset-0 bg-[#24242569] bg-opacity-100 items-center justify-center z-50  flex p-4"
-        onClick={()=>setChild(null)} // Close on backdrop click
-        >
-            <div onClick={(e)=>e.stopPropagation()}>
-                {children}
-            </div>
-        </div>
-    }
+    const DisplayModal = ()=> child? <Modal onClose={()=>setChild(null)}>{child}</Modal>:null
 
     return {modal, DisplayModal}
 }

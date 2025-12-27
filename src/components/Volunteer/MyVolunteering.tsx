@@ -1,134 +1,103 @@
 import { useState, useEffect } from "react";
-import ProjectCard from "../ProjectCard";
-import ConfirmDialog from "../ConfirmDialog";
 import ProjectDetailsModal from "../ProjectModalDetails";
 import type { MyVolunteeringProps } from "../../interface/interfaces";
+import VolunteeringProjectCard from "../VolunteeringProjectCard";
+import { useConfirmAsk } from "../hooks/useConfirm";
+import { useModal } from "../hooks/useModal";
+import useAuthFetch from "../hooks/useAuthFetch";
+import {  PageLoader } from "../icons";
 
 export default function MyVolunteering() {
   const [projects, setProjects] = useState<MyVolunteeringProps[]>([]);
-  const [showDialog, setShowDialog] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [selectedJob, setSelectedJob] = useState<MyVolunteeringProps | null>(
-    null
-  );
+  const [isLoading, setIsLoading] = useState(false)
+  const {modal, DisplayModal} = useModal()
+  const {API} = useAuthFetch("volunteer")
+  const {confirmAsk, ConfirmDialog} = useConfirmAsk({isOrg: false})
 
   // Simulate backend fetch
   useEffect(() => {
     async function fetchProjects() {
-      const data: MyVolunteeringProps[] = [
-        {
-          id: "1",
-          title: "Frontend Developer",
-          organization: {
-            name: "TechCorp Ltd",
-            status: "VERIFIED",
-            address: "123 Business Rd, Lagos, Nigeria",
-            numOfActiveProjects: 5,
-            category: ["Technology", "Education"],
-          },
-          location: {
-            lga: "Ikoyi",
-            state: "Lagos",
-          },
-          startDate: "2025-11-10",
-          progressStatus: "PENDING",
-          description:
-            "Responsible for building and maintaining user interfaces using React. Collaborate with backend developers and designers to ensure seamless functionality.",
-          userApplied: true,
-          rating: "⭐⭐⭐⭐",
-        },
-        {
-          id: "2",
-          title: "Graphic Designer",
-          organization: {
-            name: "Designify Studios",
-            status: "VERIFIED",
-            address: "123 Business Rd, Lagos, Nigeria",
-            numOfActiveProjects: 5,
-            category: ["Technology", "Education"],
-          },
-          location: {
-            lga: "Ikoyi",
-            state: "Lagos",
-          },
-          startDate: "2025-11-10",
-          progressStatus: "COMPLETED",
-          description:
-            "Design marketing materials, social media graphics, and branding assets for client projects.",
-          userApplied: true,
-rating: "⭐⭐⭐⭐"
-        },
-        {
-    id: "2",
-          title: "UI/UX Designer",
-          organization: {
-            name: "SoftBridge",
-            status: "VERIFIED",
-            address: "123 Business Rd, Lagos, Nigeria",
-            numOfActiveProjects: 5,
-            category: ["Technology", "Education"],
-          },
-          location: {
-            lga: "Ikoyi",
-            state: "Lagos",
-          },
-          startDate: "2025-11-10",
-          progressStatus: "PENDING",
-          description:
-            "Create wireframes, prototypes, and collaborate with developers to bring designs to life.",
-          userApplied: true,
-rating: "⭐⭐⭐⭐"
-        },
-      ];
+      try{
+        setIsLoading(true)
+        let response = await API().get("/volunteering")
 
-    setProjects(data);
-
+        let data = response.data as MyVolunteeringProps[]
+        setProjects(data)
+      }finally{
+        setIsLoading(false)
+      }
     }
 
     fetchProjects();
   }, []);
 
-  const handleCancelClick = (project: MyVolunteeringProps) => {
-    setSelectedJob(project);
-    setShowDialog(true);
-  };
 
-  const confirmCancel = () => {
-    if (!selectedJob) return;
-    setProjects((prev) => prev.filter((j) => j.id !== selectedJob.id));
-    setShowDialog(false);
-    setSelectedJob(null);
+  const handleCancel = async (volunteered:MyVolunteeringProps) => {
+    let confirmation = await confirmAsk({
+      question: `Are you sure you want to stop participating in ${volunteered.project?.title} project?`, 
+      trueAnswer: "I'm sure",
+      falseAnswer: "Cancel"
+    })
+
+    if(confirmation){
+
+    }
   };
 
   const handleViewDetailsClick = (project: MyVolunteeringProps) => {
-    setSelectedJob(project);
-    // setShowDetails(true);
+    modal(<ProjectDetailsModal project={project}/>)
   };
 
   return (
-    <div className="min-h-screen bg-white p-6">
-      <div className="grid md:grid-cols-2  gap-6">
-        {projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            onCancelClick={handleCancelClick}
-            onViewDetailsClick={handleViewDetailsClick}
-          />
-        ))}
+    <>
+      <ConfirmDialog/>
+      <DisplayModal/>
+      <div className="min-h-screen flex flex-col gap-y-3">
+      {isLoading?<PageLoader message="Loading Projects"/>:
+      
+      <>
+      <div className="border border-ui rounded-2xl p-5">
+        <h2 className=" text-[#676879] text-base font-semibold mb-4 ">
+          Ongoing Commitments
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-2">
+          {projects.filter(p=>p.status=="IN_PROGRESS").map((project) => (
+            <VolunteeringProjectCard
+              key={project.id}
+              volunteered={project}
+              onCancelClick={handleCancel}
+              onViewDetailsClick={handleViewDetailsClick}
+            />
+          ))}
+        </div> 
       </div>
 
+      <div className="border border-ui rounded-2xl  p-5">
+        <h2 className=" text-[#676879] text-base font-semibold mb-4 ">
+          Completed Commitments
+        </h2>
+        <div className="grid md:grid-cols-2 gap-2">
+          {projects.filter(p=>p.status=="COMPLETED").map((project) => (
+            <VolunteeringProjectCard
+              key={project.id}
+              volunteered={project}
+              onCancelClick={handleCancel}
+              onViewDetailsClick={handleViewDetailsClick}
+            />
+          ))}
+        </div> 
+      </div>
+      </>}
+
       {/* Modals */}
-      <ConfirmDialog
-        visible={showDialog}
-        onConfirm={confirmCancel}
-        onClose={() => setShowDialog(false)}
-      />
-      <ProjectDetailsModal
+      
+      {/* {showDetails&&<ProjectDetailsModal
         visible={showDetails}
         project={selectedJob}
         onClose={() => setShowDetails(false)}
-      />
+      />} */}
     </div>
+    </>
   );
 }
