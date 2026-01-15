@@ -222,7 +222,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
 
     <div className="text-sm text-gray-700 space-y-2 mb-4">
         <p>
-            <span className="font-semibold text-blue-600">Adress: </span> 
+            <span className="font-semibold text-blue-600">Address: </span> 
             {`${location?.lga}, ${location?.state}`}
         </p>
         <p>

@@ -157,7 +157,7 @@ export default function OrganizationProfile({profile, onEditProfile, editOrgInfo
           Organization Profile
         </h3>
 
-        {!profile.organization.profileCompleted && (
+        {profile.organization?.status == "UNVERIFIED" && (
           <button
             onClick={() => {
               onEditProfile()
@@ -165,7 +165,7 @@ export default function OrganizationProfile({profile, onEditProfile, editOrgInfo
             }}
             className="text-xs font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full hover:bg-green-100"
           >
-            {profile.organization.profileCompleted? "Complete profile":"Edit Organization" }
+            {!profile.organization.profileCompleted? "Complete profile":"Edit Organization" }
           </button>
         )}
       </div>
@@ -259,7 +259,8 @@ export default function OrganizationProfile({profile, onEditProfile, editOrgInfo
           </div>
 
           {/* Password */}
-          <div className="flex flex-col gap-y-2">
+          {
+            profile.organizationContact.emailEditable && <div className="flex flex-col gap-y-2">
             <div className="flex items-center justify-between p-4 rounded-xl border border-ui">
             <div>
               <p className="text-sm font-medium text-[#323338]">
@@ -276,9 +277,10 @@ export default function OrganizationProfile({profile, onEditProfile, editOrgInfo
             >
               Change Password
             </button>
+            </div>
+            <ChangePasswordModal email={profile.organizationContact.email} isOpen={isOpen} onClose={()=>{setIsOpen(false)}} onSubmit={handlePasswordChange} />
           </div>
-          <ChangePasswordModal email={profile.organizationContact.email} isOpen={isOpen} onClose={()=>{setIsOpen(false)}} onSubmit={handlePasswordChange} />
-          </div>
+          }
 
           {/* Optional: 2FA placeholder */}
           <div className="flex items-center justify-between p-4 rounded-xl border border-ui opacity-60">

@@ -25,6 +25,7 @@ export const OrganizationProfilePage:React.FC<{editing?:boolean}> = ({editing = 
       contactMiddleName:"",
       phoneNumber:"", 
       email:"",
+      emailEditable:true,
       emailVerified:false
     }
   })
@@ -47,12 +48,11 @@ export const OrganizationProfilePage:React.FC<{editing?:boolean}> = ({editing = 
   }, [])
 
   const handleUpdate = async (data: OrganizationProps)=>{
-    try{
+  
       let response = await API().patch("/profile", data)
       setProfile(response.data as OrganizationProfileProps)
-    }catch{
-      return Promise.reject()
-    }
+   
+      return response;
   }
 
   const handleContactUpdate =  async (data: OrgContantProfileProps)=>{

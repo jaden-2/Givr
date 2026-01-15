@@ -6,10 +6,12 @@ import { PageLoader } from "../icons";
 import LocationSelect from "../form/LocationSelect";
 import { CloudinaryUpload } from "../CloudinaryWidget";
 import { useAlert } from "../hooks/useAlert";
+import type { AxiosResponse } from "axios";
+import { useConfirmAsk } from "../hooks/useConfirm";
 
 type EditOrgProfileModalProps = {
   org: OrganizationProps;
-  onSave: (data: OrganizationProps) => Promise<void>;
+  onSave: (data: OrganizationProps) => Promise<AxiosResponse>;
   onClose:()=>void;
 };
 
@@ -21,19 +23,33 @@ export const EditOrgProfileModal = ({org, onSave,onClose}: EditOrgProfileModalPr
   const [errors, setErrors] = useState<Partial<OrganizationProps>>({})
   const [locationError, setLocationerror] = useState("");
   const [orgType, setOrgType] = useState("")
+  const {confirmAsk, ConfirmDialog} = useConfirmAsk({isOrg:true})
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if(!validateForm())
+      return
+
+    let userResponse = await confirmAsk({
+      question: "Are you sure you want to update organization profile?",
+      trueAnswer: "Update",
+      falseAnswer: "Cancel"
+    })
+
+    if(!userResponse)
       return
 
     try{
         setLoading(true);
         await onSave(form);
         onClose()
-    }catch{
-        alertMessage("Unexpected error, failed to update profile")
+    }catch (err:any){
+        const status = err?.response?.status;
+
+        if(status == 400){
+          alertMessage("You signed in with Google, email cannot be modified")
+        }else
+          alertMessage("Unexpected error, failed to update profile")
     }
     finally{
         setLoading(false);   
@@ -96,6 +112,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
   return (
     <div className="bg-white rounded-2xl w-full p-6">
     <AlertDialog/>
+    <ConfirmDialog/>
     {loading && <PageLoader/>}
       <h3 className="text-lg font-semibold mb-4">
         Edit Organization Profile

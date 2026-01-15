@@ -35,8 +35,8 @@ export interface LabeledIcon {
 
 // Sign in
 export interface SignInFormProps extends BasicNatigationProps {
-    onSignInAttempt: (email: string, pass: string) => Promise<boolean>;
-
+    onSignInAttempt: (email: string, pass: string) => Promise<number>;
+    onSignInWithGoogle: ()=>Promise<void>;
 }
 
 export interface BasicNatigationProps{
@@ -151,11 +151,17 @@ export interface OrgContantProfileProps{
   contactMiddleName:string;
   phoneNumber:string;
   email:string;
+  emailEditable: boolean;
   emailVerified:boolean;
 }
 export interface OrganizationProfileProps{
   organizationContact: OrgContantProfileProps;
   organization: OrganizationProps;
+}
+
+export type EmailExistProps = {
+  email:String;
+  exists:boolean;
 }
 
 export interface MyCertificationProps {
@@ -189,6 +195,7 @@ export interface ProfileProps {
   phoneIsVerified?: boolean;
   emailIsVerified?: boolean;
   role?: "VOLUNTEER"|"ORGANIZATION";
+  emailEditable?: boolean;
   email?:string;
 };
 
@@ -209,6 +216,7 @@ export interface DashboardProps{
   metrics?: MetricProps[];
   projects?: ProjectProps[];
   className?:string
+  profileCompleted?:boolean ;
   triggerAction?:(action:VolunteerQuickActions)=>void
   orgTriggerAction?: (action: OrganizationQuickActions)=>void
   hasMounted:()=>void;
@@ -260,6 +268,7 @@ export interface VolunteerProjectApplicationProps{
 
 export interface VolunteerDashboardProps{
   firstname:string;
+  profileCompleted:boolean;
   projectApplications:VolunteerProjectApplicationProps[]
 }
 interface skillProps{
