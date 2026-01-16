@@ -94,7 +94,7 @@ export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps
         e.preventDefault()
         
         const errors = validateForm()
-
+        console.log(profile)
         if(Object.keys(errors).length > 0){
             setErrors(errors)
             return
@@ -102,7 +102,7 @@ export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps
 
         const userResponse = await confirmAsk({
             question:"Are you sure you want to update profile?",
-            trueAnswer: "Updated",
+            trueAnswer: "Update",
             falseAnswer: "Cancel"
         })
 
@@ -118,7 +118,6 @@ export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps
             await alertMessage("An unexptected error occured, failed to update profile")
         }finally{
             setLoading(false)
-            console.log(profile)
         }
     }
 

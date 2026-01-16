@@ -32,7 +32,7 @@ export const ProfilePage:React.FC<{editing?:boolean}> = ({editing = false})=> {
 
     loadProfile()
 
-  }, [profileChanged])
+  }, [profileChanged, isEditing])
 
   return (
     <div className="p-6 space-y-6 flex flex-col justify-center items-center">
