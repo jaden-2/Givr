@@ -80,7 +80,7 @@ export default function ProfileAchievements({profile, onEditProfile,reload}: Pro
         }
   }
   return (
-    <div className=" grid lg:grid-cols-6 gap-8 w-full ">
+    <div className="grid lg:grid-cols-6 gap-8 w-full ">
       <AlertDialog/>
       {isLoading && <PageLoader/>}
       {/* ------------------ Profile Section ------------------ */}
@@ -135,7 +135,7 @@ export default function ProfileAchievements({profile, onEditProfile,reload}: Pro
 
           {/* Edit Button */}
           <Button 
-          variant="primary" className="w-full]"
+          variant="primary" 
           onClick={onEditProfile}>
             Edit Profile
           </Button>

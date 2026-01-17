@@ -35,7 +35,7 @@ export const ProfilePage:React.FC<{editing?:boolean}> = ({editing = false})=> {
   }, [profileChanged, isEditing])
 
   return (
-    <div className="p-6 space-y-6 flex flex-col justify-center items-center">
+    <div className="space-y-6 flex flex-col justify-center items-center">
       {isLoading && <PageLoader message="Loading your profile"/> }
 
       { isEditing?<EditProfile onClose={()=>{
