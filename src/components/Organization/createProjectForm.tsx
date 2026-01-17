@@ -86,8 +86,18 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                 if(handlesave)
                     await handlesave(projects)
                 onClose()
-            }catch{
-                alertMessage("We experienced some trouble creating account, please try again")
+            }catch(err:any){
+                let status = err?.response?.status
+                switch(status){
+                    case 400:
+                        alertMessage("Inconsistent project timeline, review and try again")
+                        break
+                    case 500:
+                        alertMessage("We experienced some trouble creating project, please try again")
+                        break
+
+
+                }
             }
         }  
         setIsLoading(false)

@@ -40,28 +40,20 @@ export const CloudinaryUpload = ({
         maxFileSize: 2_000_000, // 2MB
       },
       (error: any, result: any) => {
-        // if (error) {
-        //   console.error("Upload error:", error);
-        //   setLoading(false);
-        //   return;
-        // }
-
-        // if (result.event === "success") {
-        //   setLoading(false);
-        //   onUploadSuccess(
-        //     result.info.secure_url,
-        //     result.info.public_id
-        //   );
-        // }
+        
         if (!error && result?.event === "success") {
           onUploadSuccess(result.info.secure_url, result.info.public_id );
+        }else if(result?.event === "error"){
+          setLoading(false)
+        }else if(result?.event === "close"){
+          setLoading(false)
         }
       }
     );
 
 
     return ()=>{
-      widgetRef.current?.destroy?.()
+      widgetRef.current?.destroy()
       widgetRef.current = null
       setLoading(false)
     }
@@ -71,9 +63,7 @@ export const CloudinaryUpload = ({
 
   const openWidget = () => {
     if (disabled || !widgetRef.current) return;
-    setLoading(true);
     widgetRef.current.open();
-    
   };
 
   return (
