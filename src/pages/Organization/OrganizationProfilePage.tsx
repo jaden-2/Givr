@@ -65,7 +65,7 @@ export const OrganizationProfilePage:React.FC<{editing?:boolean}> = ({editing = 
   }
 
   return (
-    <div className="p-6 space-y-6 flex flex-col justify-center items-center">
+    <div className="space-y-6 flex flex-col justify-center items-center">
       {isLoading&&<PageLoader message="Loading your profile"/> }
 
       { isEditing? orgEdit? <EditOrgProfileModal org={profile.organization} onSave={handleUpdate} onClose={()=>{

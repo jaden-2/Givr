@@ -135,7 +135,7 @@ export default function ProfileAchievements({profile, onEditProfile,reload}: Pro
 
           {/* Edit Button */}
           <Button 
-          variant="primary" className="w-[40%]"
+          variant="primary" className="w-full]"
           onClick={onEditProfile}>
             Edit Profile
           </Button>
