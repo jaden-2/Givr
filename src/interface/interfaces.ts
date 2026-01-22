@@ -113,6 +113,7 @@ export interface ProjectFormProps{
     state:string;
     lga:string;
   }
+  address?:string;
   requiredSkills:string[];
   specialRequirements:string;
   

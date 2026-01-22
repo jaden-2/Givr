@@ -3,9 +3,9 @@ import { Button, Card } from "./ReuseableComponents";
 import type { BasicNatigationProps } from "../interface/interfaces";
 import { Link, useNavigate } from "react-router-dom";
 import { ResendOtpTimer } from "./ResendOtpTimer";
-import useAuthFetch from "./hooks/useAuthFetch";
 import { PageLoader } from "./icons";
 import { useAlert } from "./hooks/useAlert";
+import axios from "axios";
 
 interface ForgotPasswordProps{
     email:string;
@@ -27,15 +27,22 @@ export const ForgotPasswordForm: React.FC<{navProps:BasicNatigationProps, isOrg?
         rePassword:""
     })
 
-    const {API} = useAuthFetch("")
+    const API = axios.create({
+        baseURL: import.meta.env.VITE_API_BASE_URL
+    })
 
     const requestOtp = async ()=>{        
         try{
             setIsLoading(true)
-            await API().post("/password/forgot")
+            await API.post("/password/forgot", formInput)
             setOnSent(true)
-        }catch{
-            alertMessage("OTP Request failed")
+        }catch (err:any){
+            const status = err?.response?.status
+            if(status == 400){
+                alertMessage("Account does not exist")
+            }else{
+                alertMessage("OTP Request failed")
+            }
         }finally{
             setIsLoading(false)
         }
@@ -46,7 +53,7 @@ export const ForgotPasswordForm: React.FC<{navProps:BasicNatigationProps, isOrg?
 
         try{
             setIsLoading(true)
-            await API().post("/password/reset", formInput)
+            await API.post("/password/reset", formInput)
             navigate("../", {
                 replace:true
             })

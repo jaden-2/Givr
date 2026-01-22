@@ -16,7 +16,7 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
     })
     const {API} = useAuthFetch("organization")
     const [isLoading, setIsLoading] = useState(false)
-    
+    const [charCount, setCharCount] = useState(0)
     const [formFields, setFormFields] = useState<ProjectFormProps>({
         id: 0,
         title:'',
@@ -34,10 +34,11 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
             state:'',
             lga:''
         },
+        address:"",
         requiredSkills:[],
         specialRequirements:''
     });
-
+    const MAX_CHARS = 1000
 
     const [selectedSkillCat, setSelectedSkillCat] = useState("");
 
@@ -157,24 +158,41 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                             ...prev,
                             title:e.target.value
                         }))}/>
+                </div>  
+                {/* Description */}          
+                <textarea
+                    id="description"
+                    rows={4}
+                    maxLength={MAX_CHARS}
+                    placeholder="Describe the project, its goals, and what volunteers will do"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 resize-y text-gray-800"
+                    value={formFields.description}
+                    onChange={(e) => {
+                        const value = e.target.value;
+
+                        setFormFields(prev => ({
+                        ...prev,
+                        description: value
+                        }));
+
+                        setCharCount(value.length);
+                    }}
+                />
+
+                <div className="mt-1 text-sm flex justify-end">
+                    <span
+                        className={
+                        charCount >= MAX_CHARS
+                            ? "text-red-600"
+                            : charCount > 900
+                            ? "text-yellow-600"
+                            : "text-gray-500"
+                        }
+                    >
+                        {charCount}/{MAX_CHARS} characters
+                    </span>
                 </div>
-                
-                {/* Description */}
-                <div>
-                    <label htmlFor="description" className="block text-base font-semibold text-gray-700 mb-2">
-                        Description
-                    </label>
-                    <textarea id="description" rows={4} placeholder="Describe the project, it's goals, and what volunteers will do" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 resize-y text-gray-800"
-                            value={formFields.description}
-                            onChange={(e)=>{
-                                setFormFields(prev=>({
-                                    ...prev,
-                                    description: e.target.value
-                                }))
-                            }}>
-                    </textarea>
-                </div>
+
             
                 {/* Category & Max Volunteers - Grid Layout */}
                 <div className="grid grid-cols-2 gap-6">
@@ -352,7 +370,20 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                     lga={projectData?.location.lga}
                     />
                 </div>
+                {/* Address */}
+                <div>
+                    <label htmlFor="address" className="block text-base font-semibold text-gray-700 mb-2">
+                        Address
+                    </label>
+                    <input type="text" id="address" placeholder="e.g, 13, First streat" 
+                        className="w-full px-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800"
+                        value={formFields.address}
 
+                        onChange={(e)=>setFormFields((prev)=>({
+                            ...prev,
+                            address:e.target.value
+                        }))}/>
+                </div>
                 {/* Required Skills */}
                 <div>
                     <label htmlFor="requiredSkills" className="block text-base font-semibold text-gray-700 mb-2">

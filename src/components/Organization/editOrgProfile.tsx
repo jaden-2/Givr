@@ -108,7 +108,9 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
       return Object.keys(newErrors).length === 0;
   }
 
- 
+
+  const MAX_CHARS = 500;
+  const [charCount, setCharCount] = useState(0)
   return (
     <div className="bg-white rounded-2xl w-full p-6">
     <AlertDialog/>
@@ -265,10 +267,27 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
         <label>Description</label>
         <textarea
           value={form.description}
-          onChange={v => setForm(p => ({ ...p, description: v.target.value }))}
+          maxLength={MAX_CHARS}
+          onChange={v => {
+            let value = v.target.value
+            setForm(p => ({ ...p, description: value }))
+            setCharCount(value.length)
+          }}
           className="border-ui rounded-md pl-3 py-2 outline-none  w-full"
         />
-       
+       <div className="mt-1 text-sm flex justify-end">
+            <span
+              className={
+              charCount >= MAX_CHARS
+                  ? "text-red-600"
+                  : charCount > 400
+                  ? "text-yellow-600"
+                  : "text-gray-500"
+              }
+            >
+                {charCount}/{MAX_CHARS} characters
+            </span>
+        </div>
         <div className="flex justify-end gap-x-2 pt-2">
 
           <Button variant="secondary" onClick={onClose}>Cancel</Button>

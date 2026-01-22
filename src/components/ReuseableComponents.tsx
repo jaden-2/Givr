@@ -416,6 +416,8 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, 
     onCancel()
   }
 
+  const MAX_CHARS = 500
+  const [charCount, setCharCount] = useState(0)
 
   return <>
     <div className="bg-white p-8 rounded-xl mt-2 shadow-2xl w-full max-full">
@@ -424,7 +426,27 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, 
 
         <label htmlFor="reason" className="block text-base font-semibold text-gray-700 mb-2">Why do you want to volunteer for this project?</label>
 
-        <textarea name="reason" rows={5}  value={applicationForm["reason"]} onChange={(e)=>setApplicationForm({...applicationForm, reason:e.currentTarget.value })} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 resize-y text-gray-800" required></textarea>
+        <textarea name="reason" rows={5}  value={applicationForm["reason"]} 
+        onChange={(e)=>{
+          const value = e.currentTarget.value
+          setApplicationForm({...applicationForm, reason:value })
+          setCharCount(value.length)
+        }} 
+        maxLength={MAX_CHARS}
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 resize-y text-gray-800" required></textarea>
+        <div className="mt-1 text-sm flex justify-end">
+            <span
+                className={
+                charCount >= MAX_CHARS
+                    ? "text-red-600"
+                    : charCount > 900
+                    ? "text-yellow-600"
+                    : "text-gray-500"
+                }
+            >
+                {charCount}/{MAX_CHARS} characters
+            </span>
+        </div>
         <label htmlFor="availability" className="block text-base font-semibold text-gray-700 mb-2">Confirm you availability</label>
         <input className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800" type="text" name="availability" placeholder="e.g available all day" value={applicationForm.availableDays} onChange={e=>setApplicationForm({...applicationForm, availableDays: e.currentTarget.value})} required/>
 
