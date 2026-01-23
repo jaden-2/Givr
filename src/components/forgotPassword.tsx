@@ -9,6 +9,7 @@ import axios from "axios";
 
 interface ForgotPasswordProps{
     email:string;
+    otp:string;
     role:"VOLUNTEER"|"ORGANIZATION";
     newPassword:string;
     rePassword:string;
@@ -24,7 +25,8 @@ export const ForgotPasswordForm: React.FC<{navProps:BasicNatigationProps, isOrg?
         email: "",
         role: isOrg?"ORGANIZATION":"VOLUNTEER",
         newPassword: "",
-        rePassword:""
+        rePassword:"",
+        otp:""
     })
 
     const API = axios.create({
@@ -50,7 +52,8 @@ export const ForgotPasswordForm: React.FC<{navProps:BasicNatigationProps, isOrg?
 
     const handleReset = async (e: React.FormEvent)=>{
         e.preventDefault()
-
+        if(error)
+            return
         try{
             setIsLoading(true)
             await API.post("/password/reset", formInput)
@@ -141,6 +144,18 @@ export const ForgotPasswordForm: React.FC<{navProps:BasicNatigationProps, isOrg?
                     <form onSubmit={handleReset}>
                         <div className="h-70 grid grid-cols-1 gap-y-2 text-center">
                             <h1 className="text-4xl font-extrabold text-gray-800 mb-4">OTP has been Sent</h1>
+                            <input
+                                    type="text"
+                                    id="otp"
+                                    placeholder="Enter OTP sent"
+                                    className="shadow appearance-none border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                                    value={formInput["otp"]}
+                                    onChange={(e) => setFormInput(prev=>({
+                                        ...prev,
+                                        otp:e.target.value
+                                    }))}
+                                    required
+                                />
                             <input
                                     type="password"
                                     id="password"
