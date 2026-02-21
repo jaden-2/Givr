@@ -135,7 +135,7 @@ export interface OrganizationProps{
   description?:string;
   location?:location;
   category?:string[];
-  status?: "VERIFIED" | "UNVERIFIED";
+  status?: "VERIFIED" | "UNVERIFIED"| "PENDING";
   numOfActiveProjects?:number;
   website?:string;
   address?:string;
@@ -144,6 +144,7 @@ export interface OrganizationProps{
   rating?:number;
   profileCompleted?:boolean;
   profileUrl?:string;
+  cacDocUrl?:string;
 }
 
 export interface OrgContantProfileProps{
@@ -198,6 +199,7 @@ export interface ProfileProps {
   role?: "VOLUNTEER"|"ORGANIZATION";
   emailEditable?: boolean;
   email?:string;
+  createdAt?:string;
 };
 
 export interface BadgeProps {
@@ -231,8 +233,8 @@ export type OrganizationNavTypes = "Dashboard"| "Project Management" | "Applicat
 export type OrganizationQuickActions = "Create New Project"| "Review pending applications"| "Edit Profile"
 
 export interface VolunteerProfileProps{
-  firstName:string;
-  lastName:string;
+  firstname:string;
+  lastname:string;
   middleName:string;
   email:string;
   location:location;
@@ -300,6 +302,16 @@ export interface VolunteerApplicationProps{
   lastname:string;
   skills:string[];
   projectApplied: VolunteerProjectApplicationProps
+}
+
+export type ParticipationStatus = "IN_PROGRESS" | "COMPLETED" | "REJECTED"
+export interface ParticipantProps{
+  id:number;
+  status: ParticipationStatus; 
+  project: ProjectProps;
+  reviewable?:boolean;
+  endDate?:string;
+  volunteer: ProfileProps
 }
 
 export type organizationType = "NGO/Non profit" | "Community Group" | "Religious Group"| "Educational Institution" | "Government Agency"|"Corporate Foundation"|""

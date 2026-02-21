@@ -18,6 +18,25 @@ interface VolunteerUpdateErrors  {
     lga:string;
     interests:string;
 }
+const InputField:React.FC<{label:string, isRequired?:boolean, 
+        value:string, placeholder:string, 
+        type?:React.HTMLInputTypeAttribute, name:keyof ProfileProps, 
+        isDisabled?:boolean, error?:string, handleChange:(e:React.ChangeEvent<HTMLInputElement>)=>void}> = ({label, value, placeholder, type="text", name, isDisabled=false, isRequired=true, error, handleChange})=>{
+        
+        const borderClasses = error ? "border border-red-500 focus:ring-red-500": "border-ui focus:ring-blue-500";
+        
+        return <div>
+            <label htmlFor={label} className="block text-base font-semibold text-gray-700 mb-2">
+                {label}
+                {isRequired && <span className="text-red-500 ml-1">*</span>}
+            </label>
+
+            <input type={type} id="name" placeholder={placeholder} name={name} value={value} onChange={handleChange}
+            disabled={isDisabled}
+                   className={"w-full px-4 py-3 border border-gray-300 rounded-lg transition duration-150 text-gray-800" + `${isDisabled?' cursor-not-allowed':`${borderClasses}`}`}/>
+        </div>
+    
+    }
 export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps}> = ({onClose, profileProps})=>{
 
     const [profile, setProfile] = useState<ProfileProps>({
@@ -53,25 +72,7 @@ export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps
         setProfile(prev=>({...prev, location: location}))
       }, [])
 
-    const InputField:React.FC<{label:string, isRequired?:boolean, 
-        value:string, placeholder:string, 
-        type?:React.HTMLInputTypeAttribute, name:keyof ProfileProps, 
-        isDisabled?:boolean, error?:string}> = ({label, value, placeholder, type="text", name, isDisabled=false, isRequired=true, error})=>{
-        
-        const borderClasses = error ? "border border-red-500 focus:ring-red-500": "border-ui focus:ring-blue-500";
-        
-        return <div>
-            <label htmlFor={label} className="block text-base font-semibold text-gray-700 mb-2">
-                {label}
-                {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-
-            <input type={type} id="name" placeholder={placeholder} name={name} value={value} onChange={handleChange}
-            disabled={isDisabled}
-                   className={"w-full px-4 py-3 border border-gray-300 rounded-lg transition duration-150 text-gray-800" + `${isDisabled?' cursor-not-allowed':`${borderClasses}`}`}/>
-        </div>
     
-    }
 
     const ErrorMsg:React.FC<{error:string}> = ({error})=>{
         return <p className="text-red-500 text-sm mt-1">
@@ -208,13 +209,13 @@ export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps
 
 
         {/* Name Input */}
-        <InputField label={"First Name"} name="firstname" value={profile.firstname|| ""} placeholder="John" error={errors?.firstname}/>
+        <InputField label={"First Name"} name="firstname" value={profile.firstname|| ""} placeholder="John" error={errors?.firstname} handleChange={handleChange}/>
         {errors?.firstname && <ErrorMsg error={errors?.firstname}/>}
-        <InputField label="Middle Name" isRequired={false} name="middleName" value={profile.middleName || ""} placeholder="Paul" error={errors?.middlename}/>
+        <InputField label="Middle Name" isRequired={false} name="middleName" value={profile.middleName || ""} placeholder="Paul" error={errors?.middlename} handleChange={handleChange}/>
          {errors?.middlename && <ErrorMsg error={errors?.middlename}/>}
-        <InputField label={"Last Name"} name="lastname" value={profile.lastname || ""} placeholder="Doe" error={errors?.lastname}/>
+        <InputField label={"Last Name"} name="lastname" value={profile.lastname || ""} placeholder="Doe" error={errors?.lastname} handleChange={handleChange}/>
          {errors?.lastname && <ErrorMsg error={errors?.lastname}/>}
-        <InputField label={"Email"} name="email" value={profile.email || ""} placeholder="johndoe@gmail.com" type="email" isDisabled={!profile.emailEditable} error={errors?.email}/>
+        <InputField label={"Email"} name="email" value={profile.email || ""} placeholder="johndoe@gmail.com" type="email" isDisabled={!profile.emailEditable} error={errors?.email} handleChange={handleChange}/>
          {errors?.email && <ErrorMsg error={errors?.email}/>}
         
         {

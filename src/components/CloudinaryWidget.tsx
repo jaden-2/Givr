@@ -42,10 +42,11 @@ export const CloudinaryUpload = ({
       (error: any, result: any) => {
         
         if (!error && result?.event === "success") {
-          onUploadSuccess(result.info.secure_url, result.info.public_id );
+          onUploadSuccess(result.info.secure_url, result.info.public_id );  
         }else if(result?.event === "error"){
           setLoading(false)
-        }else if(result?.event === "close"){
+          
+        }else if(result?.event === "close"){ 
           setLoading(false)
         }
       }

@@ -8,6 +8,7 @@ import { CloudinaryUpload } from "../CloudinaryWidget";
 import { useAlert } from "../hooks/useAlert";
 import type { AxiosResponse } from "axios";
 import { useConfirmAsk } from "../hooks/useConfirm";
+import CACUploadWidget from "../CacUploadWidget";
 
 type EditOrgProfileModalProps = {
   org: OrganizationProps;
@@ -101,6 +102,9 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
         setLocationerror("Location of organization is required");
       }
 
+      if(!form.cacDocUrl )
+        newErrors.cacDocUrl = "CAC Document is required"
+
       if (!form.address) newErrors.address = "Required";
     
 
@@ -111,6 +115,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
 
   const MAX_CHARS = 500;
   const [charCount, setCharCount] = useState(0)
+
   return (
     <div className="bg-white rounded-2xl w-full p-6">
     <AlertDialog/>
@@ -134,20 +139,20 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
                 Organization Logo
             </span>
             <CloudinaryUpload
-            folder="avatars"
-            buttonText="Change Photo"
-            onUploadSuccess={(url) => {
-                setForm(prev => ({
-                ...prev,
-                profileUrl: url,
-                }));
-            }}
+              folder="avatars"
+              buttonText="Change Photo"
+              onUploadSuccess={(url) => {
+                  setForm(prev => ({
+                  ...prev,
+                  profileUrl: url,
+                  }));
+              }}
             />
             <p className="text-xs text-gray-400">
             JPG, PNG or WEBP. Max 2MB.
             </p>
         </div>
-        </div>
+      </div>
 
         <div>
           <Input 
@@ -288,6 +293,13 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
                 {charCount}/{MAX_CHARS} characters
             </span>
         </div>
+
+        <div>
+          <CACUploadWidget form={form} setForm={setForm}/>
+          <p className="text-red-500 text-sm mt-1">
+              {errors["cacDocUrl"]}
+            </p>
+        </div>
         <div className="flex justify-end gap-x-2 pt-2">
 
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
@@ -296,6 +308,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
           </Button>
         </div>
       </form>
+      
     </div>
   );
 };
