@@ -160,7 +160,6 @@ export const ApplicationHub = ()=>{
         },
         skills: ["Urban Farming", "Leadership", "Event Planning", "Botany", "Design"],
         profileUrl: "",
-        phoneNumber: ""
         }
     },
     {
@@ -195,7 +194,6 @@ export const ApplicationHub = ()=>{
         },
         skills: ["Urban Farming", "Leadership", "Event Planning", "Botany", "Design"],
         profileUrl: "",
-        phoneNumber: ""
         }
     }
 ];
