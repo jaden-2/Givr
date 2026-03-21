@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   CheckCircle, 
   XCircle, 
@@ -9,10 +9,15 @@ import {
   
   Layers,
   ChevronRight,
-  Info
+  Info,
+  Loader2,
+  Send,
+  Megaphone,
+  X
 } from 'lucide-react';
 import type { ParticipantProps, ProjectProps } from '../../interface/interfaces';
 import { Button } from '../ReuseableComponents';
+import useAuthFetch from '../hooks/useAuthFetch';
 
 export interface ParticipantCardComponentProps{
     participant: ParticipantProps;
@@ -206,31 +211,128 @@ export const ParticipantCard: React.FC<ParticipantCardComponentProps> = ({ parti
  * Displays the shared project information for a group of participants.
  */
 export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number}> = ({ project, count }) => {
+  const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'success'
+
+  const {API} = useAuthFetch('organization')
+
+  const handleBroadcast = async () => {
+    if (!message.trim()) return;
+
+    setStatus('sending');
+    try {
+      // Logic for your backend call goes here:
+      // await api.sendBroadcast(project.id, message);
+      
+      await API().post("/projects/broadcast", {
+        projectId: project.id,
+        message
+      })
+      
+      setStatus('success');
+
+      setTimeout(() => {
+        setIsBroadcasting(false);
+        setMessage("");
+        setStatus('idle');
+      }, 500);
+
+    } catch (error) {
+      setStatus('idle');
+    }
+  };
+
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 mt-8 first:mt-0 p-4 bg-white border-l-4 border-indigo-500 rounded-r-xl shadow-sm">
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2 mb-1">
-          <Layers size={18} className="text-indigo-500" />
-          <h2 className="text-lg font-extrabold text-gray-900">{project?.title}</h2>
-          <span className="ml-2 px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-black rounded-md">
-            {count} {count === 1 ? 'PARTICIPANT' : 'PARTICIPANTS'}
-          </span>
+    <div className="flex flex-col mb-4 mt-8 first:mt-0 bg-white border-l-4 border-indigo-500 rounded-r-xl shadow-sm overflow-hidden">
+
+      {/* Main Header Content */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 mt-8 first:mt-0 p-4 bg-white border-l-4 border-indigo-500 rounded-r-xl shadow-sm">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <Layers size={18} className="text-indigo-500" />
+            <h2 className="text-lg font-extrabold text-gray-900">{project?.title}</h2>
+            <span className="ml-2 px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-black rounded-md">
+              {count} {count === 1 ? 'PARTICIPANT' : 'PARTICIPANTS'}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
+            <span className="flex items-center gap-1">
+              <MapPin size={14} /> {project.location?.lga || "Remote"}
+            </span>
+            <span className="flex items-center gap-1">
+              <Calendar size={14} /> {new Date(project?.startDate).toLocaleDateString()} - {new Date(project.endDate).toLocaleDateString()}
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock size={14} /> {project.attendanceHours?.from} - {project.attendanceHours?.to}
+            </span>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
-          <span className="flex items-center gap-1">
-            <MapPin size={14} /> {project.location?.lga || "Remote"}
-          </span>
-          <span className="flex items-center gap-1">
-            <Calendar size={14} /> {new Date(project?.startDate).toLocaleDateString()} - {new Date(project.endDate).toLocaleDateString()}
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock size={14} /> {project.attendanceHours?.from} - {project.attendanceHours?.to}
-          </span>
+
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setIsBroadcasting(!isBroadcasting)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ${
+              isBroadcasting 
+                ? 'bg-gray-100 text-gray-600' 
+                : 'text-indigo-600 hover:bg-indigo-50'
+            }`}
+          >
+            {isBroadcasting ? (
+              <><X size={16} /> Close</>
+            ) : (
+              <><Megaphone size={16} /> Broadcast</>
+            )}
+          </button>
         </div>
+
+        <button className="text-sm font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+          Project Details <ChevronRight size={16} />
+        </button>
       </div>
-      <button className="text-sm font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
-        Project Details <ChevronRight size={16} />
-      </button>
+
+      {/* Broadcast Input Area */}
+      {isBroadcasting && (
+        <div className="px-4 pb-4 pt-2 border-t border-gray-100 bg-gray-50/50 animate-in slide-in-from-top-2 duration-200">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+                Message to all participants
+              </label>
+              {status === 'success' && (
+                <span className="text-[11px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">
+                  MESSAGE SENT SUCCESSFULLY
+                </span>
+              )}
+            </div>
+            
+            <textarea
+              autoFocus
+              className="w-full p-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-gray-400 resize-none shadow-inner"
+              placeholder="Type your message here... (e.g. Schedule update for tomorrow)"
+              rows={3}
+              value={message}
+              disabled={status !== 'idle'}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+
+            <div className="flex justify-end items-center gap-3">
+              <button
+                disabled={!message.trim() || status !== 'idle'}
+                onClick={handleBroadcast}
+                className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white text-xs font-black rounded-lg transition-all shadow-md shadow-indigo-200 active:scale-95"
+              >
+                {status === 'sending' ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : (
+                  <Send size={14} />
+                )}
+                {status === 'sending' ? 'SENDING...' : 'SEND BROADCAST'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { PageLoader } from "../icons"
 import useAuthFetch from "../hooks/useAuthFetch"
 import { useConfirmAsk } from "../hooks/useConfirm"
 
-const InputField:React.FC<{label:string, value:string, placeholder:string, type?:React.HTMLInputTypeAttribute, name:keyof OrgContantProfileProps, errors?:OrgProfilePropsErr, handleChange:(e:React.ChangeEvent<HTMLInputElement>)=>void, disabled?:boolean}> = ({label, value, placeholder, type="text", name, handleChange, errors, disabled=false})=>(
+export const InputField:React.FC<{label:string, value:string, placeholder:string, type?:React.HTMLInputTypeAttribute, name:keyof OrgContantProfileProps, errors?:OrgProfilePropsErr, handleChange:(e:React.ChangeEvent<HTMLInputElement>)=>void, disabled?:boolean}> = ({label, value, placeholder, type="text", name, handleChange, errors, disabled=false})=>(
         <div>
             <label htmlFor={label} className="block text-base font-semibold text-gray-700 mb-2">
                 {label}
@@ -30,7 +30,7 @@ type Errors = {
     email?: OrgProfilePropsErr;
 }
 
-export const EditOrgContactProfile:React.FC<{onClose?:()=>void, profileProps: OrgContantProfileProps, onSubmit:(data: OrgContantProfileProps)=>Promise<void>}> = ({onClose, profileProps, onSubmit})=>{
+export const EditOrgContactProfile:React.FC<{onClose?:()=>void, profileProps: OrgContantProfileProps, onSubmit:(data: OrgContantProfileProps)=>Promise<undefined>}> = ({onClose, profileProps, onSubmit})=>{
 
     const [profile, setProfile] = useState<OrgContantProfileProps>({
         contactFirstname:"",
@@ -149,13 +149,14 @@ export const EditOrgContactProfile:React.FC<{onClose?:()=>void, profileProps: Or
     <h2 className="text-3xl font-extrabold text-gray-900 mb-8 leading-tight">
         Edit Profile
     </h2>
-    <form className="space-y-6" onSubmit={handleUpdate}>     
+    <form className="space-y-6" onSubmit={handleUpdate}> 
+            
         {/* Name Input */}
         <InputField label={"First Name"} name="contactFirstname" value={profile.contactFirstname|| ""} placeholder="John" handleChange={handleChange} errors={profileErrors.firstName}/>
         <InputField label="Middle Name" name="contactMiddleName" value={profile.contactMiddleName || ""} placeholder="Paul" handleChange={handleChange} />
         <InputField label={"Last Name"} name="contactLastname" value={profile.contactLastname || ""} placeholder="Doe" handleChange={handleChange} errors={profileErrors.lastName}/>
         <InputField label={"Email"} name="email" value={profile.email || ""} placeholder="johndoe@gmail.com" type="email" handleChange={handleChange} errors={profileErrors.email} disabled={!profile.emailEditable}/>
-
+        
         {/* Action Buttons */}
         <div className="flex justify-end pt-4 space-x-4">
             <Button variant="outline"

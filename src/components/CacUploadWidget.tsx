@@ -64,7 +64,7 @@ const CACUploadWidget:React.FC<{form: OrganizationProps, setForm: React.Dispatch
                   Upload CAC Certificate
                 </span>
                 <p className="text-xs text-gray-400 mt-1">
-                  PDF, JPG or PNG. Max 5MB.
+                  JPG or PNG. Max 2MB.
                 </p>
               </>
             )}
@@ -80,6 +80,7 @@ const CACUploadWidget:React.FC<{form: OrganizationProps, setForm: React.Dispatch
             <Upload size={16} />
             <CloudinaryUpload
                 folder="avatars"
+                sources={["google_drive", "local", "camera"]}
                 buttonText="Select Document"
                 onUploadSuccess={(url) => {
                     setForm(prev => ({

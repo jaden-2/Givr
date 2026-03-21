@@ -9,6 +9,8 @@ import { useAlert } from "../hooks/useAlert";
 import type { AxiosResponse } from "axios";
 import { useConfirmAsk } from "../hooks/useConfirm";
 import CACUploadWidget from "../CacUploadWidget";
+import { IdentityVerificationWidget } from "../IdVerificationWidget";
+import { X } from "lucide-react";
 
 type EditOrgProfileModalProps = {
   org: OrganizationProps;
@@ -22,6 +24,13 @@ export const EditOrgProfileModal = ({org, onSave,onClose}: EditOrgProfileModalPr
  
   const {alertMessage, AlertDialog} = useAlert({isOrg:true})
   const [errors, setErrors] = useState<Partial<OrganizationProps>>({})
+
+  // Error for Id Input widget
+  const [idError, setIdError] = useState({
+    active: false,
+    errMsg: ''
+  })
+
   const [locationError, setLocationerror] = useState("");
   const [orgType, setOrgType] = useState("")
   const {confirmAsk, ConfirmDialog} = useConfirmAsk({isOrg:true})
@@ -75,13 +84,13 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
 
     }
   };
+  let fallbackUrl = `https://avatar.iran.liara.run/username?username=${form.name}+${form.category}`
 
   let organizationTypes: organizationType[] = ["NGO/Non profit", "Religious Group", "Government Agency", "Educational Institution", "Corporate Foundation", "Community Group"]
   const handleLocationChange = useCallback((location:location)=>{
     setForm(prev=>({...prev, location: location}))
   }, [])
-  let fallbackUrl = `https://avatar.iran.liara.run/username?username=${form.name}+${form.category}`
-
+  
   const validateForm = ()=>{
       const newErrors: Partial<OrganizationProps> = {}
 
@@ -106,7 +115,16 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
         newErrors.cacDocUrl = "CAC Document is required"
 
       if (!form.address) newErrors.address = "Required";
-    
+  
+      if(!form.contactVerification?.idNumber){
+        setIdError({
+          active: true,
+          errMsg: "Identification is required"
+      })
+
+      newErrors.website = "ID Required"
+      }
+        
 
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
@@ -126,33 +144,64 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
       </h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
-        {/* Profile Image */}
-        <div className="flex items-center gap-6">
-        <img
-            src={form.profileUrl || fallbackUrl}
-            alt="Profile"
-            className="w-24 h-24 rounded-full object-cover border"
-        />
 
-        <div className="flex flex-col gap-2">
-            <span className="text-sm text-gray-600">
-                Organization Logo
+         {/* Organization Logo Section (Improved) */}
+        <div className="flex items-center gap-6 p-4 bg-slate-50 rounded-xl border border-slate-100">
+          <div className="relative group">
+            <img
+              src={form.profileUrl || fallbackUrl}
+              alt="Profile"
+              className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md ring-1 ring-gray-100"
+            />
+            {form.profileUrl && (
+              <button 
+                onClick={() => setForm(prev => ({...prev, profileUrl: ''}))}
+                className="absolute -top-1 -right-1 bg-red-500 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-col items-start">
+            <span className="text-sm font-bold text-gray-900 mb-1">
+              Organization Logo
             </span>
             <CloudinaryUpload
               folder="avatars"
               buttonText="Change Photo"
+              sources={["camera", "google_drive","local"]}
               onUploadSuccess={(url) => {
                   setForm(prev => ({
-                  ...prev,
-                  profileUrl: url,
+                    ...prev,
+                    profileUrl: url,
                   }));
               }}
             />
-            <p className="text-xs text-gray-400">
-            JPG, PNG or WEBP. Max 2MB.
+            <p className="mt-2 text-[11px] font-medium text-gray-400 uppercase tracking-wider">
+              JPG, PNG or WEBP • Max 2MB
+            </p>
+          </div>
+        </div>
+
+        {/* Verification information */}
+         <div>
+          <h3 className="text-lg font-semibold mb-4">
+            Contact Person Details
+          </h3>
+          <IdentityVerificationWidget 
+            formData={form}
+            setForm={setForm}
+            disabled={false}
+            errors={idError}
+          />
+        </div>
+        <div>
+          <CACUploadWidget form={form} setForm={setForm}/>
+          <p className="text-red-500 text-sm mt-1">
+              {errors["cacDocUrl"]}
             </p>
         </div>
-      </div>
 
         <div>
           <Input 
@@ -293,15 +342,9 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>,name: keyof Organiz
                 {charCount}/{MAX_CHARS} characters
             </span>
         </div>
+        
 
-        <div>
-          <CACUploadWidget form={form} setForm={setForm}/>
-          <p className="text-red-500 text-sm mt-1">
-              {errors["cacDocUrl"]}
-            </p>
-        </div>
         <div className="flex justify-end gap-x-2 pt-2">
-
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
           <Button  variant="green">
             Save Changes

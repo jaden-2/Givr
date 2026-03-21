@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
+type source = "local" | "camera" | "google_drive"
+
 type CloudinaryUploadProps = {
   onUploadSuccess: (url: string, publicId: string) => void;
   buttonText?: string;
   folder?: string;
   disabled?: boolean;
   className?: string;
+  sources?: source[];
+  max_size_MB?:number;
 };
 
 declare global {
@@ -20,6 +24,8 @@ export const CloudinaryUpload = ({
   folder = "uploads",
   disabled = false,
   className = "",
+  sources,
+  max_size_MB
 }: CloudinaryUploadProps) => {
   const widgetRef = useRef<any>(null);
   const [loading, setLoading] = useState(false);
@@ -35,9 +41,9 @@ export const CloudinaryUpload = ({
         multiple: false,
         cropping: false,
         resourceType: "image",
-        sources:["local", "camera"],
+        sources: sources??["local", "camera"],
         clientAllowedFormats: ["jpg", "png", "jpeg", "webp"],
-        maxFileSize: 2_000_000, // 2MB
+        maxFileSize: max_size_MB? max_size_MB*1e6 : 2_000_000 // 2MB
       },
       (error: any, result: any) => {
         
@@ -57,6 +63,7 @@ export const CloudinaryUpload = ({
       widgetRef.current?.destroy()
       widgetRef.current = null
       setLoading(false)
+      document.body.style.overflow = 'auto';
     }
   }, []);
 
