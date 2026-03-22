@@ -181,6 +181,7 @@ export default function ProfileAchievements({profile, onEditProfile,reload}: Pro
                     setOtpIsOpen(false)
                     reload()
                   }}
+                  close={()=>setOtpIsOpen(false)}
                 />
               </div>
     

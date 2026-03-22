@@ -6,8 +6,8 @@ import type { AxiosResponse } from "axios";
 type VerifyEmailModalProps = {
   email: string;
   onSubmit: (otp:string)=>Promise<AxiosResponse<any, any, any>>;
-  otpRequest: ()=>Promise<undefined>;
-  onEmailChange: (email:string)=>Promise<undefined> | Promise<void>;
+  otpRequest?: ()=>Promise<undefined>;
+  onEmailChange?: (email:string)=>Promise<undefined> | Promise<void>;
   isOpen: boolean;
   onSuccess: ()=>void;
   close: ()=>void;
@@ -77,7 +77,7 @@ export const VerifyEmailOtpModal = ({
         setLoading(false);
       }
     } else {
-      setIsEditingEmail(true);
+      setIsEditingEmail(true && (onEmailChange!=null));
     }
   };
 
@@ -144,7 +144,7 @@ export const VerifyEmailOtpModal = ({
 
           {/* Email Modification Row */}
           <div className="mb-6 flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 p-2 pl-4">
-            {isEditingEmail ? (
+            {isEditingEmail && onEmailChange!=null ? (
               <input
                 type="email"
                 value={email}
