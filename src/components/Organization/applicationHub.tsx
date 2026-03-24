@@ -300,7 +300,6 @@ export const ApplicationHub = ()=>{
                                 key={member.id} 
                                 participant={member}
                                 onComplete={() =>{ 
-                                   
                                     updatestatus(member, "COMPLETED")
                                 }
                                     

@@ -41,7 +41,6 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
     const MAX_CHARS = 1000
 
     const [selectedSkillCat, setSelectedSkillCat] = useState("");
-
     const handleLocationChange = useCallback(
         (location: { state: string; lga: string }) => {
           setFormFields(prev=>({
@@ -273,11 +272,13 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                         Attendance Hours
                     </label>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2">
                         <div className="flex gap-x-2">
-                            <label htmlFor="from" className="whitespace-nowrap">From: </label>
+                
                             <input type="time" id="attendanceHours" placeholder="9:00" 
-                            className="w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800"
+                            className="sm:w-full px-2 py-3 border border-gray-300 rounded-lg 
+
+                            focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800"
                             value={formFields.attendanceHours.from.split(" ")[0]}
                             onChange={e=>{
                                 setFormFields(prev=>({
@@ -308,10 +309,10 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                         </div>
                        
 
-                        <div className="flex gap-x-2">
-                            <label htmlFor="to">To: </label>
+                        <div className="flex gap-x-2 items-center">
+                            <label htmlFor="to" className="font-semibold">To: </label>
                             <input type="time" id="attendanceHours" placeholder="3:00" 
-                            className="w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800"
+                            className="sm:w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800"
                             value={formFields.attendanceHours.to.split(" ")[0]}
                             onChange={e=>{
                                 setFormFields(prev=>({
@@ -396,13 +397,14 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                             {interestCategories.map((interest, index)=><option value={interest.title} key={index}>{interest.title}</option>)}
                         </select>
                         <select disabled={!selectedSkillCat}
+                        value={formFields.requiredSkills.at(-1)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800 appearance-none bg-white pr-8"
                         onChange={(e)=>{
                             setFormFields(prev=>({
                                 ...prev, requiredSkills: [...prev.requiredSkills, e.target.value]
                             }))
                         }}>
-                            <option selected={true} hidden={true}>Skill</option>
+                            <option selected={true} hidden={true} value="">Skill</option>
                             {
                                 interestCategories
                                     .filter((cat=>cat.title == selectedSkillCat))
@@ -411,7 +413,7 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                             }
                         </select>
                     </div>
-                    <div id="requiredSkills" className="flex gap-x-2 px-4 py-3 border border-white rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-800">
+                    <div id="requiredSkills" className="w-full flex flex-wrap gap-2 px-4 py-3 border border-white rounded-lg transition duration-150 text-gray-800">
                         {formFields.requiredSkills.map((skill)=><span className="px-2 py-1 text-xs bg-gray-200 rounded-full flex items-center" key={skill}>
                             {skill}
                             <button onClick={() => setFormFields((prev)=>({

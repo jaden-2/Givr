@@ -7,7 +7,6 @@ import { useModal } from "./hooks/useModal";
 import useAuthFetch from "./hooks/useAuthFetch";
 import { CreateProject } from "./Organization/createProjectForm";
 
-
 // --- Reusable Components ---
 
 export const Button: React.FC<ButtonProps> = ({ children, variant, className = '', onClick }) => {
@@ -244,7 +243,7 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
 }
 
 /**Displays details of a project */
-export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organization, specialRequirements,applicationDeadline,description,categories, attendanceHours, location,requiredSkills, maxVolunteers, startDate, endDate,status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false, isDraft=false, onEdit, onDelete, onPublish})=>{
+export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organization, specialRequirements,applicationDeadline,description,categories, attendanceHours, location,address,requiredSkills, maxVolunteers, startDate, endDate,status, totalApplicants, superVolunteer, manage=false, applied=false, isOrganization=false, isDraft=false, onEdit, onDelete, onPublish})=>{
 
   const [displayForm, setDisplayForm] = useState(false)
   const {modal, DisplayModal} = useModal()
@@ -255,7 +254,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
     modal(<OrganizationCard {...organization} description={organization?.description!}  hasVolunteered={false} />)
 
   }
-  const {state, lga} = location
+  // const {state, lga} = location
 
   const closeEditing = ()=>{
     setIsEditing(false);
@@ -271,8 +270,9 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
     applicationDeadline: applicationDeadline.split(",")[0].split("/").reverse().join("-"),
     description: description?description:"",
     endDate: endDate.split(",")[0].split("/").reverse().join("-"),
-    location: location,
+    location,
     maxVolunteers: maxVolunteers,
+    address,
     requiredSkills: requiredSkills,
     specialRequirements: specialRequirements,
   }
@@ -309,7 +309,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
       <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-6 py-4 border-y border-gray-200">
           <InfoCell icon={<CalendarIcon/>} info={startDate? startDate.split(",")[0]: "Jan 20, 2025"}/>
           <InfoCell icon={<ClockIcon color="#676879" className="w-6 w-6"/>} info={attendanceHours && typeof attendanceHours !="string"? `${attendanceHours.from.toUpperCase()}-${attendanceHours.to.toUpperCase()}`: "9:00 AM - 3:00 PM"}/>
-          <InfoCell icon={<LocationIcon/>} info={location? `${lga}, ${state}`: "Wuse District, Abuja"}/>
+          <InfoCell icon={<LocationIcon/>} info={address? `${address}`: "Wuse District, Abuja"}/>
           <InfoCell icon={<GroupIcon/>} info={`${totalApplicants?totalApplicants: 0 }/${maxVolunteers?maxVolunteers: 20}` }/>
       </div>
 
@@ -404,13 +404,19 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, 
     })
     if(ok){
       let message = `Thank you for Applying! ${organization} will reach out to you if you fit the selection criteria`
-      await API().post("/projects/apply", applicationForm ) 
-      .then(async ()=>{
+      try{
+        await API().post("/projects/apply", applicationForm ) 
         await alertMessage(message)
-      }, async ()=>{
-        await alertMessage(`Application ${organization}'s project failed. Please try again`)
-      })     
-      
+      }catch(err:any){
+        let status = err?.response?.status
+        let data = err?.response?.data?.message;
+        if(status == 400){
+          await alertMessage(data)
+        }else{
+          await alertMessage(`Application ${organization}'s project failed. Please try again`)
+        }
+      }
+        
     }
 
     onCancel()

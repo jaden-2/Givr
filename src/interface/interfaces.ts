@@ -94,6 +94,7 @@ export interface ProjectProps{
   requiredSkills:string[];
   createdAt:string;
   updatedAt:string;
+  address?:string;
   }
 
 export interface ProjectFormProps{

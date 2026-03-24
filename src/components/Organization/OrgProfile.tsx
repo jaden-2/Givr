@@ -179,7 +179,7 @@ export default function OrganizationProfile({profile, onEditProfile, editOrgInfo
           Organization Profile
         </h3>
 
-        {profile.organization?.status != "VERIFIED" && (
+        {profile.organization?.status == "UNVERIFIED" && (
           <button
             onClick={() => {
               onEditProfile()
