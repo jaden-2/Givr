@@ -71,7 +71,7 @@ export const DashboardPage = () => {
     // Makes requests with automatic refresh logic when access token expires
     const {API} = useAuthFetch("volunteer")
 
-    
+
     // const projects = rawProjects as ProjectProps[]
     const activateNavButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         let selectButtonValue = buttons.get(event.currentTarget.textContent);
@@ -97,7 +97,7 @@ export const DashboardPage = () => {
         .then(response=>{
             setVolunteerDashboard(response.data as VolunteerDashboardProps)
         })
-    
+
         return null
     }
 
@@ -105,7 +105,7 @@ export const DashboardPage = () => {
     useEffect(() => {
         (() => {
             loadUserProfile()
-           
+
         })()
     }, [dashboardIsMounted])
 
