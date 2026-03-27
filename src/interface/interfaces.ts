@@ -118,7 +118,7 @@ export interface ProjectFormProps{
   address?:string;
   requiredSkills:string[];
   specialRequirements:string;
-  
+
 }
 
 export interface ProjectComponentProps extends ProjectProps{
@@ -224,7 +224,11 @@ export interface BadgeProps {
 
 
 export interface OrganizationComponentProps extends OrganizationProps{
-  hasVolunteered?:boolean
+  hasVolunteered?: boolean;
+  startDate?:string;
+  endDate?:string;
+  projectDescription?: string;
+  skillsRequired?: string[];
 }
 
 
@@ -320,7 +324,7 @@ export interface VolunteerApplicationProps{
 export type ParticipationStatus = "IN_PROGRESS" | "COMPLETED" | "REJECTED"
 export interface ParticipantProps{
   id:number;
-  status: ParticipationStatus; 
+  status: ParticipationStatus;
   project: ProjectProps;
   reviewable?:boolean;
   endDate?:string;
@@ -354,7 +358,7 @@ export interface ProjectMap {
   draftProjects: ProjectProps[];
   openProjects: ProjectProps[];
   ongoingProjects: ProjectProps[];
-  completedProjects: ProjectProps[]; 
+  completedProjects: ProjectProps[];
 }
 
 export const projectStatuses= ["DRAFT", "OPEN", "ONGOING", "COMPLETED"] as const
@@ -415,9 +419,9 @@ export interface QoreIdExitResponse {
   sessionId?: string;
 }
 
-export type QoreIdCallbackResponse = 
-  | QoreIdSuccessResponse 
-  | QoreIdErrorResponse 
+export type QoreIdCallbackResponse =
+  | QoreIdSuccessResponse
+  | QoreIdErrorResponse
   | QoreIdExitResponse;
 
 export type QoreIdEnvironment = 'production' | 'sandbox';
@@ -436,7 +440,7 @@ export interface QoreIdLivenessCheckProps {
   productCode?: QoreIdProductCode;
 }
 
-export type QoreIdProductCode = 
+export type QoreIdProductCode =
   | 'liveness'
   | 'liveness_bvn'
   | 'liveness_drivers_license'

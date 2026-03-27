@@ -25,7 +25,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
     const [isLoading, setIsloading] = useState(true)
     const [verificaitonStatus, setVerificationStatus] = useState<VerificationStatus>()
     const [isDisabled, setIsDisabled] = useState(false);
-    
+
     useEffect(()=>{
         if(isOrganization)
             return
@@ -42,7 +42,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
     }
 
     const createProject = ()=>{
-        
+
         setNewProject(true)
     }
 
@@ -57,7 +57,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
     }
 
     const loadDraftProjects = async (): Promise<void> =>{
-        
+
         try{
             setIsloading(true)
             let response = await API().get("/dashboard")
@@ -68,7 +68,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
         }finally{
             setIsloading(false)
         }
-          
+
     }
 
     const onSuccessfulProjectUpdate = (updatedProject:ProjectProps)=>{
@@ -90,7 +90,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
             }, ()=>alertMessage(`Failed to publish ${title} project, please try again`))
         }
 
-        
+
     }
 
     const handleDelete = async (projectId:number, title:string)=>{
@@ -127,7 +127,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
         setOrganizationDraftProjects(projects)
     }
 
-  
+
 
     // useEffect(()=>console.log(organizationDraftProjects), [organizationDraftProjects])
     return <div className="border border-gray-300 rounded-xl p-4 grid grid-cols-1 gap-y-2">
@@ -164,10 +164,9 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
                         <span className="text-xl font-bold text-green-800">Project Management</span>
                         <Button variant={isDisabled?"disabled":"green"} onClick={createProject}>+ Create Project</Button>
                     </div>
-                     
-                        <div className="text-sm font-bold text-green-800 flex flex-col justify-between">
-                            <span>Draft Projects</span>
 
+                        <div className="text-sm font-bold text-green-800 flex flex-col justify-between">
+                        
                             <p className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                 {organizationDraftProjects.map((project, i) => <ProjectCard {...project} key={i} isOrganization={true} isDraft={true} onEdit={onSuccessfulProjectUpdate} onPublish={handlePublish} onDelete={handleDelete}/>).reverse()}
                             </p>
@@ -200,7 +199,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
                 : (projects.filter((p)=> p.categories.includes(activeCategory)).map((p, i)=><ProjectCard {...p} key={i} manage={true}/>))}
                 </>
                 }
-                
+
        </>}
     </div>
 }

@@ -178,7 +178,7 @@ export const InfoCell:React.FC<{icon:ReactNode, info:string}> = ({icon, info})=>
 )
 
 /**Displays an organization's information */
-export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, description, numOfActiveProjects,location, category, status, hasVolunteered=false})=>{
+export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, description, numOfActiveProjects,location, category, status, hasVolunteered=false, startDate, endDate, projectDescription, skillsRequired})=>{
   const {confirmAsk, ConfirmDialog} = useConfirmAsk({})
   const {alertMessage, AlertDialog} = useAlert({isOrg:true})
 
@@ -200,46 +200,72 @@ export const OrganizationCard: React.FC<OrganizationComponentProps> = ({name, de
     }
   }
 
-  return <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 w-full ">
-
-    <div className="flex justify-between items-start mb-4">
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 w-full ">
+      <div className="flex justify-between items-start mb-4">
         <div className="flex flex-col pr-4">
-            <h3 className="text-xl font-bold text-gray-900 mb-1">{name}</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
-                {description}
-            </p>
+          <h3 className="text-xl font-bold text-gray-900 mb-1">{name}</h3>
+          <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
         </div>
         <div className="flex-shrink-0 flex space-x-2">
-            {/* <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+          {/* <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
                 Applied
             </span> */}
-            <span className={`${status=="VERIFIED"?"bg-green-600": "bg-red-600"} text-white text-xs font-semibold px-3 py-1 rounded-full`}>
-               {status}
-            </span>
+          <span
+            className={`${status == "VERIFIED" ? "bg-green-600" : "bg-red-600"} text-white text-xs font-semibold px-3 py-1 rounded-full`}
+          >
+            {status}
+          </span>
         </div>
-    </div>
+      </div>
 
-    <div className="text-sm text-gray-700 space-y-2 mb-4">
+      <div className="text-sm text-gray-700 space-y-2 mb-4">
         <p>
-            <span className="font-semibold text-blue-600">Address: </span> 
-            {`${location?.lga}, ${location?.state}`}
+          <span className="font-semibold text-blue-600">Address: </span>
+          {`${location?.lga}, ${location?.state}`}
         </p>
         <p>
-            <span className="font-semibold text-blue-600">Active Projects: </span>
-            {numOfActiveProjects? numOfActiveProjects: 0}
+          <span className="font-semibold text-blue-600">Active Projects: </span>
+          {numOfActiveProjects ? numOfActiveProjects : 0}
         </p>
-    </div>
+        <p>
+          <span className="font-semibold text-blue-600">
+            projectDescription:{" "}
+          </span>
+          {projectDescription || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold text-blue-600">Skills Required: </span>
+          {skillsRequired?.join(", ") || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold text-blue-600">Start Date: </span>
+          {startDate || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold text-blue-600">End Date: </span>
+          {endDate || "N/A"}
+        </p>
+      </div>
 
-    <div className="flex justify-between items-end">
+      <div className="flex justify-between items-end">
         <div className="flex space-x-2">
-            <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">{category}</span>
+          <span className="text-xs px-3 py-1 border border-gray-300 rounded-full text-gray-700">
+            {category}
+          </span>
         </div>
         <Button variant="primary">View Projects</Button>
-        {hasVolunteered?<Button variant="outline" onClick={handleApplication} > Cancel Application</Button>: null}
+        {hasVolunteered ? (
+          <Button variant="outline" onClick={handleApplication}>
+            {" "}
+            Cancel Application
+          </Button>
+        ) : null}
+      </div>
+      <ConfirmDialog />
+      <AlertDialog />
     </div>
-    <ConfirmDialog/>
-    <AlertDialog/>
-</div>
+  );
 }
 
 /**Displays details of a project */
@@ -260,7 +286,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
     setIsEditing(false);
   }
 
-  // Project data to prepopulate when editing 
+  // Project data to prepopulate when editing
   const projectData:ProjectFormProps = {
     id: id,
     title: title,
@@ -300,7 +326,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
               <h3 className="text-xl font-bold text-gray-800">{title?title: "Community Health Screening"}</h3>
               {!isOrganization && <p className="text-sm font-medium text-gray-500">{organization? organization.name: "Abuja Health Initiative"}</p>}
           </div>
-        
+
           <span className={`${status=="OPEN"? "bg-green-600": "bg-red-600 "} text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider`}>
               {status? status: "Verified"}
           </span>
@@ -324,7 +350,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
             </div>
               {superVolunteer&& (<p className="text-sm font-normal text-gray-600">Super Volunteer: <span className="font-medium text-gray-800">{superVolunteer}</span></p>)}
           </div>
-          
+
           {!isOrganization?
         <div className="flex gap-x-2 self-end">
               {manage && <Button variant="outline" onClick={handleView}>View details</Button>}
@@ -332,13 +358,13 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({id, title, organiza
           </div>:
           <div className="flex gap-x-2 self-end">
             {status!="COMPLETED" &&<Button variant="outline" onClick={()=>setIsEditing(true)}>Edit</Button>}
-              {status!="COMPLETED" &&manage&&<Button variant="outline" > Manage Volunteers</Button>}  
+              {status!="COMPLETED" &&manage&&<Button variant="outline" > Manage Volunteers</Button>}
               {isDraft && <Button variant="green" onClick={()=>{
                 if(onPublish)
                   onPublish(id, title)
 
               }}>Publish</Button>}
-          </div>  
+          </div>
         }
       </div>
 
@@ -405,7 +431,7 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, 
     if(ok){
       let message = `Thank you for Applying! ${organization} will reach out to you if you fit the selection criteria`
       try{
-        await API().post("/projects/apply", applicationForm ) 
+        await API().post("/projects/apply", applicationForm )
         await alertMessage(message)
       }catch(err:any){
         let status = err?.response?.status
@@ -416,7 +442,7 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, 
           await alertMessage(`Application ${organization}'s project failed. Please try again`)
         }
       }
-        
+
     }
 
     onCancel()
@@ -432,12 +458,12 @@ export const ApplicationForm:React.FC<{onCancel:()=>void, organization?:string, 
 
         <label htmlFor="reason" className="block text-base font-semibold text-gray-700 mb-2">Why do you want to volunteer for this project?</label>
 
-        <textarea name="reason" rows={5}  value={applicationForm["reason"]} 
+        <textarea name="reason" rows={5}  value={applicationForm["reason"]}
         onChange={(e)=>{
           const value = e.currentTarget.value
           setApplicationForm({...applicationForm, reason:value })
           setCharCount(value.length)
-        }} 
+        }}
         maxLength={MAX_CHARS}
         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 resize-y text-gray-800" required></textarea>
         <div className="mt-1 text-sm flex justify-end">
