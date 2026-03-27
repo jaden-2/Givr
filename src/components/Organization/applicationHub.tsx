@@ -76,6 +76,7 @@ export const ApplicationHub = ()=>{
     const {API} = useAuthFetch("organization")
     const [isLoading, setIsLoading] = useState(false)
     const {confirmAsk, ConfirmDialog} = useConfirmAsk({isOrg:true})
+
     // Fetch list of applications when mounted
     useEffect(()=>{
         API().get("/projects/applicants")
@@ -230,6 +231,18 @@ export const ApplicationHub = ()=>{
         }
     }
 
+    const markProjectCompleted = async (project: ProjectProps)=>{
+        let response = await confirmAsk({
+            question: `Are you sure you want to close this project? Project will be marked completed`, 
+            falseAnswer: "Cancel", 
+            trueAnswer: "Proceed"
+        })
+        project.status = "COMPLETED"
+
+        if(response){
+            await API().patch(`/projects/${project.id}`, {...project})
+        }
+    }
 
     return <div className="min-h-screen bg-[#F8FAFC] font-sans pb-20">
         {isLoading && <PageLoader/>}
@@ -293,7 +306,7 @@ export const ApplicationHub = ()=>{
                 {Object.values(groupedParticipants).length > 0 ? (
                     Object.values(groupedParticipants).map(({ project, members }) => (
                         <div key={project.id} className="mb-14">
-                        <ProjectGroupHeader project={project} count={members.length} />
+                        <ProjectGroupHeader project={project} count={members.length}  onComplete={markProjectCompleted}/>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                             {members.map((member:ParticipantProps) => (
                             <ParticipantCard 

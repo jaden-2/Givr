@@ -8,7 +8,6 @@ import {
   Calendar,
   
   Layers,
-  ChevronRight,
   Info,
   Loader2,
   Send,
@@ -210,7 +209,7 @@ export const ParticipantCard: React.FC<ParticipantCardComponentProps> = ({ parti
  * ProjectGroupHeader Component
  * Displays the shared project information for a group of participants.
  */
-export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number}> = ({ project, count }) => {
+export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number, onComplete:(project: ProjectProps)=>Promise<void>}> = ({ project, count, onComplete }) => {
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'success'
@@ -286,9 +285,20 @@ export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number}> =
           </button>
         </div>
 
-        <button className="text-sm font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
-          Project Details <ChevronRight size={16} />
-        </button>
+        {
+          project.status == "COMPLETED"? <Button
+          variant='disabled' 
+          className='w-auto'
+        >
+          <CheckCircle size={32} className="mr-2" />
+        </Button>:<Button
+          variant='primary' 
+          className='w-auto'
+          onClick={()=>onComplete(project)}
+        >
+          <CheckCircle size={32} className="mr-2" />
+        </Button>
+        }
       </div>
 
       {/* Broadcast Input Area */}
