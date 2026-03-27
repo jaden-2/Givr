@@ -318,7 +318,7 @@ export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number}> =
 
             <div className="flex justify-end items-center gap-3">
               <button
-                disabled={!message.trim() || status !== 'idle'}
+                disabled={(!message.trim() || status !== 'idle') && project.broadcastEnabled}
                 onClick={handleBroadcast}
                 className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white text-xs font-black rounded-lg transition-all shadow-md shadow-indigo-200 active:scale-95"
               >

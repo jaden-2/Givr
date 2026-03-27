@@ -55,9 +55,14 @@ export const EditOrgProfileModal = ({org, onSave,onClose}: EditOrgProfileModalPr
         onClose()
     }catch (err:any){
         const status = err?.response?.status;
-
+        const errMsg = err?.response?.body?.message
         if(status == 400){
           alertMessage("You signed in with Google, email cannot be modified")
+        }else if(status == 409){
+          setIdError({
+            active: true,
+            errMsg
+          })
         }else
           alertMessage("Unexpected error, failed to update profile")
     }

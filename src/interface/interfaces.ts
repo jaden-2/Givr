@@ -95,6 +95,7 @@ export interface ProjectProps{
   createdAt:string;
   updatedAt:string;
   address?:string;
+  broadcastEnabled?:boolean;
   }
 
 export interface ProjectFormProps{
@@ -131,13 +132,13 @@ export interface ProjectComponentProps extends ProjectProps{
   onPublish?:(projectId:number, title:string)=>void;
 }
 export type IdType =  "DL"|"vNIN"|"VOTER_CARD"|"PASSPORT"
-
+export type VerificationStatus =  "VERIFIED" | "UNVERIFIED"| "PENDING";
 export interface OrganizationProps{
   name?: string;
   description?:string;
   location?:location;
   category?:string[];
-  status?: "VERIFIED" | "UNVERIFIED"| "PENDING";
+  status?: VerificationStatus;
   numOfActiveProjects?:number;
   website?:string;
   address?:string;
@@ -192,6 +193,7 @@ export interface MyVolunteeringProps {
   project?:ProjectProps;
   status?: "IN_PROGRESS" | "COMPLETED";
   rating?:string;
+  reviewable?:boolean;
 }
 
 
@@ -367,7 +369,7 @@ export interface OrganizationDashboardProps {
     numApproved:number;
     numRejected:number;
   }
-  isRestricted:boolean;
+  status:VerificationStatus;
 }
 
 export type UserTypes = "volunteer"|"organization"|"";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { OrganizationDashboardProps, OrganizationQuickActions, ProjectProps } from "../../interface/interfaces"
+import type { OrganizationDashboardProps, OrganizationQuickActions, ProjectProps, VerificationStatus } from "../../interface/interfaces"
 import { Button, ProjectCard, RadioButton } from "../ReuseableComponents"
 import { CreateProject } from "../Organization/createProjectForm"
 import useAuthFetch from "../hooks/useAuthFetch"
@@ -23,7 +23,7 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
 
     const {API} = useAuthFetch(isOrganization? "organization": "volunteer");
     const [isLoading, setIsloading] = useState(true)
-
+    const [verificaitonStatus, setVerificationStatus] = useState<VerificationStatus>()
     const [isDisabled, setIsDisabled] = useState(false);
     
     useEffect(()=>{
@@ -63,7 +63,8 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
             let response = await API().get("/dashboard")
              const data = response.data as OrganizationDashboardProps
             setOrganizationDraftProjects(data.projects.draftProjects)
-            setIsDisabled(data.isRestricted)
+            setVerificationStatus(data.status)
+            setIsDisabled(data.status != "VERIFIED")
         }finally{
             setIsloading(false)
         }
@@ -173,9 +174,16 @@ export const ProjectHub:React.FC<{ isOrganization?:boolean, orgTriggerAction?:(a
                         </div>
                         {isDisabled && (
                         <div className="flex items-center justify-between gap-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-                            <span>
+                            {
+                                verificaitonStatus=="UNVERIFIED" && <span>
                             Add your <strong>organization's information</strong> to complete your profile and manage projects
                             </span>
+                            }
+                            {
+                                verificaitonStatus == "PENDING" && <span>
+                            You <strong>organization's information</strong> is under review
+                            </span>
+                            }
                             <button className="whitespace-nowrap font-medium underline hover:opacity-80"
                                 onClick={()=>{
                                    if(orgTriggerAction)

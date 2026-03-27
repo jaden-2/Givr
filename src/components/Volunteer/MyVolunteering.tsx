@@ -15,7 +15,7 @@ export default function MyVolunteering() {
   const {API} = useAuthFetch("volunteer")
   const {confirmAsk, ConfirmDialog} = useConfirmAsk({isOrg: false})
   const {alertMessage, AlertDialog} = useAlert({isOrg:false})
-  // Simulate backend fetch
+  // Backend fetch
   useEffect(() => {
     async function fetchProjects() {
       try{

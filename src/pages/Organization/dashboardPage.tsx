@@ -32,7 +32,7 @@ export const DashboardPage = () => {
             numApproved: 0,
             numRejected:0
         },
-        isRestricted: false
+        status: "PENDING"
 
     });
     
