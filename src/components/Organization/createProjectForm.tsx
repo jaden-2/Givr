@@ -119,7 +119,7 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
                         onSuccessfulEdit(updatedProject)
                 }
             }
-       }catch{
+       }catch(err:any){
             await alertMessage( `Failed to update project`)
             
        }finally{

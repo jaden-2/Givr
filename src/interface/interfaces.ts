@@ -96,6 +96,7 @@ export interface ProjectProps{
   updatedAt:string;
   address?:string;
   broadcastEnabled?:boolean;
+  rating?:number;
   }
 
 export interface ProjectFormProps{
@@ -192,7 +193,7 @@ export interface MyVolunteeringProps {
   organization?: OrganizationProps;
   project?:ProjectProps;
   status?: "IN_PROGRESS" | "COMPLETED";
-  rating?:string;
+  rating?:number;
   reviewable?:boolean;
 }
 

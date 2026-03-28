@@ -129,75 +129,7 @@ export const ApplicationHub = ()=>{
         }, {});
     }, [participants]);
 
-    const mockParticipant:ParticipantProps[] = [{
-        id: 101,
-        status: "IN_PROGRESS",
-        project: {
-        title: "Community Garden Restoration",
-        startDate: "2023-10-01",
-        endDate: "2023-12-01",
-        attendanceHours: { from: "09:00 AM", to: "01:00 PM" },
-        location: { lga: "San Francisco", 
-            state: "Lagos"
-         },
-         applicationDeadline: "",
-         categories: [],
-         createdAt: "",
-         maxVolunteers: 20,
-         requiredSkills: [],
-         specialRequirements: "",
-         status: "OPEN",
-         totalApplicants: 10,
-         updatedAt: "",
-         id: 90
-        },
-        volunteer: {
-        firstname: "Sarah",
-        lastname: "Jenkins",
-        middleName: "Marie",
-        email: "sarah.j@example.com",
-        location: { lga: "San Francisco" ,
-            state: "Abuja"
-        },
-        skills: ["Urban Farming", "Leadership", "Event Planning", "Botany", "Design"],
-        profileUrl: "",
-        }
-    },
-    {
-        id: 102,
-        status: "IN_PROGRESS",
-        project: {
-        title: "Community Garden Restoration",
-        startDate: "2023-10-01",
-        endDate: "2023-12-01",
-        attendanceHours: { from: "09:00 AM", to: "01:00 PM" },
-        location: { lga: "San Francisco", 
-            state: "Lagos"
-         },
-         applicationDeadline: "",
-         categories: [],
-         createdAt: "",
-         maxVolunteers: 20,
-         requiredSkills: [],
-         specialRequirements: "",
-         status: "OPEN",
-         totalApplicants: 10,
-         updatedAt: "",
-         id: 90
-        },
-        volunteer: {
-        firstname: "Sarah",
-        lastname: "Jenkins",
-        middleName: "Marie",
-        email: "sarah.j@example.com",
-        location: { lga: "San Francisco" ,
-            state: "Abuja"
-        },
-        skills: ["Urban Farming", "Leadership", "Event Planning", "Botany", "Design"],
-        profileUrl: "",
-        }
-    }
-];
+    
    
 
     const fetchParticipants = async ()=>{
@@ -205,7 +137,7 @@ export const ApplicationHub = ()=>{
             let participants = await API().get("/projects/participants") 
             setParticipants(participants.data as ParticipantProps[])
         }catch{
-            setParticipants(mockParticipant)
+            
         }
     }
 

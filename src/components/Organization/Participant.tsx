@@ -268,7 +268,7 @@ export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number, on
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex justify-end gap-3 w-full">
           <button 
             onClick={() => setIsBroadcasting(!isBroadcasting)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ${
@@ -283,22 +283,22 @@ export const ProjectGroupHeader:React.FC<{project:ProjectProps, count:number, on
               <><Megaphone size={16} /> Broadcast</>
             )}
           </button>
-        </div>
 
-        {
-          project.status == "COMPLETED"? <Button
-          variant='disabled' 
-          className='w-auto'
-        >
-          <CheckCircle size={32} className="mr-2" />
-        </Button>:<Button
-          variant='primary' 
-          className='w-auto'
-          onClick={()=>onComplete(project)}
-        >
-          <CheckCircle size={32} className="mr-2" />
-        </Button>
-        }
+          {
+              project.status == "COMPLETED"? <Button
+              variant='disabled' 
+              className='w-auto'
+              >
+              <CheckCircle size={32} className="mr-2" />
+            </Button>:<Button
+              variant='primary' 
+              className='w-auto'
+              onClick={()=>onComplete(project)}
+            >
+              <CheckCircle size={32} className="mr-2" />
+            </Button>
+            }
+        </div>
       </div>
 
       {/* Broadcast Input Area */}
