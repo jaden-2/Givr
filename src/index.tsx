@@ -47,7 +47,9 @@ export const IndexPage = ()=>{
               path="*"
               element={<PageNotFound toDashBoard="/dashboard" />}
             />
-            <Route path="/coming-soon" element={<ComingSoon />} />
+            <Route path="/opportunities" element={<ComingSoon dashboardPath="/" buttonLabel="Return Home"/>} />
+            <Route path="/organizations" element={<ComingSoon dashboardPath="/" buttonLabel="Return Home"/>} />
+            <Route path="/certificates" element={<ComingSoon dashboardPath="/" buttonLabel="Return Home"/>} />
           </Routes>
         </AuthenticatedFlagProvider>
       </>
