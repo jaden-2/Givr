@@ -108,6 +108,8 @@ export const CreateProject:React.FC<{onClose?:()=>void, onSuccessfulEdit?:(updPr
     }
 
     const handleUpdate = async ()=>{
+        if(!validateForm())
+            return;
         let userConfirm = await confirmAsk({
             question: "Are you sure you want to update this project?",
             trueAnswer: "Update",
