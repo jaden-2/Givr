@@ -343,7 +343,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({ id, title, organiz
             </span>
             {
               status != "DRAFT" && <button onClick={handleShareProject}>
-              <LucideShare2 className={`${isOrganization? 'hover:text-green-500':'hover:text-blue-500'}`}></LucideShare2>
+              <LucideShare2 className={`${isOrganization? 'hover:text-green-500':'hover:text-blue-500'}`}/> 
             </button>
             }
           </div>

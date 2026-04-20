@@ -106,7 +106,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
                 <Button variant={isOrganization?"green":"primary"} className="w-full py-3" >
                     {isLoading ? (
                         <LoadingEffect message="Signing In..." />
-                    ) : 'Sign In / Sign Up'}
+                    ) : 'Sign In'}
                 </Button>
             </form>
 
@@ -122,7 +122,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ toSignUp, onSignInAttempt, toFo
                 onClick={onSignInWithGoogle}
             >
                 <GoogleIcon />
-                <span>Continue with Google</span>
+                <span>Sign-in / Sign-up with Google</span>
             </Button>
 
             {/* Sign Up Link */}
