@@ -34,7 +34,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, shareData }) =
   const [isNativeSupported, setIsNativeSupported] = useState<boolean>(false);
 
   useEffect(() => {
-    if (typeof navigator !== 'undefined' && navigator.share) {
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
       setIsNativeSupported(true);
     }
   }, []);
