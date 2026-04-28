@@ -221,7 +221,7 @@ export const EditProfile:React.FC<{onClose?:()=>void, profileProps: ProfileProps
         {
             <>
                 <div>
-                    <label htmlFor="location"  className="block text-base font-semibold text-gray-700 mb-2">Location <span className="text-red-500 ml-1">*</span></label>
+                    <label htmlFor="location"  className="block text-base font-semibold text-gray-700 mb-2">Location (State of residence) <span className="text-red-500 ml-1">*</span></label>
                     {errors?.state && <ErrorMsg error={errors?.state}/>}
                     <LocationSelect onChange={handleLocationChange} state={profile.location?.state} lga={profile.location?.lga} />
                     {errors?.lga && <ErrorMsg error={errors?.lga}/>}
