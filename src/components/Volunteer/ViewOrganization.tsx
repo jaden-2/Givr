@@ -59,7 +59,7 @@ export const useOrganizationView = ()=>{
         
         const handleViewProjects = (): void => {
             setActiveTab('projects');
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            window.scrollTo({ top: 500, behavior: 'smooth' });
         };
 
         useEffect(()=>{

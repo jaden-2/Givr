@@ -132,7 +132,7 @@ export const useApplicationForm = ()=>{
 
     const handleCancel = async ()=>{
          const confirmed = await confirmAsk({
-            question: "Are you sure you want to cancel your applicatoin for this project?",
+            question: "Are you sure you want to cancel your application for this project?",
             trueAnswer: "Proceed",
             falseAnswer: "Cancel"
         });
