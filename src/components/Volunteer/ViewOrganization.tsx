@@ -106,7 +106,7 @@ export const useOrganizationView = ()=>{
                     {/* Logo / Profile Image */}
                     <div className="relative shrink-0">
                     <div className="h-40 w-40 rounded-3xl bg-gradient-to-br from-green-500 to-orange-600 flex items-center justify-center text-white overflow-hidden shadow-xl border-4 border-white">
-                        {!profileUrl ? (
+                        {profileUrl ? (
                         <img src={profileUrl} alt={name} className="h-full w-full object-cover" />
                         ) : (
                         <Building2 size={64}/>
