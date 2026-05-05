@@ -41,8 +41,8 @@ export const useOrganizationView = ()=>{
     const OrganizationView: React.FC<OrganizationViewComponentProps> = ({ organization, onBack, isOpen }) => {
         const [activeTab, setActiveTab] = useState<'overview' | 'projects'>('overview');
         const {API} = useAuthFetch("volunteer")
-        const [activeProjects, setActiveProjects] = useState<ProjectProps[]>([])
-        let numOfActiveProjects = activeProjects.length
+        const [projects, setProjects] = useState<ProjectProps[]>([])
+        let numOfProjects = projects.length
         // Destructuring with defaults
         let {
             name = "Unnamed Organization",
@@ -68,7 +68,7 @@ export const useOrganizationView = ()=>{
                     let response = await API().get(`/organizations/${organization?.organizationId}/projects/active`)
                     let data = response.data as ProjectProps[];
                     
-                    setActiveProjects(()=>{
+                    setProjects(()=>{
                         return data.length>0? data: [];
                     }) 
                     
@@ -105,11 +105,11 @@ export const useOrganizationView = ()=>{
                     
                     {/* Logo / Profile Image */}
                     <div className="relative shrink-0">
-                    <div className="h-40 w-40 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white overflow-hidden shadow-xl border-4 border-white">
-                        {profileUrl ? (
+                    <div className="h-40 w-40 rounded-3xl bg-gradient-to-br from-green-500 to-orange-600 flex items-center justify-center text-white overflow-hidden shadow-xl border-4 border-white">
+                        {!profileUrl ? (
                         <img src={profileUrl} alt={name} className="h-full w-full object-cover" />
                         ) : (
-                        <Building2 size={64} />
+                        <Building2 size={64}/>
                         )}
                     </div>
                     {status === 'VERIFIED' && (
@@ -140,10 +140,12 @@ export const useOrganizationView = ()=>{
                         {address}
                         </div>
                         <div className="flex items-center gap-2">
+                        
+                        {website && <>
                         <Globe size={18} className="text-indigo-500" />
                         <a href={website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 underline decoration-indigo-200 underline-offset-4 transition-colors flex items-center gap-1">
                             Official Website <ExternalLink size={14} />
-                        </a>
+                        </a></>}
                         </div>
                         <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-1 rounded-lg">
                         <Star size={16} fill="currentColor" />
@@ -184,7 +186,7 @@ export const useOrganizationView = ()=>{
                     activeTab === 'projects' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'
                     }`}
                 >
-                    ACTIVE PROJECTS ({numOfActiveProjects})
+                    PROJECTS ({numOfProjects})
                     {activeTab === 'projects' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-indigo-600 rounded-t-full" />}
                 </button>
                 </div>
@@ -230,8 +232,8 @@ export const useOrganizationView = ()=>{
                             <FolderDot size={28} className="text-white" />
                         </div>
                         <div>
-                            <div className="text-slate-400 text-xs font-bold tracking-widest mb-1 uppercase">Active Projects</div>
-                            <div className="text-3xl font-black">{numOfActiveProjects}</div>
+                            <div className="text-slate-400 text-xs font-bold tracking-widest mb-1 uppercase">Projects</div>
+                            <div className="text-3xl font-black">{numOfProjects}</div>
                         </div>
                         </div>
                     </div>
@@ -247,7 +249,7 @@ export const useOrganizationView = ()=>{
                         </p>
                         <p className="text-slate-600 leading-relaxed text-lg">
                             Headquartered in <strong>{location?.state}, Nigeria</strong>, {name} operates with a commitment to high standards. 
-                            The organization currently maintains a public performance rating of <strong>{rating}/5.0</strong>. 
+                            The organization currently maintains an excellent public performance rating. 
                             {status === 'VERIFIED' 
                             ? " As a verified entity, all registration documents and contact points have been validated by our compliance team." 
                             : " This profile is currently in the verification pipeline."}
@@ -259,8 +261,8 @@ export const useOrganizationView = ()=>{
                 ) : (
                 /* Projects List */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {activeProjects.length > 0 ? (
-                    activeProjects.map((project, index) => (
+                    {projects.length > 0 ? (
+                    projects.map((project, index) => (
                         <ProjectCard key={index} project={project} />
                     ))
                     ) : (
@@ -321,12 +323,14 @@ export const useOrganizationView = ()=>{
                         {/* <InfoCell icon={<ClockIcon color="#676879" className="w-6 w-6"/>} info={attendanceHours && `${attendanceHours.from.toUpperCase()}-${attendanceHours.to.toUpperCase()}`}/> */}
                         <InfoCell icon= {<Hourglass/>} info={`${Math.round(duration)} days`}/>
                         <InfoCell icon={<LocationIcon/>} info={project.address? `${project.address}`: "Wuse District, Abuja"}/>
-                        <InfoCell icon={<GroupIcon/>} info={`${project.totalApplicants?project.totalApplicants: 0 }/${project.maxVolunteers?project.maxVolunteers: 20}` }/>
+                        {project.status == "OPEN"? <InfoCell icon={<GroupIcon/>} info={`${project.totalApplicants?project.totalApplicants: 0 }/${project.maxVolunteers?project.maxVolunteers: 20}` }/>
+                            : <InfoCell icon={<Star/>} info={`${project.rating}/5`}/>}
                     </div>
-                    <div className="flex items-center justify-end pt-6 border-t border-slate-100">
-                        
+                    {
+                        project.status == "OPEN" && <div className="flex items-center justify-end pt-6 border-t border-slate-100">
                         <Button variant='primary' onClick={viewApplicationForm}>Apply Now</Button>
                     </div>
+                    }
                     
                 </>}
             </div>

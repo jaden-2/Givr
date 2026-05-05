@@ -303,10 +303,11 @@ export const ApplicationHub = ()=>{
             falseAnswer: "Cancel", 
             trueAnswer: "Proceed"
         })
-        project.status = "COMPLETED"
+        
 
         if(response){
             await API().patch(`/projects/${project.id}`, {...project})
+            project.status = "COMPLETED"
         }
     }
 
