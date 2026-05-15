@@ -7,3 +7,9 @@ export function parseZonedDateTime(zonedDateTimeStr:string) {
     year: 'numeric'
   });
 }
+
+export function parseTime(timeTimeStr:string){
+  const date = new Date(timeTimeStr)
+
+  return date.toLocaleTimeString("en-uk")
+}

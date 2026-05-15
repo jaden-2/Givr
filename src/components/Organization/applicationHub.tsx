@@ -17,6 +17,7 @@ import {
   Clock
 } from 'lucide-react';
 import { parseZonedDateTime } from "../hooks/ParseDate"
+import MessageThreadApp from "../Chat/MessageThread"
 
 interface GroupedData {
     [projectId: number]: {
@@ -314,6 +315,7 @@ export const ApplicationHub = ()=>{
     return <div className="min-h-screen bg-[#F8FAFC] font-sans pb-20">
         {isLoading && <PageLoader/>}
         <ConfirmDialog/>
+        <MessageThreadApp/>
         {/* 1. Dashboard Header */}
         <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
