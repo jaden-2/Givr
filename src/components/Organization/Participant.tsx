@@ -8,7 +8,6 @@ import {
   Calendar,
   Layers,
   Info,
-  Megaphone,
   X,
   LucideMessageCircleDashed
 } from 'lucide-react';

@@ -3,7 +3,7 @@ import type { ParticipantProps,  ParticipationStatus,  ProjectProps, VolunteerAp
 import { useConfirmAsk } from "../hooks/useConfirm"
 import { Button } from "../ReuseableComponents"
 import useAuthFetch from "../hooks/useAuthFetch"
-import { ParticipantCard, ProjectGroupHeader } from "./Participant"
+import {  ProjectGroupHeader } from "./Participant"
 import { PageLoader } from "../icons"
 import {  Filter, Inbox, Search, Users } from "lucide-react"
 import { 

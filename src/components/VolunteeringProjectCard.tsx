@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { MyVolunteeringProps, ProjectProps } from "../interface/interfaces";
 import { Button } from "./ReuseableComponents";
 import { PageLoader } from "./icons";
-import { LucideMessageCircleDashed, Megaphone } from "lucide-react";
+import { LucideMessageCircleDashed, } from "lucide-react";
 
 
 interface ProjectCardProps {
