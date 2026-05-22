@@ -1,61 +1,85 @@
-import  { useState,} from 'react';
-import { Send, Smile, CheckCheck, User } from 'lucide-react';
-import { Button } from '../ReuseableComponents';
+import { useState } from 'react';
+import { Send, CheckCheck, User, LucideArrowLeft } from 'lucide-react';
+import { useVerifyAuth } from '../Auth/AuthContext';
+import type { UserTypes } from '../../interface/interfaces';
+import { parseTime, parseZonedDateTime } from '../hooks/ParseDate';
 
 export interface Message {
-  id: string;
-  sender: string;
-  timestamp: string;
-  content: string;
-  isOutgoing: boolean;
+  msgId?: string;
+  projectId?: number;
+  sentBy?: string;
+  username?: string;
+  sentAt?: string;
+  content?: string;
+  type?: "chat_message"|"unread_update"
 }
 
-const Avatar = ({ className = "" }: { className?: string }) => (
-  <div className={`w-12 h-12 rounded-full bg-black flex items-center justify-center flex-shrink-0 ${className}`}>
-    <User className="text-white w-8 h-8" />
+const Avatar = ({ className = "", }: { className?: string; seed?: string }) => (
+  <div className={`w-9 h-9 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center flex-shrink-0 ring-2 ring-white shadow-sm ${className}`}>
+    <User className="text-slate-300 w-4 h-4" />
   </div>
 );
 
-export const ThreadHeader = ({ newMessageCount }: { newMessageCount: number }) => (
-  <header className="flex justify-between items-center px-4 py-3 border-b border-gray-100 bg-white">
-    <h2 className="text-xs font-bold text-black uppercase tracking-wider">Message Thread</h2>
-    <div className="flex items-center gap-1 text-blue-500 font-medium text-xs">
-      <span>{newMessageCount} new messages</span>
-      <div className="w-2 h-2 bg-blue-500 rounded-full" />
+export const ThreadHeader = ({
+  title,
+  onClose,
+}: {
+  newMessageCount: number;
+  title: string;
+  onClose: () => void;
+}) => (
+  <header className="flex items-center gap-3 px-4 py-3 bg-white border-b border-slate-100">
+    <button
+      onClick={onClose}
+      className="group flex items-center justify-center w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-900 text-slate-500 hover:text-white transition-all duration-200 active:scale-95"
+    >
+      <LucideArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+    </button>
+
+    <div className="flex-1 min-w-0">
+      <h2 className="text-sm font-semibold text-slate-900 truncate tracking-tight">{title}</h2>
     </div>
+
+    <div className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-100" title="Active" />
   </header>
 );
 
 export const MessageBubble = ({ message }: { message: Message }) => {
-  if (message.isOutgoing) {
+  const verifyAuth = useVerifyAuth();
+  const isOwn = message.sentBy === verifyAuth?.currentUser?.userId;
+
+  if (isOwn) {
     return (
-      <div className="flex justify-end gap-3 mb-6 items-start">
-        <div className="flex flex-col items-end max-w-[70%]">
-          <div className="flex items-center gap-2 mb-1">
-             <span className="text-xs font-bold text-blue-600">You</span>
-             <span className="text-[10px] text-gray-500 uppercase">{message.timestamp}</span>
-          </div>
-          <div className="bg-blue-50 text-gray-800 p-4 rounded-2xl rounded-tr-none shadow-sm relative">
+      <div className="flex justify-end gap-2.5 mb-5 items-end">
+        <div className="flex flex-col items-end max-w-[72%]">
+          <span className="text-[10px] text-slate-400 mb-1.5 mr-1 tracking-wide uppercase">
+            {parseTime(message.sentAt)}, {parseZonedDateTime(message.sentAt)}
+          </span>
+          <div className="bg-slate-900 text-white px-4 py-3 rounded-2xl rounded-br-sm shadow-md">
             <p className="text-sm leading-relaxed">{message.content}</p>
-            <div className="flex justify-end mt-1">
-               <CheckCheck className="w-4 h-4 text-blue-400" />
+            <div className="flex justify-end mt-1.5">
+              <CheckCheck className="w-3.5 h-3.5 text-emerald-400" />
             </div>
           </div>
         </div>
-        <Avatar className="mt-6" />
+        <Avatar className="mb-0.5" />
       </div>
     );
   }
 
   return (
-    <div className="flex justify-start gap-3 mb-6 items-start">
-      <Avatar />
-      <div className="flex flex-col max-w-[70%]">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-bold text-black">{message.sender}</span>
-          <span className="text-[10px] text-gray-500 uppercase">{message.timestamp}</span>
+    <div className="flex justify-start gap-2.5 mb-5 items-end">
+      <Avatar seed={message.username} className="mb-0.5" />
+      <div className="flex flex-col max-w-[72%]">
+        <div className="flex items-baseline gap-2 mb-1.5 ml-1">
+          <span className="text-xs font-semibold text-slate-700 tracking-tight">
+            {message.username}
+          </span>
+          <span className="text-[10px] text-slate-400 uppercase tracking-wide">
+            {message.sentAt}
+          </span>
         </div>
-        <div className="bg-gray-50 text-gray-800 p-4 rounded-2xl rounded-tl-none shadow-sm">
+        <div className="bg-slate-50 border border-slate-100 text-slate-800 px-4 py-3 rounded-2xl rounded-bl-sm shadow-sm">
           <p className="text-sm leading-relaxed">{message.content}</p>
         </div>
       </div>
@@ -63,42 +87,58 @@ export const MessageBubble = ({ message }: { message: Message }) => {
   );
 };
 
-export const InputArea:React.FC<{onSend:(test:string)=>Promise<void>}> = ({onSend}) => {
-  const [text, setText] = useState("");
+export const InputArea: React.FC<{ onSend: (text: string) => Promise<void>; variant: UserTypes }> = ({
+  onSend,
+  variant,
+}) => {
+  const [text, setText] = useState('');
+  const [focused, setFocused] = useState(false);
 
-  const handleSend = async ()=>{
-    await onSend(text)
-    setText('')
-  }
+  const handleSend = async () => {
+    if (!text.trim()) return;
+    await onSend(text);
+    setText('');
+  };
+
   return (
-    <div className="p-4 bg-white border-t border-gray-100 flex gap-4 items-center">
-      <div className="relative flex-grow">
-        <textarea 
-        
+    <div className="px-4 py-3 bg-white border-t border-slate-100">
+      <div
+        className={`flex gap-3 items-end bg-slate-50 rounded-2xl px-4 py-3 transition-all duration-200 ${
+          focused ? 'ring-2 ring-slate-900/10 bg-white shadow-sm' : ''
+        }`}
+      >
+        <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyDown={async (key)=>{
-            if(key.key == "Enter"){
-                if(!key.shiftKey)
-                    await handleSend()
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onKeyDown={async (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              await handleSend();
             }
           }}
-          placeholder="Type your message here..."
-          rows={4}
-          className="resize-none w-full pl-4 pr-10 py-3 border-2 border-indigo-100 rounded-xl focus:outline-none focus:border-indigo-300 transition-colors text-sm"
+          placeholder="Write a message…"
+          rows={2}
+          className="resize-none flex-1 bg-transparent focus:outline-none text-sm text-slate-800 placeholder:text-slate-400 leading-relaxed"
         />
-        <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
-          <Smile size={20} />
+        <button
+          onClick={handleSend}
+          disabled={!text.trim()}
+          className={`flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 active:scale-95 ${
+            text.trim()
+              ? variant === 'organization'
+                ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm hover:shadow-md'
+                : 'bg-slate-900 hover:bg-slate-700 text-white shadow-sm hover:shadow-md'
+              : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+          }`}
+        >
+          <Send className="w-4 h-4" />
         </button>
       </div>
-      {/* <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 font-bold text-xs tracking-widest transition-all shadow-md">
-        
-      </button> */}
-      <Button variant='primary' onClick={handleSend}>
-        <Send size={16} />
-        SEND MESSAGE
-      </Button>
+      <p className="text-[10px] text-slate-400 mt-1.5 ml-1">
+        Enter to send · Shift + Enter for new line
+      </p>
     </div>
   );
 };
-

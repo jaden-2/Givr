@@ -425,7 +425,7 @@ export const RadioButton: React.FC<{children: React.ReactNode;  value?:string; a
   return (
         <button
         onClick={onClick}
-        className={`font-semibold text-sm  px-4 relative z-10 transition-all
+        className={`font-semibold text-sm flex justify-center px-4 relative z-10 transition-all
             ${active
             ? activeStyle_
             : notActiveStyle}`}

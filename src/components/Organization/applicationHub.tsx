@@ -17,7 +17,6 @@ import {
   Clock
 } from 'lucide-react';
 import { parseZonedDateTime } from "../hooks/ParseDate"
-import MessageThreadApp from "../Chat/MessageThread"
 
 interface GroupedData {
     [projectId: number]: {
@@ -315,7 +314,6 @@ export const ApplicationHub = ()=>{
     return <div className="min-h-screen bg-[#F8FAFC] font-sans pb-20">
         {isLoading && <PageLoader/>}
         <ConfirmDialog/>
-        <MessageThreadApp/>
         {/* 1. Dashboard Header */}
         <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -375,23 +373,8 @@ export const ApplicationHub = ()=>{
                 {Object.values(groupedParticipants).length > 0 ? (
                     Object.values(groupedParticipants).map(({ project, members }) => (
                         <div key={project.id} className="mb-14">
-                        <ProjectGroupHeader project={project} count={members.length}  onComplete={markProjectCompleted}/>
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-                            {members.map((member:ParticipantProps) => (
-                            <ParticipantCard 
-                                key={member.id} 
-                                participant={member}
-                                onComplete={() =>{ 
-                                    updatestatus(member, "COMPLETED")
-                                }
-                                    
-                                }
-                                onReject={() => {
-                                    updatestatus(member, "REJECTED")
-                                }}
-                            />
-                            ))}
-                        </div>
+                        <ProjectGroupHeader project={project} members={members}  
+                          onComplete={markProjectCompleted} updatestatus={updatestatus}/>
                         </div>
                     ))
                     ) : (

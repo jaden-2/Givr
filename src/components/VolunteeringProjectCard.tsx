@@ -1,7 +1,8 @@
 import { useState } from "react";
-import type { MyVolunteeringProps } from "../interface/interfaces";
+import type { MyVolunteeringProps, ProjectProps } from "../interface/interfaces";
 import { Button } from "./ReuseableComponents";
 import { PageLoader } from "./icons";
+import { LucideMessageCircleDashed, Megaphone } from "lucide-react";
 
 
 interface ProjectCardProps {
@@ -9,6 +10,7 @@ interface ProjectCardProps {
   onCancelClick: (project: MyVolunteeringProps) => void;
   onViewDetailsClick: (project: MyVolunteeringProps) => void;
   onRateSubmit: (volunteered: MyVolunteeringProps, rating:number)=>Promise<void>;
+  onChatOpen: (project:ProjectProps)=>void;
   href?: string;
 }
 
@@ -53,7 +55,7 @@ const StarIcon = ({
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
   </svg>
 );
-export default function VolunteeringProjectCard({volunteered, onCancelClick, onViewDetailsClick, onRateSubmit}: ProjectCardProps) {
+export default function VolunteeringProjectCard({volunteered, onCancelClick, onViewDetailsClick, onRateSubmit, onChatOpen}: ProjectCardProps) {
 
   const [isRatingMode, setIsRatingMode] = useState(false);
   const [currentRating, setCurrentRating] = useState<number>(volunteered.project?.rating|| 0);
@@ -119,6 +121,12 @@ export default function VolunteeringProjectCard({volunteered, onCancelClick, onV
       <div className="mt-5 pt-4 border-t border-gray-100">
         {volunteered.status === "IN_PROGRESS" ? (
           <div className="flex gap-3">
+            <Button variant="void" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold 
+              transition-all duration-200 active:scale-95 bg-orange-50 text-orange-600 hover:bg-orange-100 border border-orange-100"
+              onClick={()=>onChatOpen(volunteered.project)}
+              >
+              <LucideMessageCircleDashed size={14}/> Chat
+            </Button>
             <Button
               variant="primary"
               onClick={() => onViewDetailsClick(volunteered)}

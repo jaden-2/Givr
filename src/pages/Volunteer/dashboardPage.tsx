@@ -175,7 +175,7 @@ export const DashboardPage = () => {
     return <>
         <main className="">
             <DashboardHeader />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15">
+            <div className="max-w-7xl h-svh mx-auto px-4 sm:px-6 lg:px-8 mt-15">
                 <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={volunteerDashboard?.firstname} />
                 {active == "Dashboard" && <Dashboard metrics={metrics} triggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)} profileCompleted={volunteerDashboard.profileCompleted}/>}
                 {active == "Find Opportunities" && <ProjectHub />}

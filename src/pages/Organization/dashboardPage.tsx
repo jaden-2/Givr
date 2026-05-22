@@ -10,9 +10,12 @@ import { DashboardHeader } from "../../components/dashboardHeader";
 import { ApplicationHub } from "../../components/Organization/applicationHub";
 import useAuthFetch from "../../components/hooks/useAuthFetch";
 import OrganizationProfilePage from "./OrganizationProfilePage";
+import { useVerifyAuth, } from "../../components/Auth/AuthContext";
+import { useSocketConnection } from "../../components/Chat/socketConnection";
 
 export const DashboardPage = () => {
 
+    const loadSocketConnection = useSocketConnection()
     const [active, setActive] = useState<OrganizationNavTypes>("Dashboard");
     const [dashboardIsMounted, setDashboardIsMounted] = useState(false);
     const [dashboard, setDashboard] = useState<OrganizationDashboardProps>({
@@ -67,7 +70,7 @@ export const DashboardPage = () => {
     ], [dashboard])
 
     const {API} = useAuthFetch("organization")
-
+    const verifyAuth = useVerifyAuth()
     const buttons = new Map<string, string>()
     buttons.set("Dashboard", "Dashboard")
     buttons.set("Project Management", "Project Management")
@@ -87,7 +90,6 @@ export const DashboardPage = () => {
         })
         
     }
-
     const quickAction = (action: OrganizationQuickActions) => {
         switch (action) {
             case "Create New Project":
@@ -106,6 +108,8 @@ export const DashboardPage = () => {
         (async () => {
             await fetchOrganizationDashboard()  
         })()
+
+        // loadSocketConnection?.setHasMounted(true)
     }, [dashboardIsMounted])
     return <>
         <main>
