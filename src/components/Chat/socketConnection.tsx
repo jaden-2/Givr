@@ -31,7 +31,6 @@ export const WebsocketConnection:React.FC<{children:React.ReactNode}> = ({childr
     const [unreadCount, setUnreadCount] = useState<Map<number, number>>(new Map())
     const [totalCount, setTotalCount] = useState<number>(0)
 
-    const [isConnected, setIsConnected] = useState(false)
     const socketBaseUrl = import.meta.env.VITE_CHAT_BASEURL;
 
     const notificationSound = useRef(new Audio("/sound/notify.mp3"))

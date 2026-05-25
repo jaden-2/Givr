@@ -10,7 +10,6 @@ import ProjectDetailsModal from "./ProjectModalDetails";
 import { Hourglass, LucideShare2 } from "lucide-react";
 import  { useShareModal } from "./shareModal";
 import { useApplicationForm } from "./Volunteer/ApplicationForm";
-import { useSocketConnection } from "./Chat/socketConnection";
 
 // --- Reusable Components ---
 
@@ -414,7 +413,7 @@ export const ProjectCard:React.FC<ProjectComponentProps> = ({ id, title, organiz
 
 
 {/*Highlights only active button, used for navigation, allowing user toggle*/}
-export const RadioButton: React.FC<{children: React.ReactNode;  value?:string; activeSyle?:string; inActiveStyle?:string; active?: boolean; onClick?: (event:React.MouseEvent<HTMLButtonElement>) => void; notificationCount?:number}> = ({ children, active, onClick, activeSyle, inActiveStyle, value, notificationCount}) => {
+export const RadioButton: React.FC<{children: React.ReactNode;  value?:string; activeSyle?:string; inActiveStyle?:string; active?: boolean; onClick?: (event:React.MouseEvent<HTMLButtonElement>) => void; notificationCount?:number}> = ({ children, active, onClick, activeSyle, inActiveStyle, value}) => {
   let activeStyle_ = activeSyle;
   let notActiveStyle = inActiveStyle;
 
