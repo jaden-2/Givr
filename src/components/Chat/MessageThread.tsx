@@ -106,10 +106,12 @@ const useMessageThread= ()=>{
       
 
       useEffect(() => {
-        if(!isConnected) return;
+
         (async()=>{
           await loadConversation(false)
         })()
+        
+        if(!isConnected) return;
         
         if(!sockConnection?.socketConnection)
           return
