@@ -2,7 +2,8 @@ import { useState } from "react";
 import type { MyVolunteeringProps, ProjectProps } from "../interface/interfaces";
 import { Button } from "./ReuseableComponents";
 import { PageLoader } from "./icons";
-import { LucideMessageCircleDashed, } from "lucide-react";
+import { ChatNavItem } from "./ChatNavItem";
+import { useSocketConnection } from "./Chat/socketConnection";
 
 
 interface ProjectCardProps {
@@ -63,6 +64,8 @@ export default function VolunteeringProjectCard({volunteered, onCancelClick, onV
   const [persistedRating, setPersistedRating] = useState<number | null>(volunteered.project?.rating || null);
   const [isLoading, setIsLoading] = useState(false)
   
+  const unreadCount = useSocketConnection()?.unreadCount?.get(volunteered.project.id)
+
   const handleRatingSubmit = async () => {
     setPersistedRating(currentRating);
     
@@ -80,20 +83,32 @@ export default function VolunteeringProjectCard({volunteered, onCancelClick, onV
     <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
       {isLoading&&<PageLoader color="blue" message={"Rating"} />}
       <div className="flex justify-between items-start">
-        <div className="flex-1">
-          <h2 className="text-lg font-semibold text-[#323338] leading-tight">
-            {volunteered.project?.title}
-          </h2>
-          <p className="text-[#676879] text-sm mt-0.5">{volunteered.organization?.name}</p>
+  <div className="flex-1">
+    <h2 className="text-lg font-semibold text-[#323338] leading-tight">
+      {volunteered.project?.title}
+    </h2>
+    <p className="text-[#676879] text-sm mt-0.5">{volunteered.organization?.name}</p>
+  </div>
+
+  <div className="flex items-center gap-2">
+      {persistedRating && (
+        <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg border border-yellow-100">
+          <span className="text-xs font-bold text-yellow-700">{persistedRating}</span>
+          <StarIcon filled className="w-3 h-3" />
         </div>
-        
-        {persistedRating && (
-          <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg border border-yellow-100">
-            <span className="text-xs font-bold text-yellow-700">{persistedRating}</span>
-            <StarIcon filled className="w-3 h-3" />
-          </div>
-        )}
-      </div>
+      )}
+      {volunteered.status === "IN_PROGRESS" && (
+        <Button
+          variant="void"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold 
+            transition-all duration-200"
+          onClick={() => onChatOpen(volunteered.project)}
+        >
+          <ChatNavItem unreadCount={unreadCount}/>
+        </Button>
+      )}
+    </div>
+  </div>
 
       <div className="flex items-center gap-4 mt-3">
         <div className="text-gray-500 text-xs flex items-center gap-1">
@@ -121,12 +136,6 @@ export default function VolunteeringProjectCard({volunteered, onCancelClick, onV
       <div className="mt-5 pt-4 border-t border-gray-100">
         {volunteered.status === "IN_PROGRESS" ? (
           <div className="flex gap-3">
-            <Button variant="void" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold 
-              transition-all duration-200 active:scale-95 bg-orange-50 text-orange-600 hover:bg-orange-100 border border-orange-100"
-              onClick={()=>onChatOpen(volunteered.project)}
-              >
-              <LucideMessageCircleDashed size={14}/> Chat
-            </Button>
             <Button
               variant="primary"
               onClick={() => onViewDetailsClick(volunteered)}

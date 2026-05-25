@@ -45,12 +45,11 @@ const useMessageThread= ()=>{
     // const sockConnection = useSocketConnection()
 
     const sockConnection = useSocketConnection()
-    const socket = sockConnection?.socketConnection
+    const isConnected = !!sockConnection?.socketConnection
 
     const MessageThread:React.FC<{project:ProjectProps, userType: UserTypes, onClose: ()=>void}>= ({project, userType, onClose}) =>{
 
       const [messages, setMessages] = useState<Message[]>([])
-      const scrollRef = useRef<HTMLDivElement>(null);
       const [isLoading, setIsLoading] = useState(false)
       const [hasMore, setHasMore] = useState(false)
       
@@ -62,10 +61,14 @@ const useMessageThread= ()=>{
       let projectId = project.id;
       let title = project.title
       
-      const observerTargetRef = useRef<HTMLElement|null>(null)
+      const observerTargetRef = useRef<HTMLDivElement|null>(null)
       const containerRef = useRef<HTMLDivElement|null>(null)
+      const scrollRef = useRef<HTMLDivElement>(null);
 
-
+      const handleRef = (ex: HTMLDivElement)=>{
+        scrollRef.current = ex
+        containerRef.current = ex
+      }
       const loadConversation = async (getOld:boolean)=>{
         if(!verifyAuth?.isAuthenticated){
           return;
@@ -73,8 +76,11 @@ const useMessageThread= ()=>{
 
         try{
           setIsLoading(true)
-          let response = !getOld? await API().get(`/chat/${projectId}/history`): await  API().get(`/chat/${projectId}/history?cursor=${messages[-1].msgId}`)
-          setHasMore(!(response.data.last as boolean))
+          let response = !getOld? await API().get(`/chat/${projectId}/history`): await  API().get(`/chat/${projectId}/history?cursor=${messages[0].msgId}`)
+          let totalElements = response.data.page.totalElements as number
+          let size = response.data.page.size as number
+
+          setHasMore(size < totalElements)
           let msgs:Message[] = response.data.content as Message[];
           msgs.reverse()
           
@@ -100,20 +106,18 @@ const useMessageThread= ()=>{
       
 
       useEffect(() => {
+        if(!isConnected) return;
         (async()=>{
           await loadConversation(false)
         })()
         
         if(!sockConnection?.socketConnection)
           return
-
-
       
-        console.log(sockConnection.socketConnection)
         sockConnection.socketConnection?.addEventListener("message", handleMessageNotification)
         sockConnection.subscribe(projectId)
-        
-        
+        // sockConnection.clearUnread(projectId)
+
         return ()=>{
           let socket = sockConnection?.socketConnection
             if(socket && socket.readyState==socket.OPEN){
@@ -121,7 +125,8 @@ const useMessageThread= ()=>{
               socket.removeEventListener("message", handleMessageNotification)
           }
         }
-      }, [socket]);
+      }, [isConnected, projectId]);
+
 
       useEffect(() => {
           scrollRef.current?.scrollTo({
@@ -130,13 +135,26 @@ const useMessageThread= ()=>{
           });
         }, [messages]);
 
+
       useEffect(()=>{
-        if(!hasMore || isLoading) return;
+       
+        if(!containerRef.current || !observerTargetRef.current)
+          return;
 
         const observer = new IntersectionObserver(
-          (entries)=>{
-            if(entries[0].isIntersecting){
-              loadConversation(true)
+          async ([entries])=>{
+            if(entries.isIntersecting && hasMore && !isLoading){
+              const container = containerRef.current
+              if(!container)return;
+
+              const previousHeight = container?.scrollHeight
+              await loadConversation(true)
+
+              requestAnimationFrame(()=>{
+                const newHeight = container?.scrollHeight;
+                
+                container.scrollTop += (newHeight - previousHeight)
+              })
             }
           },
           {root: containerRef.current, threshold: 0.1}
@@ -145,6 +163,8 @@ const useMessageThread= ()=>{
         if(observerTargetRef.current){
           observer.observe(observerTargetRef.current)
         }
+
+        return ()=>observer.disconnect()
       }, [hasMore, isLoading, messages])
 
       async function handleSend(txt: string) {
@@ -155,13 +175,8 @@ const useMessageThread= ()=>{
             projectId
           }
         };
-        let sock = sockConnection?.socketConnection;
-
-        if (sock && sock.readyState == sock.OPEN)
-          sock.send(JSON.stringify(payload));
-
-        else
-          console.error(`Failed to send: ${txt}`);
+        
+        sockConnection?.send(payload)
       }
 
       if(!isOpen)
@@ -169,14 +184,15 @@ const useMessageThread= ()=>{
   
       return (
         <div className="flex flex-col h-svh bg-white font-sans text-slate-900 overflow-hidden w-full mx-auto shadow-2xl" 
-        ref={containerRef}
         >
           {isLoading && <LoadingEffect message="Loading Conversation"/>}
           <ThreadHeader newMessageCount={3} title={title} onClose={onClose}/>
+          
           <div 
-            ref={scrollRef}
+            ref={handleRef}
             className="flex-grow overflow-y-auto p-6 space-y-4 scroll-smooth"
           >
+            <div ref={observerTargetRef} className="h-1"></div>
             {messages.map((msg) => (
               <MessageBubble key={msg.msgId} message={msg}/>
             ))}

@@ -10,10 +10,12 @@ import { DashboardHeader } from "../../components/dashboardHeader";
 import { ApplicationHub } from "../../components/Organization/applicationHub";
 import useAuthFetch from "../../components/hooks/useAuthFetch";
 import OrganizationProfilePage from "./OrganizationProfilePage";
+import { useSocketConnection } from "../../components/Chat/socketConnection";
 
 export const DashboardPage = () => {
 
-    // const loadSocketConnection = useSocketConnection()
+    const loadSocketConnection = useSocketConnection()
+
     const [active, setActive] = useState<OrganizationNavTypes>("Dashboard");
     const [dashboardIsMounted, setDashboardIsMounted] = useState(false);
     const [dashboard, setDashboard] = useState<OrganizationDashboardProps>({
@@ -109,11 +111,13 @@ export const DashboardPage = () => {
 
         // loadSocketConnection?.setHasMounted(true)
     }, [dashboardIsMounted])
+
+    const notificationCount = loadSocketConnection?.totalCount || 0
     return <>
         <main>
             <DashboardHeader isOrganization={true}/>
             {<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-15 ">
-                <UserDashboardInformation activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={dashboard.name} />
+                <UserDashboardInformation notificationCount={notificationCount} activeButton={active} buttons={[...buttons.keys()]} onClick={activateNavButton} username={dashboard.name} isOrganization={true}/>
                 {active == "Dashboard" && dashboard && <Dashboard projects={[]} metrics={metrics} orgTriggerAction={quickAction} hasMounted={()=>setDashboardIsMounted(!dashboardIsMounted)} />}
                 {active == "Project Management" && <ProjectHub isOrganization={true} orgTriggerAction={quickAction}/>}
                 {active == "Applications" && <ApplicationHub/>}

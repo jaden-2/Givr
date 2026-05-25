@@ -8,12 +8,13 @@ import {
   Calendar,
   Layers,
   Info,
-  X,
-  LucideMessageCircleDashed
+ 
 } from 'lucide-react';
 import type { ParticipantProps, ParticipationStatus, ProjectProps } from '../../interface/interfaces';
 import { Button } from '../ReuseableComponents';
 import useMessageThread from '../Chat/MessageThread';
+import { ChatNavItem } from '../ChatNavItem';
+import { useSocketConnection } from '../Chat/socketConnection';
 
 export interface ParticipantCardComponentProps{
     participant: ParticipantProps;
@@ -222,6 +223,8 @@ export const ProjectGroupHeader:React.FC<ProjectGroupHeaderProps> = ({ project, 
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   let count = members.length
   const {openGroupMessage, GroupMessageComp} = useMessageThread()
+
+  const unreadCount = useSocketConnection()?.unreadCount?.get(project.id)
   return (
     <div className="flex flex-col h-svh mb-4 mt-8 first:mt-0 bg-white border-l-4 border-green-500 rounded-r-xl shadow-sm overflow-hidden">
 
@@ -259,22 +262,20 @@ export const ProjectGroupHeader:React.FC<ProjectGroupHeaderProps> = ({ project, 
         <div className="flex items-center gap-2 flex-shrink-0">
 
           {/* Chat toggle */}
-          <button
+          {!isBroadcasting && <button
             onClick={() => {
-              setIsBroadcasting(!isBroadcasting)
+              setIsBroadcasting(true)
+              
               openGroupMessage(project, "organization", ()=>setIsBroadcasting(false))
             }}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 active:scale-95 ${
               isBroadcasting
                 ? 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                : 'bg-orange-50 text-orange-600 hover:bg-orange-100 border border-orange-100'
+                : ''
             }`}
           >
-            {isBroadcasting
-              ? <><X size={14} /> Close</>
-              : <><LucideMessageCircleDashed size={14}/>Chat</>
-            }
-          </button>
+             <><ChatNavItem unreadCount={unreadCount}/></>
+          </button>}
 
           {/* Complete button */}
           {project.status === 'COMPLETED' ? (
@@ -296,7 +297,7 @@ export const ProjectGroupHeader:React.FC<ProjectGroupHeaderProps> = ({ project, 
       </div>
 
       {/* Broadcast Input Area */}
-      <GroupMessageComp/>
+      {isBroadcasting && <GroupMessageComp/>}
 
       {
         !isBroadcasting && <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 m-2">

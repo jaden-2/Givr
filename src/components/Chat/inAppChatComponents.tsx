@@ -76,7 +76,7 @@ export const MessageBubble = ({ message }: { message: Message }) => {
             {message.username}
           </span>
           <span className="text-[10px] text-slate-400 uppercase tracking-wide">
-            {message.sentAt}
+           {parseTime(message.sentAt)}, {parseZonedDateTime(message.sentAt)}
           </span>
         </div>
         <div className="bg-slate-50 border border-slate-100 text-slate-800 px-4 py-3 rounded-2xl rounded-bl-sm shadow-sm">
@@ -87,7 +87,7 @@ export const MessageBubble = ({ message }: { message: Message }) => {
   );
 };
 
-export const InputArea: React.FC<{ onSend: (text: string) => Promise<void>; variant: UserTypes }> = ({
+export const InputArea: React.FC<{ onSend?: (text: string) => void; variant: UserTypes }> = ({
   onSend,
   variant,
 }) => {
@@ -95,9 +95,15 @@ export const InputArea: React.FC<{ onSend: (text: string) => Promise<void>; vari
   const [focused, setFocused] = useState(false);
 
   const handleSend = async () => {
-    if (!text.trim()) return;
-    await onSend(text);
-    setText('');
+    if (!text) return;
+   try{
+    if(onSend)
+      onSend(text);
+     setText('');
+   }catch{
+    
+   }
+    
   };
 
   return (
