@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Send, CheckCheck, User, LucideArrowLeft } from 'lucide-react';
+import { Send, CheckCheck,  LucideArrowLeft, User } from 'lucide-react';
 import { useVerifyAuth } from '../Auth/AuthContext';
 import type { UserTypes } from '../../interface/interfaces';
 import { parseTime, parseZonedDateTime } from '../hooks/ParseDate';
+
+type AccountType = "VOLUNTEER"|"ORGANIZATION"
 
 export interface Message {
   msgId?: string;
@@ -11,14 +13,34 @@ export interface Message {
   username?: string;
   sentAt?: string;
   content?: string;
+  role?: AccountType
   type?: "chat_message"|"unread_update"
 }
 
-const Avatar = ({ className = "", }: { className?: string; seed?: string }) => (
-  <div className={`w-9 h-9 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center flex-shrink-0 ring-2 ring-white shadow-sm ${className}`}>
-    <User className="text-slate-300 w-4 h-4" />
-  </div>
-);
+const Avatar = ({ className = "", userId, role }: { className?: string; seed?: string ; userId?:string; role?:AccountType; }) => {
+
+  const [imageError, setImageError] = useState(false)
+
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const profileUrl = `${apiBaseUrl}/${role?.toLowerCase()}/profile/image?userId=${userId}`
+
+  if(imageError){
+     return (
+      <div
+        className={`w-9 h-9 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center flex-shrink-0 ring-2 ring-white shadow-sm ${className}`}
+      >
+        <User className="text-slate-300 w-4 h-4" />
+      </div>
+    );
+  }
+
+  return ( <img
+      src={profileUrl}
+      alt="Profile"
+      onError={() => setImageError(true)}
+      className={`w-9 h-9 rounded-2xl object-cover flex-shrink-0 ring-2 ring-white shadow-sm ${className}`}
+    />)
+};
 
 export const ThreadHeader = ({
   title,
@@ -47,7 +69,7 @@ export const ThreadHeader = ({
 export const MessageBubble = ({ message }: { message: Message }) => {
   const verifyAuth = useVerifyAuth();
   const isOwn = message.sentBy === verifyAuth?.currentUser?.userId;
-
+  const {role, sentBy} = message
   if (isOwn) {
     return (
       <div className="flex justify-end gap-2.5 mb-5 items-end">
@@ -62,14 +84,14 @@ export const MessageBubble = ({ message }: { message: Message }) => {
             </div>
           </div>
         </div>
-        <Avatar className="mb-0.5" />
+      <Avatar className="mb-0.5" role={role} userId={sentBy} />
       </div>
     );
   }
 
   return (
     <div className="flex justify-start gap-2.5 mb-5 items-end">
-      <Avatar seed={message.username} className="mb-0.5" />
+      <Avatar seed={message.username} className="mb-0.5" role={role} userId={sentBy}/>
       <div className="flex flex-col max-w-[72%]">
         <div className="flex items-baseline gap-2 mb-1.5 ml-1">
           <span className="text-xs font-semibold text-slate-700 tracking-tight">
