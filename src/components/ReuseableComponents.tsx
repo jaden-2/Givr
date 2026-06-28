@@ -420,12 +420,12 @@ export const RadioButton: React.FC<{children: React.ReactNode;  value?:string; a
   if(!activeSyle)
     activeStyle_ = "bg-white rounded-xl w-full text-black shadow-md rounded-t-lg py-2"
   if(!inActiveStyle)
-    notActiveStyle = "bg-[#E7E9EF] rounded-xl w-full text-gray-600 hover:bg-gray-300 py-2"
+    notActiveStyle = "bg-[#E7E9EF] w-full rounded-xl text-gray-600 hover:bg-gray-300 py-2"
 
   return (
         <button
         onClick={onClick}
-        className={`relative z-10 flex w-full items-center justify-center gap-2 px-4 text-sm font-semibold transition-all
+        className={`relative z-10 flex items-center justify-center gap-2 px-4 text-sm font-semibold transition-all
             ${active
             ? activeStyle_
             : notActiveStyle}`}
